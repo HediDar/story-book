@@ -1,28 +1,40 @@
-import React, { Component } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 
-class ToDo extends Component {
-  render() {
-    //if (this.props.task.done === 0)
-      return (
-        <>
-          <li>
-            <label>
-              {this.props.task.name}
-              {"    "}
-            </label>
+const ToDo = (props) => {
+  const { task } = props;
+  const { onDone } = props;
+  const { onDeleteTask } = props;
+  return (
+    <>
+      <li>
+        <label htmlFor="task-name">
+          {task.name}
+          {"    "}
+        </label>
 
-            <button onClick={() => this.props.onDone(this.props.task.id)}>
-              add to done
-            </button>
-            <label>{"   "}</label>
-            <button onClick={() => this.props.onDeleteTask(this.props.task.id)}>
-              Delete
-            </button>
-          </li>
-        </>
-      );
-    return null;
-  }
-}
+        <button type="button" onClick={() => onDone(task.id)}>
+          add to done
+        </button>
+        <label htmlFor="just a space">{"   "}</label>
+        <button type="button" onClick={() => onDeleteTask(task.id)}>
+          Delete
+        </button>
+      </li>
+    </>
+  );
+};
+
+ToDo.propTypes = {
+  task: PropTypes.arrayOf(PropTypes.object),
+  onDone: PropTypes.func,
+  onDeleteTask: PropTypes.func,
+};
+
+ToDo.defaultProps = {
+  task: [{}],
+  onDone: () => {},
+  onDeleteTask: () => {},
+};
 
 export default ToDo;

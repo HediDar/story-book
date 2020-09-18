@@ -1,11 +1,16 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import ToDo from "./toDo";
 
 class ToDos extends Component {
   componentDidMount() {}
 
   render() {
-    const myTasks = this.props.tasks;
+    const { tasks } = this.props;
+    const { onDoneTaskApp } = this.props;
+    const { onDeleteTaskApp } = this.props;
+
+    const myTasks = tasks;
     const tasksFiltred = [];
 
     myTasks.forEach((el) => {
@@ -19,13 +24,25 @@ class ToDos extends Component {
           <ToDo
             key={task.id}
             task={task}
-            onDone={this.props.onDoneTaskApp}
-            onDeleteTask={this.props.onDeleteTaskApp}
+            onDone={onDoneTaskApp}
+            onDeleteTask={onDeleteTaskApp}
           />
         ))}
       </>
     );
   }
 }
+
+ToDos.propTypes = {
+  tasks: PropTypes.arrayOf(PropTypes.object),
+  onDoneTaskApp: PropTypes.func,
+  onDeleteTaskApp: PropTypes.func,
+};
+
+ToDos.defaultProps = {
+  tasks: [{}],
+  onDoneTaskApp: () => {},
+  onDeleteTaskApp: () => {},
+};
 
 export default ToDos;

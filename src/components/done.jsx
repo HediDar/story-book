@@ -1,24 +1,34 @@
-import React, { Component } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 
-class Done extends Component {
-  render() {
-    //if (this.props.task.done === 1)
-      return (
-        <>
-          <li>
-            <label>
-              {this.props.task.name}
-              {"    "}
-            </label>
+const Done = (props) => {
+  const { task } = props;
+  const { onDeleteDone } = props;
 
-            <button onClick={() => this.props.onDeleteDone(this.props.task.id)}>
-              Delete
-            </button>
-          </li>
-        </>
-      );
-    return null;
-  }
-}
+  return (
+    <>
+      <li>
+        <label htmlFor="taske name">
+          {task.name}
+          {"    "}
+        </label>
+
+        <button type="button" onClick={() => onDeleteDone(task.id)}>
+          Delete
+        </button>
+      </li>
+    </>
+  );
+};
+
+Done.propTypes = {
+  task: PropTypes.arrayOf(PropTypes.object),
+  onDeleteDone: PropTypes.func,
+};
+
+Done.defaultProps = {
+  task: [{}],
+  onDeleteDone: () => {},
+};
 
 export default Done;

@@ -1,31 +1,37 @@
-import React, { Component } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import Done from "./done";
 
-class Dones extends Component {
-  componentDidMount() {}
+const Dones = (props) => {
+  const { tasks } = props;
+  const { onDeleteDoneTask } = props;
 
-  render() {
-    const myTasks = this.props.tasks;
-    const tasksFiltred = [];
+  const myTasks = tasks;
+  const tasksFiltred = [];
 
-    myTasks.forEach((el) => {
-      if (el.done === 1) {
-        tasksFiltred.push(el);
-      }
-    });
+  myTasks.forEach((el) => {
+    if (el.done === 1) {
+      tasksFiltred.push(el);
+    }
+  });
 
-    return (
-      <>
-        {tasksFiltred.map((task) => (
-          <Done
-            key={task.id}
-            task={task}
-            onDeleteDone={this.props.onDeleteDoneTask}
-          />
-        ))}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      {tasksFiltred.map((task) => (
+        <Done key={task.id} task={task} onDeleteDone={onDeleteDoneTask} />
+      ))}
+    </>
+  );
+};
+
+Dones.propTypes = {
+  tasks: PropTypes.arrayOf(PropTypes.object),
+  onDeleteDoneTask: PropTypes.func,
+};
+
+Dones.defaultProps = {
+  tasks: [{}],
+  onDeleteDoneTask: () => {},
+};
 
 export default Dones;

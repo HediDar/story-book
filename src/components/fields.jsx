@@ -1,30 +1,37 @@
-import React, { Component } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 
-class Fields extends Component {
-  render() {
-    var title = this.title;
-    return (
-      <>
-        <table>
-          <tr>
-            <td>
-              <input
-                ref={(c) => (this.title = c)}
-                type="text"
-                placeholder="task name"
-              />
-            </td>
+const Fields = (props) => {
+  const { onAddTask } = props;
+  const myTextField = React.useRef();
+  return (
+    <>
+      <table>
+        <tr>
+          <td>
+            <input ref={myTextField} type="text" placeholder="task name" />
+          </td>
 
-            <td>
-              <button onClick={() => this.props.onAddTask(this.title.value)}>
-                add a task
-              </button>
-            </td>
-          </tr>
-        </table>
-      </>
-    );
-  }
-}
+          <td>
+            <button
+              type="button"
+              onClick={() => onAddTask(myTextField.current.value)}
+            >
+              add a task
+            </button>
+          </td>
+        </tr>
+      </table>
+    </>
+  );
+};
+
+Fields.propTypes = {
+  onAddTask: PropTypes.func,
+};
+
+Fields.defaultProps = {
+  onAddTask: () => {},
+};
 
 export default Fields;
