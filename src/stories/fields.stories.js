@@ -6,16 +6,22 @@ export default {
   title: "Example/Fields",
   component: Fields,
   argTypes: {
-    backgroundColor: { control: "color" },
     onAddTask: {
-      action: "clicked"
-    }
+      action: () => {
+        alert("hfurhgfu");
+      },
+    },
   },
 };
 
-const Template = (args) => <Fields {...args} />;
+const Template = (args) => (
+  <Fields
+    onAddTask={(val) => {
+      alert("si el Hedi", val);
+    }}
+    {...args}
+  />
+);
 
-export const Secondary = Template.bind({});
-Secondary.args = {
- 
-};
+export const testhh = Template.bind({});
+testhh.args = {};

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Fields from "./components/fields";
 import ToDos from "./components/toDos";
 import Dones from "./components/dones";
-
 import "./App.css";
 
 class App extends Component {
@@ -83,7 +82,7 @@ class App extends Component {
 
     if (testTOdo === 1 && testTOdone === 1)
       return (
-        <>
+        <div>
           <Fields onAddTask={this.handleAddToDone} />
           <br />
           <br />
@@ -98,11 +97,11 @@ class App extends Component {
             tasks={tasks}
             onDeleteDoneTask={this.handleonDeleteDoneTasks}
           />
-        </>
+        </div>
       );
-     if (testTOdo === 1 && testTOdone === 0)
+    if (testTOdo === 1 && testTOdone === 0)
       return (
-        <>
+        <div>
           <Fields onAddTask={this.handleAddToDone} />
           <br />
           <br />
@@ -114,11 +113,11 @@ class App extends Component {
           <br />
           <br />
           <h1>no data to display in done</h1>
-        </>
+        </div>
       );
-     if (testTOdo === 0 && testTOdone === 1)
+    if (testTOdo === 0 && testTOdone === 1)
       return (
-        <>
+        <div>
           <Fields onAddTask={this.handleAddToDone} />
           <br />
           <br />
@@ -129,11 +128,11 @@ class App extends Component {
             tasks={tasks}
             onDeleteDoneTask={this.handleonDeleteDoneTasks}
           />
-        </>
+        </div>
       );
 
     return (
-      <>
+      <div>
         <Fields onAddTask={this.handleAddToDone} />
         <br />
         <br />
@@ -142,7 +141,7 @@ class App extends Component {
         <br />
         <br />
         <h1>no data to display in done</h1>
-      </>
+      </div>
     );
   }
 }
