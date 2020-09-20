@@ -7,21 +7,14 @@ export default {
   component: Fields,
   argTypes: {
     onAddTask: {
-      action: () => {
-        alert("hfurhgfu");
-      },
-    },
+      action: "clicked"
+    }
   },
 };
 
-const Template = (args) => (
-  <Fields
-    onAddTask={(val) => {
-      alert("si el Hedi", val);
-    }}
-    {...args}
-  />
-);
+const Template = (args) => <Fields {...args} />;
 
-export const testhh = Template.bind({});
-testhh.args = {};
+export const Secondary = Template.bind({});
+Secondary.args = {
+  onAddTask: (text)=>{alert(text)}
+};
