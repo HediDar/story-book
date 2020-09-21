@@ -62,13 +62,13 @@ const ToDo = (props) => {
 };
 
 ToDo.propTypes = {
-  task: PropTypes.arrayOf(PropTypes.object),
+  task: PropTypes.shape(),
   onDone: PropTypes.func,
   onDeleteTask: PropTypes.func,
 };
 
 ToDo.defaultProps = {
-  task: [{}],
+  task: {},
   onDone: () => {},
   onDeleteTask: () => {},
 };

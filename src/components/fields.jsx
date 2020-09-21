@@ -5,13 +5,14 @@ import { Button, TextField, Grid } from "@material-ui/core";
 const Fields = ({ onAddTask }) => {
   const [text, setText] = useState("");
   const [textArea, setTextArea] = useState("");
- 
+
+
 
   return (
     <>
       <Grid container style={{ justifyContent: "center" }}>
-        <Grid alignItems="center" container xs={12} md={10} lg={8}>
-          <Grid container item style={{ justifyContent: "center" }} xl={12}>
+        <Grid item xs={12} md={10} lg={8}>
+          <Grid item style={{ justifyContent: "center" }} xl={12}>
             <TextField
               onChange={(e) => {
                 setText(e.target.value);
@@ -23,13 +24,12 @@ const Fields = ({ onAddTask }) => {
               label="task name"
             />
           </Grid>
-          <Grid container item style={{ justifyContent: "center" }} xl={12}>
+          <Grid item style={{ justifyContent: "center" }} xl={12}>
             <TextField
               onChange={(e) => {
                 setTextArea(e.target.value);
               }}
               value={textArea}
-              textAlign="center"
               inputProps={{ style: { textAlign: "center" } }}
               fullWidth
               id="standard-multiline-flexible"
@@ -38,7 +38,7 @@ const Fields = ({ onAddTask }) => {
               rowsMax={4}
             />
           </Grid>
-          <Grid container item style={{ justifyContent: "center" }} xl={12}>
+          <Grid item style={{ justifyContent: "center" }} xl={12}>
             <Button
               fullWidth
               color="secondary"

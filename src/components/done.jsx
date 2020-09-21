@@ -54,12 +54,12 @@ const Done = (props) => {
 };
 
 Done.propTypes = {
-  task: PropTypes.arrayOf(PropTypes.object),
+  task: PropTypes.shape(),
   onDeleteDone: PropTypes.func,
 };
 
 Done.defaultProps = {
-  task: [{}],
+  task: {},
   onDeleteDone: () => {},
 };
 

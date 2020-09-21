@@ -14,10 +14,16 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log(localStorage.getItem("tasksInLocalStorage"));
     if (localStorage.getItem("tasksInLocalStorage")) {
       const data = JSON.parse(localStorage.getItem("tasksInLocalStorage"));
       if (data.length > 0) this.setState({ tasks: data });
+    }
+
+    if (localStorage.getItem("incrementInLocalStorage")) {
+      this.increment = parseInt(
+        localStorage.getItem("incrementInLocalStorage"),
+        10
+      );
     }
   }
 
@@ -25,6 +31,7 @@ class App extends Component {
     const { tasks } = this.state;
 
     localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
+    localStorage.setItem("incrementInLocalStorage", this.increment);
   }
 
   // when we click first on add button
