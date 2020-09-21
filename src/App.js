@@ -14,16 +14,19 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const data = JSON.parse(localStorage.getItem("tasksInLocalStorage"));
-    if (data.length > 0) this.setState({ tasks: data });
+    console.log(sessionStorage);
+    if (sessionStorage.length > 0) {
+      const data = JSON.parse(sessionStorage.getItem("tasksInSessionStorage"));
+      if (data.length > 0) this.setState({ tasks: data });
+    }
   }
 
   componentDidUpdate() {
     const { tasks } = this.state;
 
-    localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
-    console.log(localStorage);
-    console.log(tasks);
+    sessionStorage.setItem("tasksInSessionStorage", JSON.stringify(tasks));
+
+    console.log(sessionStorage);
   }
 
   // when we click first on add button
