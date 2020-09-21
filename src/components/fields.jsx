@@ -1,16 +1,16 @@
-import React, { createRef, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, TextField, Grid } from "@material-ui/core";
 
 const Fields = ({ onAddTask }) => {
-  const myTextField = createRef();
   const [text, setText] = useState("");
+  const [textArea, setTextArea] = useState("");
+
   return (
     <>
       <Grid container style={{ justifyContent: "center" }}>
         <Grid
           alignItems="center"
-          style={{ backgroundColor: "yellow" }}
           container
           xs={12}
           md={10}
@@ -30,6 +30,10 @@ const Fields = ({ onAddTask }) => {
           </Grid>
           <Grid container item style={{ justifyContent: "center" }} xl={12}>
             <TextField
+              onChange={(e) => {
+                setTextArea(e.target.value);
+              }}
+              value={textArea}
               textAlign="center"
               inputProps={{ style: { textAlign: "center" } }}
               fullWidth
@@ -40,7 +44,7 @@ const Fields = ({ onAddTask }) => {
             />
           </Grid>
           <Grid container item style={{ justifyContent: "center" }} xl={12}>
-            <Button fullWidth color="secondary" onClick={() => onAddTask(text)}>
+            <Button fullWidth color="secondary" onClick={() => onAddTask(text,textArea)}>
               Add task
             </Button>
           </Grid>
