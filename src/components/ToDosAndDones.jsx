@@ -9,6 +9,7 @@ class ToDosAndDones extends Component {
     const { tasks } = this.props;
     const { onDoneTaskApp } = this.props;
     const { onDeleteTaskApp } = this.props;
+    const { onMakeImportant } = this.props;
 
     const myTasks = tasks;
     const tasksFiltredToDo = [];
@@ -33,6 +34,7 @@ class ToDosAndDones extends Component {
             task={task}
             onDone={onDoneTaskApp}
             onDeleteTask={onDeleteTaskApp}
+            makeImportant={onMakeImportant}
           />
         ))}
       </>
@@ -43,10 +45,12 @@ ToDosAndDones.propTypes = {
   tasks: PropTypes.arrayOf(PropTypes.object),
   onDoneTaskApp: PropTypes.func,
   onDeleteTaskApp: PropTypes.func,
+  onMakeImportant: PropTypes.func,
 };
 ToDosAndDones.defaultProps = {
   tasks: [{}],
   onDoneTaskApp: () => {},
   onDeleteTaskApp: () => {},
+  onMakeImportant: () => {},
 };
 export default ToDosAndDones;

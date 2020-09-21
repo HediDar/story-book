@@ -28,8 +28,9 @@ const SingleTask = (props) => {
   const { task } = props;
   const { onDone } = props;
   const { onDeleteTask } = props;
-  const classes = useStyles();
+  const { makeImportant } = props;
 
+  const classes = useStyles();
 
   if (task.done === 0 && task.important === 1)
     return (
@@ -49,6 +50,11 @@ const SingleTask = (props) => {
           </AccordionDetails>
           <Divider />
           <AccordionActions>
+            <Button color="secondary" onClick={() => makeImportant(task.id)}>
+              {" "}
+              remove from important
+            </Button>
+
             <Button color="secondary" onClick={() => onDone(task.id)}>
               {" "}
               Add to done
@@ -79,6 +85,10 @@ const SingleTask = (props) => {
           </AccordionDetails>
           <Divider />
           <AccordionActions>
+            <Button color="secondary" onClick={() => makeImportant(task.id)}>
+              {" "}
+              make Important
+            </Button>
             <Button color="secondary" onClick={() => onDone(task.id)}>
               {" "}
               Add to done
@@ -121,12 +131,14 @@ SingleTask.propTypes = {
   task: PropTypes.shape(),
   onDone: PropTypes.func,
   onDeleteTask: PropTypes.func,
+  makeImportant: PropTypes.func,
 };
 
 SingleTask.defaultProps = {
   task: {},
   onDone: () => {},
   onDeleteTask: () => {},
+  makeImportant: () => {},
 };
 
 export default SingleTask;

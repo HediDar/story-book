@@ -38,21 +38,21 @@ class App extends Component {
     const { tasks } = this.state;
     const data = tasks;
     if (radio.localeCompare("notImportant") === 0)
-    data.push({
-      id: this.increment,
-      important:0,
-      name: text,
-      description: textArea,
-      done: 0,
-    });
-else
-    data.push({
-      id: this.increment,
-      important:1,
-      name: text,
-      description: textArea,
-      done: 0,
-    });
+      data.push({
+        id: this.increment,
+        important: 0,
+        name: text,
+        description: textArea,
+        done: 0,
+      });
+    else
+      data.push({
+        id: this.increment,
+        important: 1,
+        name: text,
+        description: textArea,
+        done: 0,
+      });
 
     this.increment += 1;
 
@@ -88,6 +88,20 @@ else
     this.setState({ tasks: data });
   };
 
+  handleonImportant = (value) => {
+    const { tasks } = this.state;
+
+    const actualTasks = tasks;
+    actualTasks.forEach((el, index) => {
+      if (el.id === value) {
+        if (el.important === 0) actualTasks[index].important = 1;
+        else actualTasks[index].important = 0;
+      }
+    });
+
+    this.setState({ tasks: actualTasks });
+  };
+
   render() {
     const { tasks } = this.state;
 
@@ -101,6 +115,7 @@ else
           tasks={tasks}
           onDoneTaskApp={this.handleOnDoneTask}
           onDeleteTaskApp={this.handleonDeleteDone}
+          onMakeImportant={this.handleonImportant}
         />
       </>
     );
