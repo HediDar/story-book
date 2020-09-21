@@ -1,18 +1,23 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, TextField, Grid } from "@material-ui/core";
+import {
+  RadioGroup,
+  FormControlLabel,
+  Button,
+  TextField,
+  Grid,
+  Radio,
+} from "@material-ui/core";
 
-const Fields = ({ onAddTask }) => {
+const AddToDo = ({ onAddTask }) => {
   const [text, setText] = useState("");
   const [textArea, setTextArea] = useState("");
-
-
 
   return (
     <>
       <Grid container style={{ justifyContent: "center" }}>
-        <Grid item xs={12} md={10} lg={8}>
-          <Grid item style={{ justifyContent: "center" }} xl={12}>
+        <Grid alignItems="center" container xs={12} md={10} lg={8}>
+          <Grid container item style={{ justifyContent: "center" }} xl={12}>
             <TextField
               onChange={(e) => {
                 setText(e.target.value);
@@ -24,12 +29,13 @@ const Fields = ({ onAddTask }) => {
               label="task name"
             />
           </Grid>
-          <Grid item style={{ justifyContent: "center" }} xl={12}>
+          <Grid container item style={{ justifyContent: "center" }} xl={12}>
             <TextField
               onChange={(e) => {
                 setTextArea(e.target.value);
               }}
               value={textArea}
+              textAlign="center"
               inputProps={{ style: { textAlign: "center" } }}
               fullWidth
               id="standard-multiline-flexible"
@@ -38,7 +44,7 @@ const Fields = ({ onAddTask }) => {
               rowsMax={4}
             />
           </Grid>
-          <Grid item style={{ justifyContent: "center" }} xl={12}>
+          <Grid container item style={{ justifyContent: "center" }} xl={12}>
             <Button
               fullWidth
               color="secondary"
@@ -47,15 +53,34 @@ const Fields = ({ onAddTask }) => {
               Add task
             </Button>
           </Grid>
+          <Grid container item style={{ justifyContent: "center" }} xl={12}>
+            <RadioGroup
+              defaultValue="notImportant"
+              row
+              aria-label="gender"
+              name="myRadioGroup"
+            >
+              <FormControlLabel
+                value="notImportant"
+                control={<Radio />}
+                label="Not important"
+              />
+              <FormControlLabel
+                value="Important"
+                control={<Radio />}
+                label="Important"
+              />
+            </RadioGroup>
+          </Grid>
         </Grid>
       </Grid>
     </>
   );
 };
-Fields.propTypes = {
+AddToDo.propTypes = {
   onAddTask: PropTypes.func,
 };
-Fields.defaultProps = {
+AddToDo.defaultProps = {
   onAddTask: () => {},
 };
-export default Fields;
+export default AddToDo;

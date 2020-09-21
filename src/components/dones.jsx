@@ -7,7 +7,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import ClearIcon from '@material-ui/icons/Clear';
-import Done from "./done";
+import Done from "./Done";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {

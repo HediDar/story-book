@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import Fields from "./components/fields";
-import ToDos from "./components/toDos";
-import Dones from "./components/dones";
+import AddToDO from "./components/AddToDo";
+import ToDosAndDones from "./components/ToDosAndDones";
 import "./App.css";
 
 class App extends Component {
@@ -51,20 +50,6 @@ class App extends Component {
 
   // when we click on delete task
 
-  handleonDeleteDone = (value) => {
-    const { tasks } = this.state;
-
-    const data = [];
-    const actualTasks = tasks;
-
-    actualTasks.forEach((el) => {
-      if (el.id !== value) {
-        data.push(el);
-      }
-      this.setState({ tasks: data });
-    });
-  };
-
   handleOnDoneTask = (value) => {
     const { tasks } = this.state;
     const data = tasks;
@@ -78,17 +63,18 @@ class App extends Component {
     this.setState({ tasks: data });
   };
 
-  handleonDeleteDoneTasks = (value) => {
-    const data = [];
+  handleonDeleteDone = (value) => {
     const { tasks } = this.state;
+
+    const data = [];
     const actualTasks = tasks;
 
     actualTasks.forEach((el) => {
       if (el.id !== value) {
         data.push(el);
       }
-      this.setState({ tasks: data });
     });
+    this.setState({ tasks: data });
   };
 
   render() {
@@ -96,17 +82,15 @@ class App extends Component {
 
     return (
       <>
-        <Fields onAddTask={this.handleAddToDone} />
+        <AddToDO onAddTask={this.handleAddToDone} />
         <br />
         <br />
-        <ToDos
+
+        <ToDosAndDones
           tasks={tasks}
           onDoneTaskApp={this.handleOnDoneTask}
           onDeleteTaskApp={this.handleonDeleteDone}
         />
-        <br />
-        <br />
-        <Dones tasks={tasks} onDeleteDoneTask={this.handleonDeleteDoneTasks} />
       </>
     );
   }
