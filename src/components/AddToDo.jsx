@@ -12,11 +12,22 @@ import {
 const AddToDo = ({ onAddTask }) => {
   const [text, setText] = useState("");
   const [textArea, setTextArea] = useState("");
+  const [radio, setRadio] = useState("notImportant");
+
+  function onClickCalls() {
+    if (text === "") alert("you need to name your task");
+    else {
+      onAddTask(text, textArea, radio);
+      setText("");
+      setTextArea("");
+      setRadio("notImportant");
+    }
+  }
 
   return (
     <>
       <Grid container style={{ justifyContent: "center" }}>
-        <Grid alignItems="center" container xs={12} md={10} lg={8}>
+        <Grid alignItems="center" container item xs={12} md={10} lg={8}>
           <Grid container item style={{ justifyContent: "center" }} xl={12}>
             <TextField
               onChange={(e) => {
@@ -35,7 +46,6 @@ const AddToDo = ({ onAddTask }) => {
                 setTextArea(e.target.value);
               }}
               value={textArea}
-              textAlign="center"
               inputProps={{ style: { textAlign: "center" } }}
               fullWidth
               id="standard-multiline-flexible"
@@ -44,21 +54,16 @@ const AddToDo = ({ onAddTask }) => {
               rowsMax={4}
             />
           </Grid>
-          <Grid container item style={{ justifyContent: "center" }} xl={12}>
-            <Button
-              fullWidth
-              color="secondary"
-              onClick={() => onAddTask(text, textArea)}
-            >
-              Add task
-            </Button>
-          </Grid>
+
           <Grid container item style={{ justifyContent: "center" }} xl={12}>
             <RadioGroup
-              defaultValue="notImportant"
+              onChange={(e) => {
+                setRadio(e.target.value);
+              }}
               row
               aria-label="gender"
               name="myRadioGroup"
+              value={radio}
             >
               <FormControlLabel
                 value="notImportant"
@@ -71,6 +76,11 @@ const AddToDo = ({ onAddTask }) => {
                 label="Important"
               />
             </RadioGroup>
+          </Grid>
+          <Grid container item style={{ justifyContent: "center" }} xl={12}>
+            <Button fullWidth color="secondary" onClick={() => onClickCalls()}>
+              Add task
+            </Button>
           </Grid>
         </Grid>
       </Grid>

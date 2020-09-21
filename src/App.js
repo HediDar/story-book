@@ -34,15 +34,26 @@ class App extends Component {
   }
 
   // when we click first on add button
-  handleAddToDone = (text, textArea) => {
+  handleAddToDone = (text, textArea, radio) => {
     const { tasks } = this.state;
     const data = tasks;
+    if (radio.localeCompare("notImportant") === 0)
     data.push({
       id: this.increment,
+      important:0,
       name: text,
       description: textArea,
       done: 0,
     });
+else
+    data.push({
+      id: this.increment,
+      important:1,
+      name: text,
+      description: textArea,
+      done: 0,
+    });
+
     this.increment += 1;
 
     this.setState({ tasks: data });

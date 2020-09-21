@@ -1,6 +1,6 @@
 import React from "react";
 
-import Fields from "../components/fields";
+import Fields from "../components/AddToDo";
 
 export default {
   title: "Example/Fields",
