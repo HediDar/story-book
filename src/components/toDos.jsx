@@ -6,6 +6,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import ClearIcon from '@material-ui/icons/Clear';
 import ToDo from "./toDo";
 
 const StyledTableCell = withStyles((theme) => ({
@@ -72,8 +73,8 @@ class ToDos extends Component {
           </TableHead>
           <TableBody>
             <TableRow>
-              <StyledTableCell>
-              No data found
+              <StyledTableCell align="center">
+             <ClearIcon/>
               </StyledTableCell>
             </TableRow>
           </TableBody>

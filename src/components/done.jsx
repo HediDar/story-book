@@ -29,7 +29,7 @@ const Done = (props) => {
   const classes = useStyles();
   return (
     <>
-      <Accordion defaultExpanded>
+      <Accordion defaultExpanded style={{backgroundColor:'lightgrey'}}>
         <AccordionSummary aria-controls="panel1c-content" id="panel1c-header">
           <div>
             <Typography>{task.name}</Typography>

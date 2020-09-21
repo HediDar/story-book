@@ -10,8 +10,10 @@ import Divider from "@material-ui/core/Divider";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
+
   root: {
     width: "100%",
+  
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -31,7 +33,7 @@ const ToDo = (props) => {
   const classes = useStyles();
   return (
     <>
-      <Accordion defaultExpanded>
+      <Accordion defaultExpanded style={{backgroundColor:'mistyrose'}}>
         <AccordionSummary aria-controls="panel1c-content" id="panel1c-header">
           <div>
             <Typography>{task.name}</Typography>
