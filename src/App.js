@@ -30,39 +30,64 @@ class App extends Component {
   }
 
   componentDidMount() {
-
     const db = firestore.firestore();
     db.collection("tasks").onSnapshot((snapshot) => {
-
       snapshot.docChanges().forEach((change) => {
-
         if (change.type === "added") {
+          console.log("firestore");
+
           const { tasks } = this.state;
           const actualTasks = tasks;
           let data = [];
-          data=({
+          data = {
             id: change.doc.id,
             important: change.doc.data().important,
             name: change.doc.data().name,
             description: change.doc.data().description,
             done: change.doc.data().done,
-          });
+          };
 
           actualTasks.push(data);
           this.setState({ tasks: actualTasks });
           this.setState({ tasksToShow: actualTasks });
-
-         
         }
 
-        
         if (change.type === "modified") {
           console.log("in update");
-          console.log("Modified city: ", change.doc.data());
+          const { tasks } = this.state;
+          const actualTasks = tasks;
+          let data = [];
+
+          actualTasks.forEach((el) => {
+            if (
+              el.id === change.doc.id &&
+              el.important !== change.doc.data().important
+            ) {
+              el.important = change.doc.data().important;
+            } else if (
+              el.id === change.doc.id &&
+              el.done !== change.doc.data().done
+            ) {
+              el.done = change.doc.data().done;
+            }
+            data.push(el);
+          });
+
+          this.setState({ tasks: data });
+          this.setState({ tasksToShow: data });
         }
         if (change.type === "removed") {
-          console.log("in removed");
-          console.log("Removed city: ", change.doc.data());
+          const { tasks } = this.state;
+          const actualTasks = tasks;
+          const data = [];
+          actualTasks.forEach((el) => {
+            if (el.id !== change.doc.id) {
+              data.push(el);
+            }
+          });
+
+          this.setState({ tasks: data });
+          this.setState({ tasksToShow: data });
         }
       });
     });
@@ -85,27 +110,27 @@ class App extends Component {
     // });
   }
 
-  fetchTasksData = async () => {
-    try {
-      const data = [];
-      const db = firestore.firestore();
-      const snapshot = await db.collection("tasks").get();
-      snapshot.forEach((doc) => {
-        data.push({
-          id: doc.id,
-          important: doc.data().important,
-          name: doc.data().name,
-          description: doc.data().description,
-          done: doc.data().done,
-        });
-      });
+  // fetchTasksData = async () => {
+  //   try {
+  //     const data = [];
+  //     const db = firestore.firestore();
+  //     const snapshot = await db.collection("tasks").get();
+  //     snapshot.forEach((doc) => {
+  //       data.push({
+  //         id: doc.id,
+  //         important: doc.data().important,
+  //         name: doc.data().name,
+  //         description: doc.data().description,
+  //         done: doc.data().done,
+  //       });
+  //     });
 
-      this.setState({ tasks: data });
-      this.setState({ tasksToShow: data });
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  //     this.setState({ tasks: data });
+  //     this.setState({ tasksToShow: data });
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   // componentDidUpdate() {
   //   const { tasks } = this.state;
@@ -116,24 +141,9 @@ class App extends Component {
 
   // when we click first on add button
   handleAddToDone = (text, textArea, radio) => {
-    const { tasks } = this.state;
-    const { inAll } = this.state;
-    const { inCompleted } = this.state;
-    const { inActive } = this.state;
-    const data = tasks;
-
-    // initialize fb
-
     const db = firestore.firestore();
 
     if (radio.localeCompare("notImportant") === 0) {
-      data.push({
-        id: this.increment,
-        important: 0,
-        name: text,
-        description: textArea,
-        done: 0,
-      });
       db.collection("tasks").add({
         name: text,
         description: textArea,
@@ -141,13 +151,6 @@ class App extends Component {
         important: 0,
       });
     } else {
-      data.push({
-        id: this.increment,
-        important: 1,
-        name: text,
-        description: textArea,
-        done: 0,
-      });
       db.collection("tasks").add({
         name: text,
         description: textArea,
@@ -155,82 +158,92 @@ class App extends Component {
         important: 1,
       });
     }
-
-    /* db.collection("tasks").get().onSnapshot(function(doc) {
-        console.log("Current data: ", doc.data());
-    }); */
-    // const db = firestore.firestore();
-
-    // const tutorialsRef = firestore.firestore.collection("tasks");
-
-    // this.increment += 1;
-    // this.setState({ tasks: data });
-
-    // if (inAll === 1) this.setState({ tasksToShow: data });
-    // else if (inActive === 1) this.activeButtonClick();
-    // else if (inCompleted === 1) this.completedButtonClick();
   };
 
   // when we click on delete task
 
   handleOnDoneTask = (value) => {
+    const db = firestore.firestore();
     const { tasks } = this.state;
-    const { inAll } = this.state;
-    const { inCompleted } = this.state;
-    const { inActive } = this.state;
     const data = tasks;
-    let k = -1;
+    console.log(db.collection("tasks").doc(value));
+    let doneVar = 0;
+
     data.forEach((el) => {
-      k += 1;
       if (el.id === value) {
-        data[k].done = 1;
+        if (el.done === 1) doneVar = 1;
+        else doneVar = 0;
       }
     });
-    this.setState({ tasks: data });
-    if (inAll === 1) this.setState({ tasksToShow: data });
-    else if (inActive === 1) this.activeButtonClick();
-    else if (inCompleted === 1) this.completedButtonClick();
+    if (doneVar === 0)
+      db.collection("tasks")
+        .doc(value)
+        .update({ done: 1 })
+        .then(() => {
+          console.log("update successful");
+        })
+        .catch((error) => {
+          console.error("Error updating document: ", error);
+        });
+    else
+      db.collection("tasks")
+        .doc(value)
+        .update({ done: 0 })
+        .then(() => {
+          console.log("update successful");
+        })
+        .catch((error) => {
+          console.error("Error updating document: ", error);
+        });
   };
 
   handleonDeleteDone = (value) => {
-    const { inActive } = this.state;
-    const { inCompleted } = this.state;
-    const { inAll } = this.state;
-    const { tasks } = this.state;
+    const db = firestore.firestore();
 
-    const data = [];
-    const actualTasks = tasks;
-
-    actualTasks.forEach((el) => {
-      if (el.id !== value) {
-        data.push(el);
-      }
-    });
-
-    this.setState({ tasks: data }, () => {
-      if (inAll === 1) this.setState({ tasksToShow: tasks });
-      else if (inActive === 1) this.activeButtonClick();
-      else if (inCompleted === 1) this.completedButtonClick();
-    });
+    db.collection("tasks")
+      .doc(value)
+      .delete()
+      .then(() => {
+        console.log("delete successful");
+      })
+      .catch((error) => {
+        console.error("Error removing document: ", error);
+      });
   };
 
   handleonImportant = (value) => {
+    const db = firestore.firestore();
     const { tasks } = this.state;
-    const { inAll } = this.state;
-    const { inActive } = this.state;
-    const { inCompleted } = this.state;
+    const data = tasks;
+    console.log(db.collection("tasks").doc(value));
+    let importantVar = 0;
 
-    const actualTasks = tasks;
-    actualTasks.forEach((el, index) => {
+    data.forEach((el) => {
       if (el.id === value) {
-        if (el.important === 1) actualTasks[index].important = 0;
-        else if (el.important === 0) actualTasks[index].important = 1;
+        if (el.important === 1) importantVar = 1;
+        else importantVar = 0;
       }
     });
-    this.setState({ tasks: actualTasks });
-    if (inAll === 1) this.setState({ tasksToShow: actualTasks });
-    else if (inActive === 1) this.activeButtonClick();
-    else if (inCompleted === 1) this.completedButtonClick();
+    if (importantVar === 0)
+      db.collection("tasks")
+        .doc(value)
+        .update({ important: 1 })
+        .then(() => {
+          console.log("update successful");
+        })
+        .catch((error) => {
+          console.error("Error updating document: ", error);
+        });
+    else
+      db.collection("tasks")
+        .doc(value)
+        .update({ important: 0 })
+        .then(() => {
+          console.log("update successful");
+        })
+        .catch((error) => {
+          console.error("Error updating document: ", error);
+        });
   };
 
   allButtonClick = () => {
@@ -250,17 +263,14 @@ class App extends Component {
     const { tasks } = this.state;
     const myLoopData = tasks;
     const toUpdataTasksToShow = [];
-
     myLoopData.forEach((el) => {
       if (el.done === 0) {
         toUpdataTasksToShow.push(el);
       }
     });
-
     this.colorActif = "primary";
     this.colorAll = "secondary";
     this.colorCompleted = "secondary";
-
     this.setState({
       tasksToShow: toUpdataTasksToShow,
       inAll: 0,
@@ -273,7 +283,6 @@ class App extends Component {
     const { tasks } = this.state;
     const myLoopData = tasks;
     const toUpdataTasksToShow = [];
-
     myLoopData.forEach((el) => {
       if (el.done === 1) {
         toUpdataTasksToShow.push(el);
@@ -282,7 +291,6 @@ class App extends Component {
     this.colorActif = "secondary";
     this.colorAll = "secondary";
     this.colorCompleted = "primary";
-
     this.setState({
       tasksToShow: toUpdataTasksToShow,
       inAll: 0,
