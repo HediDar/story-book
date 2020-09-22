@@ -21,6 +21,7 @@ class App extends Component {
       inActive: 0,
       inCompleted: 0,
     };
+    let t = 0;
     this.colorActif = "secondary";
     this.colorAll = "primary";
     this.colorCompleted = "secondary";
@@ -158,7 +159,6 @@ class App extends Component {
     const { tasks } = this.state;
     const myLoopData = tasks;
     const toUpdataTasksToShow = [];
-
 
     myLoopData.forEach((el) => {
       if (el.done === 0) {
