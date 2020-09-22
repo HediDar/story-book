@@ -8,11 +8,14 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import AddToDO from "./components/AddToDo";
 import ToDosAndDones from "./components/ToDosAndDones";
+import firestore from "./firebase/Firestore";
+
 import "./App.css";
 
 class App extends Component {
   constructor() {
     super();
+
     this.increment = 0;
     this.state = {
       tasks: [],
@@ -21,32 +24,95 @@ class App extends Component {
       inActive: 0,
       inCompleted: 0,
     };
-    let t = 0;
     this.colorActif = "secondary";
     this.colorAll = "primary";
     this.colorCompleted = "secondary";
   }
 
   componentDidMount() {
-    if (localStorage.getItem("tasksInLocalStorage")) {
-      const data = JSON.parse(localStorage.getItem("tasksInLocalStorage"));
-      if (data.length > 0) this.setState({ tasks: data, tasksToShow: data });
-    }
 
-    if (localStorage.getItem("incrementInLocalStorage")) {
-      this.increment = parseInt(
-        localStorage.getItem("incrementInLocalStorage"),
-        10
-      );
-    }
+    const db = firestore.firestore();
+    db.collection("tasks").onSnapshot((snapshot) => {
+
+      snapshot.docChanges().forEach((change) => {
+
+        if (change.type === "added") {
+          const { tasks } = this.state;
+          const actualTasks = tasks;
+          let data = [];
+          data=({
+            id: change.doc.id,
+            important: change.doc.data().important,
+            name: change.doc.data().name,
+            description: change.doc.data().description,
+            done: change.doc.data().done,
+          });
+
+          actualTasks.push(data);
+          this.setState({ tasks: actualTasks });
+          this.setState({ tasksToShow: actualTasks });
+
+         
+        }
+
+        
+        if (change.type === "modified") {
+          console.log("in update");
+          console.log("Modified city: ", change.doc.data());
+        }
+        if (change.type === "removed") {
+          console.log("in removed");
+          console.log("Removed city: ", change.doc.data());
+        }
+      });
+    });
+
+    //  tutorialsRef.on('child_added', (data)=> {
+    //    console.log("y");
+    //    console.log(data);
+    //   });
+
+    // tutorialsRef.on('child_added', (data)=> {
+    //   console.log("gg");
+    // });
+
+    // tutorialsRef.on('child_changed', (data)=>{
+    //   console.log("gg");
+    // });
+
+    // tutorialsRef.on('child_removed', (data)=> {
+    //   console.log("gg");
+    // });
   }
 
-  componentDidUpdate() {
-    const { tasks } = this.state;
+  fetchTasksData = async () => {
+    try {
+      const data = [];
+      const db = firestore.firestore();
+      const snapshot = await db.collection("tasks").get();
+      snapshot.forEach((doc) => {
+        data.push({
+          id: doc.id,
+          important: doc.data().important,
+          name: doc.data().name,
+          description: doc.data().description,
+          done: doc.data().done,
+        });
+      });
 
-    localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
-    localStorage.setItem("incrementInLocalStorage", this.increment);
-  }
+      this.setState({ tasks: data });
+      this.setState({ tasksToShow: data });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // componentDidUpdate() {
+  //   const { tasks } = this.state;
+
+  //   localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
+  //   localStorage.setItem("incrementInLocalStorage", this.increment);
+  // }
 
   // when we click first on add button
   handleAddToDone = (text, textArea, radio) => {
@@ -55,7 +121,12 @@ class App extends Component {
     const { inCompleted } = this.state;
     const { inActive } = this.state;
     const data = tasks;
-    if (radio.localeCompare("notImportant") === 0)
+
+    // initialize fb
+
+    const db = firestore.firestore();
+
+    if (radio.localeCompare("notImportant") === 0) {
       data.push({
         id: this.increment,
         important: 0,
@@ -63,7 +134,13 @@ class App extends Component {
         description: textArea,
         done: 0,
       });
-    else
+      db.collection("tasks").add({
+        name: text,
+        description: textArea,
+        done: 0,
+        important: 0,
+      });
+    } else {
       data.push({
         id: this.increment,
         important: 1,
@@ -71,13 +148,27 @@ class App extends Component {
         description: textArea,
         done: 0,
       });
+      db.collection("tasks").add({
+        name: text,
+        description: textArea,
+        done: 0,
+        important: 1,
+      });
+    }
 
-    this.increment += 1;
-    this.setState({ tasks: data });
+    /* db.collection("tasks").get().onSnapshot(function(doc) {
+        console.log("Current data: ", doc.data());
+    }); */
+    // const db = firestore.firestore();
 
-    if (inAll === 1) this.setState({ tasksToShow: data });
-    else if (inActive === 1) this.activeButtonClick();
-    else if (inCompleted === 1) this.completedButtonClick();
+    // const tutorialsRef = firestore.firestore.collection("tasks");
+
+    // this.increment += 1;
+    // this.setState({ tasks: data });
+
+    // if (inAll === 1) this.setState({ tasksToShow: data });
+    // else if (inActive === 1) this.activeButtonClick();
+    // else if (inCompleted === 1) this.completedButtonClick();
   };
 
   // when we click on delete task
