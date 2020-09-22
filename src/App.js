@@ -34,8 +34,9 @@ class App extends Component {
     db.collection("tasks").onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
-          console.log("firestore");
-
+          const { inAll } = this.state;
+          const { inCompleted } = this.state;
+          const { inActive } = this.state;
           const { tasks } = this.state;
           const actualTasks = tasks;
           let data = [];
@@ -49,11 +50,15 @@ class App extends Component {
 
           actualTasks.push(data);
           this.setState({ tasks: actualTasks });
-          this.setState({ tasksToShow: actualTasks });
+          if (inAll === 1) this.setState({ tasksToShow: actualTasks });
+          else if (inActive === 1) this.activeButtonClick();
+          else if (inCompleted === 1) this.completedButtonClick();
         }
 
         if (change.type === "modified") {
-          console.log("in update");
+          const { inAll } = this.state;
+          const { inCompleted } = this.state;
+          const { inActive } = this.state;
           const { tasks } = this.state;
           const actualTasks = tasks;
           let data = [];
@@ -74,9 +79,14 @@ class App extends Component {
           });
 
           this.setState({ tasks: data });
-          this.setState({ tasksToShow: data });
+          if (inAll === 1) this.setState({ tasksToShow: data });
+          else if (inActive === 1) this.activeButtonClick();
+          else if (inCompleted === 1) this.completedButtonClick();
         }
         if (change.type === "removed") {
+          const { inAll } = this.state;
+          const { inCompleted } = this.state;
+          const { inActive } = this.state;
           const { tasks } = this.state;
           const actualTasks = tasks;
           const data = [];
@@ -87,7 +97,9 @@ class App extends Component {
           });
 
           this.setState({ tasks: data });
-          this.setState({ tasksToShow: data });
+          if (inAll === 1) this.setState({ tasksToShow: data });
+          else if (inActive === 1) this.activeButtonClick();
+          else if (inCompleted === 1) this.completedButtonClick();
         }
       });
     });
