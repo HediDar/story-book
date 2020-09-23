@@ -7,20 +7,19 @@ const initialStates = {
 };
 
 function tasksReducer(state = initialStates, action) {
-  const data = state;
   // if state is empty, we take initialStates
   switch (action.type) {
     // the case is the type
     case "updateTasks":
       return {
         ...state,
-        tasks: action.payload,
+        tasks: [...state.tasks, action.payload],
       };
 
     case "updateTasksToShow":
       return {
         ...state,
-        tasksToShow: action.payload,
+        tasksToShow: [...state.tasksToShow, action.payload],
       };
 
     case "updateInAll":

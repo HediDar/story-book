@@ -28,15 +28,7 @@ class App extends Component {
     super();
 
     this.increment = 0;
-
-    this.state = {
-      tasksToShow: [],
-      tasks: [],
-      inAll: 1,
-      inActive: 0,
-      inCompleted: 0,
-    };
-
+ 
     this.colorActif = "secondary";
     this.colorAll = "primary";
     this.colorCompleted = "secondary";
@@ -44,23 +36,16 @@ class App extends Component {
 
   componentDidMount() {
     // console.log(this.props);
-    this.props.updateInActiveAction(10);
-    this.props.updateInAllAction(5);
-    this.props.updateInCompletedAction(3);
-
-    this.props.updateTasksAction({test:"a"});
-    this.props.updateTasksToShowAction({test2:"a"});
 
     const db = firestore.firestore();
     db.collection("tasks").onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change) => {
+
+
         if (change.type === "added") {
-          const { inAll } = this.state;
-          const { inCompleted } = this.state;
-          const { inActive } = this.state;
-          const { tasks } = this.state;
-          const actualTasks = tasks;
-          let data = [];
+         
+          const actualTasks = this.props.tasks;
+          let data = {};
           data = {
             id: change.doc.id,
             important: change.doc.data().important,
@@ -69,19 +54,16 @@ class App extends Component {
             done: change.doc.data().done,
           };
 
-          actualTasks.push(data);
-          this.setState({ tasks: actualTasks });
-          if (inAll === 1) this.setState({ tasksToShow: actualTasks });
-          else if (inActive === 1) this.activeButtonClick();
-          else if (inCompleted === 1) this.completedButtonClick();
+         // actualTasks.push(data);
+          this.props.updateTasksAction(actualTasks);
+          if (this.props.inAll === 1)
+            this.props.updateTasksToShowAction(data);
+          else if (this.props.inActive === 1) this.activeButtonClick();
+          else if (this.props.inCompleted === 1) this.completedButtonClick();
         }
 
         if (change.type === "modified") {
-          const { inAll } = this.state;
-          const { inCompleted } = this.state;
-          const { inActive } = this.state;
-          const { tasks } = this.state;
-          const actualTasks = tasks;
+          const actualTasks = this.props.actualTasks;
           let data = [];
 
           actualTasks.forEach((el) => {
@@ -98,18 +80,14 @@ class App extends Component {
             }
             data.push(el);
           });
+          this.props.updateTaskAction(data);
 
-          this.setState({ tasks: data });
-          if (inAll === 1) this.setState({ tasksToShow: data });
-          else if (inActive === 1) this.activeButtonClick();
-          else if (inCompleted === 1) this.completedButtonClick();
+          if (this.props.inAll === 1) this.props.updateTaskToShowAction(data);
+          else if (this.props.inActive === 1) this.activeButtonClick();
+          else if (this.props.inCompleted === 1) this.completedButtonClick();
         }
         if (change.type === "removed") {
-          const { inAll } = this.state;
-          const { inCompleted } = this.state;
-          const { inActive } = this.state;
-          const { tasks } = this.state;
-          const actualTasks = tasks;
+          const actualTasks = this.props.tasks;
           const data = [];
           actualTasks.forEach((el) => {
             if (el.id !== change.doc.id) {
@@ -117,10 +95,10 @@ class App extends Component {
             }
           });
 
-          this.setState({ tasks: data });
-          if (inAll === 1) this.setState({ tasksToShow: data });
-          else if (inActive === 1) this.activeButtonClick();
-          else if (inCompleted === 1) this.completedButtonClick();
+          this.props.updateTaskAction(data);
+          if (this.props.inAll === 1) this.props.updateTaskToShowAction(data);
+          else if (this.props.inActive === 1) this.activeButtonClick();
+          else if (this.props.inCompleted === 1) this.completedButtonClick();
         }
       });
     });
@@ -151,9 +129,7 @@ class App extends Component {
 
   handleOnDoneTask = (value) => {
     const db = firestore.firestore();
-    const { tasks } = this.state;
-    const data = tasks;
-    console.log(db.collection("tasks").doc(value));
+    const data = this.props.tasks;
     let doneVar = 0;
 
     data.forEach((el) => {
@@ -200,9 +176,7 @@ class App extends Component {
 
   handleonImportant = (value) => {
     const db = firestore.firestore();
-    const { tasks } = this.state;
-    const data = tasks;
-    console.log(db.collection("tasks").doc(value));
+    const data = this.props.tasks;
     let importantVar = 0;
 
     data.forEach((el) => {
@@ -234,21 +208,18 @@ class App extends Component {
   };
 
   allButtonClick = () => {
-    const { tasks } = this.state;
     this.colorActif = "secondary";
     this.colorAll = "primary";
     this.colorCompleted = "secondary";
-    this.setState({
-      tasksToShow: tasks,
-      inAll: 1,
-      inActive: 0,
-      inCompleted: 0,
-    });
+
+    this.props.updateTasksToShowAction(this.props.tasks);
+    this.props.updateInAllAction(1);
+    this.props.updateInCompletedAction(0);
+    this.props.updateInActiveAction(0);
   };
 
   activeButtonClick = () => {
-    const { tasks } = this.state;
-    const myLoopData = tasks;
+    const myLoopData = this.props.tasks;
     const toUpdataTasksToShow = [];
     myLoopData.forEach((el) => {
       if (el.done === 0) {
@@ -258,17 +229,15 @@ class App extends Component {
     this.colorActif = "primary";
     this.colorAll = "secondary";
     this.colorCompleted = "secondary";
-    this.setState({
-      tasksToShow: toUpdataTasksToShow,
-      inAll: 0,
-      inActive: 1,
-      inCompleted: 0,
-    });
+
+    this.props.updateTasksToShowAction(toUpdataTasksToShow);
+    this.props.updateInAllAction(0);
+    this.props.updateInCompletedAction(0);
+    this.props.updateInActiveAction(1);
   };
 
   completedButtonClick = () => {
-    const { tasks } = this.state;
-    const myLoopData = tasks;
+    const myLoopData = this.props.tasks;
     const toUpdataTasksToShow = [];
     myLoopData.forEach((el) => {
       if (el.done === 1) {
@@ -278,16 +247,21 @@ class App extends Component {
     this.colorActif = "secondary";
     this.colorAll = "secondary";
     this.colorCompleted = "primary";
-    this.setState({
-      tasksToShow: toUpdataTasksToShow,
-      inAll: 0,
-      inActive: 0,
-      inCompleted: 1,
-    });
+
+    this.props.updateTasksToShowAction(toUpdataTasksToShow);
+    this.props.updateInAllAction(0);
+    this.props.updateInCompletedAction(1);
+    this.props.updateInActiveAction(0);
   };
 
   render() {
-    const { tasksToShow } = this.state;
+
+   
+    const tasksToShow = this.props.tasksToShow;
+    
+
+    // console.log(tasksToShow[0]);
+
 
     return (
       <>
