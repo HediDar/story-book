@@ -26,21 +26,23 @@ class App extends Component {
 
     this.increment = 0;
 
-
-    
     this.state = {
-      tasks: [],
       tasksToShow: [],
+      tasks: [],
       inAll: 1,
       inActive: 0,
       inCompleted: 0,
     };
+
     this.colorActif = "secondary";
     this.colorAll = "primary";
     this.colorCompleted = "secondary";
   }
 
   componentDidMount() {
+
+
+
     const db = firestore.firestore();
     db.collection("tasks").onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change) => {
@@ -114,56 +116,15 @@ class App extends Component {
         }
       });
     });
-
-    //  tutorialsRef.on('child_added', (data)=> {
-    //    console.log("y");
-    //    console.log(data);
-    //   });
-
-    // tutorialsRef.on('child_added', (data)=> {
-    //   console.log("gg");
-    // });
-
-    // tutorialsRef.on('child_changed', (data)=>{
-    //   console.log("gg");
-    // });
-
-    // tutorialsRef.on('child_removed', (data)=> {
-    //   console.log("gg");
-    // });
   }
-
-  // fetchTasksData = async () => {
-  //   try {
-  //     const data = [];
-  //     const db = firestore.firestore();
-  //     const snapshot = await db.collection("tasks").get();
-  //     snapshot.forEach((doc) => {
-  //       data.push({
-  //         id: doc.id,
-  //         important: doc.data().important,
-  //         name: doc.data().name,
-  //         description: doc.data().description,
-  //         done: doc.data().done,
-  //       });
-  //     });
-
-  //     this.setState({ tasks: data });
-  //     this.setState({ tasksToShow: data });
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-
-  // componentDidUpdate() {
-  //   const { tasks } = this.state;
-
-  //   localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
-  //   localStorage.setItem("incrementInLocalStorage", this.increment);
-  // }
 
   // when we click first on add button
   handleAddToDone = (text, textArea, radio) => {
+
+    this.props.updateInActiveAction(10);
+
+
+
     const db = firestore.firestore();
 
     if (radio.localeCompare("notImportant") === 0) {
