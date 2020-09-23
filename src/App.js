@@ -69,6 +69,7 @@ class App extends Component {
               el.important !== change.doc.data().important
             ) {
               el.important = change.doc.data().important;
+              
             } else if (
               el.id === change.doc.id &&
               el.done !== change.doc.data().done
