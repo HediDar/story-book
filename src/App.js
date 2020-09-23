@@ -6,6 +6,14 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import { connect } from "react-redux";
+import {
+  updateTasksAction,
+  updateTasksToShowAction,
+  updateInAllAction,
+  updateInActiveAction,
+  updateInCompletedAction,
+} from "./actions/tasksActions";
 import AddToDO from "./components/AddToDo";
 import ToDosAndDones from "./components/ToDosAndDones";
 import firestore from "./firebase/Firestore";
@@ -17,6 +25,9 @@ class App extends Component {
     super();
 
     this.increment = 0;
+
+
+    
     this.state = {
       tasks: [],
       tasksToShow: [],
@@ -69,7 +80,6 @@ class App extends Component {
               el.important !== change.doc.data().important
             ) {
               el.important = change.doc.data().important;
-              
             } else if (
               el.id === change.doc.id &&
               el.done !== change.doc.data().done
@@ -372,4 +382,16 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  ...state,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  updateTasksAction: () => dispatch(updateTasksAction),
+  updateTasksToShowAction: () => dispatch(updateTasksToShowAction),
+  updateInAllAction: () => dispatch(updateInAllAction),
+  updateInActiveAction: () => dispatch(updateInActiveAction),
+  updateInCompletedAction: () => dispatch(updateInCompletedAction),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
