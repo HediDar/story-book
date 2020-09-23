@@ -7,13 +7,16 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { connect } from "react-redux";
-import {
-  updateTasksAction,
-  updateTasksToShowAction,
-  updateInAllAction,
-  updateInActiveAction,
-  updateInCompletedAction,
-} from "./actions/tasksActions";
+
+import * as actionCreators from "./actions/tasksActions";
+
+// import {
+//   updateTasksAction,
+//   updateTasksToShowAction,
+//   updateInAllAction,
+//   updateInActiveAction,
+//   updateInCompletedAction,
+// } from "./actions/tasksActions";
 import AddToDO from "./components/AddToDo";
 import ToDosAndDones from "./components/ToDosAndDones";
 import firestore from "./firebase/Firestore";
@@ -40,8 +43,13 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // console.log(this.props);
+    this.props.updateInActiveAction(10);
+    this.props.updateInAllAction(5);
+    this.props.updateInCompletedAction(3);
 
-
+    this.props.updateTasksAction({test:"a"});
+    this.props.updateTasksToShowAction({test2:"a"});
 
     const db = firestore.firestore();
     db.collection("tasks").onSnapshot((snapshot) => {
@@ -120,11 +128,6 @@ class App extends Component {
 
   // when we click first on add button
   handleAddToDone = (text, textArea, radio) => {
-
-    this.props.updateInActiveAction(10);
-
-
-
     const db = firestore.firestore();
 
     if (radio.localeCompare("notImportant") === 0) {
@@ -348,11 +351,16 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  updateTasksAction: () => dispatch(updateTasksAction),
-  updateTasksToShowAction: () => dispatch(updateTasksToShowAction),
-  updateInAllAction: () => dispatch(updateInAllAction),
-  updateInActiveAction: () => dispatch(updateInActiveAction),
-  updateInCompletedAction: () => dispatch(updateInCompletedAction),
+  updateTasksAction: (payload) =>
+    dispatch(actionCreators.updateTasksAction(payload)),
+  updateTasksToShowAction: (payload) =>
+    dispatch(actionCreators.updateTasksToShowAction(payload)),
+  updateInAllAction: (payload) =>
+    dispatch(actionCreators.updateInAllAction(payload)),
+  updateInActiveAction: (payload) =>
+    dispatch(actionCreators.updateInActiveAction(payload)),
+  updateInCompletedAction: (payload) =>
+    dispatch(actionCreators.updateInCompletedAction(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

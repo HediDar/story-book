@@ -20,7 +20,6 @@ function updateInAllAction(inAllValue) {
 }
 
 function updateInActiveAction(inActiveValue) {
-  console.log(inActiveValue);
 
   return {
     type: "updateInActive",
