@@ -41,9 +41,13 @@ class App extends Component {
     db.collection("tasks").onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
-          const actualTasks = this.props.tasks;
-          let data = {};
-          data = {
+          const { inAll } = this.props;
+          const { updateTasksToShowAction } = this.props;
+          const { updateTasksAction } = this.props;
+
+          const { inActive } = this.props;
+          const { inCompleted } = this.props;
+          const data = {
             id: change.doc.id,
             important: change.doc.data().important,
             name: change.doc.data().name,
@@ -52,10 +56,10 @@ class App extends Component {
           };
 
           // actualTasks.push(data);
-          this.props.updateTasksAction(data);
-          if (this.props.inAll === 1) this.props.updateTasksToShowAction(data);
-          else if (this.props.inActive === 1) this.activeButtonClick();
-          else if (this.props.inCompleted === 1) this.completedButtonClick();
+          updateTasksAction(data);
+          if (inAll === 1) updateTasksToShowAction(data);
+          else if (inActive === 1) this.activeButtonClick();
+          else if (inCompleted === 1) this.completedButtonClick();
         }
 
         if (change.type === "modified") {
