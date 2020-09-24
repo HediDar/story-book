@@ -16,14 +16,7 @@ import "./App.css";
 class App extends Component {
   constructor() {
     super();
-    this.increment = 0;
-    this.state = {
-      tasks: [],
-      tasksToShow: [],
-      inAll: 1,
-      inActive: 0,
-      inCompleted: 0,
-    };
+
     this.colorActif = "secondary";
     this.colorAll = "primary";
     this.colorCompleted = "secondary";
@@ -143,7 +136,6 @@ class App extends Component {
   // };
 
   allButtonClick = () => {
-
     const { setToSHowToTasksAction } = this.props;
     const { updateInAllAction } = this.props;
     const { updateInCompletedAction } = this.props;
@@ -200,8 +192,6 @@ class App extends Component {
     this.colorActif = "secondary";
     this.colorAll = "secondary";
     this.colorCompleted = "primary";
-
-    
 
     updateTasksToShowWithoutTasksAction(toUpdataTasksToShow);
 

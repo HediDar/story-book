@@ -39,12 +39,6 @@ class ToDosAndDones extends Component {
     const { onAll2 } = this.props;
     const { onActive2 } = this.props;
 
-    // actualTasks.forEach((el, index) => {
-    //   if (el.id === id) {
-    //     if (el.important === 1) actualTasks[index].important = 0;
-    //     else if (el.important === 0) actualTasks[index].important = 1;
-    //   }
-    // });
     const actualTasks = tasks.map((el) => {
       if (el.id === id) {
         if (el.important === 1) {
@@ -76,7 +70,25 @@ class ToDosAndDones extends Component {
   };
 
   onDoneHandle = (id) => {
-    console.log("handle add id= " + id);
+    const { tasks } = this.props;
+    const { inAll } = this.props;
+    const { inCompleted } = this.props;
+    const { inActive } = this.props;
+    const { onAll2 } = this.props;
+    const { onActive2 } = this.props;
+
+    const data = tasks.map((el) => {
+      if (el.id === id) {
+        el.done = 1;
+        return el;
+      }
+      return el;
+    });
+
+    this.props.updateTasksFromDataAction(data);
+    if (inAll === 1) this.props.updateTasksToShowWithoutTasksAction(data);
+    else if (inActive === 1) onAll2();
+    else if (inCompleted === 1) onActive2();
   };
 
   onDeleteHandle = (id) => {
