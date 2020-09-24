@@ -6,10 +6,11 @@ import SingleTask from "./SingleTask";
 import * as actionCreators from "../actions/tasksActions";
 
 class ToDosAndDones extends Component {
-  componentDidMount() {
-    console.log("did mount");
-    console.log(localStorage.getItem("incrementInLocalStorage"));
+  componentDidUpdate() {
+    console.log("gggg");
+  }
 
+  componentDidMount() {
     if (localStorage.getItem("tasksInLocalStorage")) {
       const { updateTasksFromDataAction } = this.props;
       const { updateTasksToShowWithoutTasksAction } = this.props;
@@ -38,19 +39,40 @@ class ToDosAndDones extends Component {
     const { onAll2 } = this.props;
     const { onActive2 } = this.props;
 
-    const actualTasks = tasks;
-    actualTasks.forEach((el, index) => {
+    // actualTasks.forEach((el, index) => {
+    //   if (el.id === id) {
+    //     if (el.important === 1) actualTasks[index].important = 0;
+    //     else if (el.important === 0) actualTasks[index].important = 1;
+    //   }
+    // });
+    const actualTasks = tasks.map((el) => {
       if (el.id === id) {
-        if (el.important === 1) actualTasks[index].important = 0;
-        else if (el.important === 0) actualTasks[index].important = 1;
+        if (el.important === 1) {
+          el.important = 0;
+          return el;
+        }
+        el.important = 1;
+        return el;
       }
+      return el;
     });
 
-    updateTasksFromDataAction(actualTasks);
+    console.log();
 
-    if (inAll === 1) updateTasksToShowWithoutTasksAction(actualTasks);
-    else if (inActive === 1) onAll2();
-    else if (inCompleted === 1) onActive2();
+    updateTasksFromDataAction(actualTasks);
+    console.log(this.props.tasksToShow);
+
+    if (inAll === 1) {
+      console.log("inAll");
+      updateTasksToShowWithoutTasksAction(actualTasks);
+      console.log(this.props.tasksToShow);
+    } else if (inActive === 1) {
+      console.log("inActiiii");
+      onAll2();
+    } else if (inCompleted === 1) {
+      console.log("completed");
+      onActive2();
+    }
   };
 
   onDoneHandle = (id) => {
@@ -62,28 +84,31 @@ class ToDosAndDones extends Component {
   };
 
   render() {
+    console.log("in render");
     const { tasksToShow } = this.props;
     const { onDoneTaskApp } = this.props;
     const { onDeleteTaskApp } = this.props;
     const { onMakeImportant } = this.props;
 
-    // const tasksFiltredToDo = [];
+    const myTasks = tasksToShow;
 
-    // myTasks.forEach((el) => {
-    //   if (el.done === 0 && el.important === 1) tasksFiltredToDo.push(el);
-    // });
+    const tasksFiltredToDo = [];
 
-    // myTasks.forEach((el) => {
-    //   if (el.done === 0 && el.important === 0) tasksFiltredToDo.push(el);
-    // });
+    myTasks.forEach((el) => {
+      if (el.done === 0 && el.important === 1) tasksFiltredToDo.push(el);
+    });
 
-    // myTasks.forEach((el) => {
-    //   if (el.done === 1) tasksFiltredToDo.push(el);
-    // });
+    myTasks.forEach((el) => {
+      if (el.done === 0 && el.important === 0) tasksFiltredToDo.push(el);
+    });
+
+    myTasks.forEach((el) => {
+      if (el.done === 1) tasksFiltredToDo.push(el);
+    });
 
     return (
       <>
-        {tasksToShow.map((task) => (
+        {tasksFiltredToDo.map((task) => (
           <SingleTask
             key={task.id}
             task={task}
@@ -96,9 +121,15 @@ class ToDosAndDones extends Component {
     );
   }
 }
-const mapStateToProps = (state) => ({
-  ...state,
-});
+const mapStateToProps = (state) => {
+  return {
+    tasksToShow: state.tasksToShow,
+    inAll: state.inAll,
+    inCompleted: state.inCompleted,
+    inActive: state.inActive,
+    tasks: state.tasks,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   setIncrementAction: (payload) =>

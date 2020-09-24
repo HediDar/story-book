@@ -143,7 +143,6 @@ class App extends Component {
   // };
 
   allButtonClick = () => {
-    console.log("in all");
 
     const { setToSHowToTasksAction } = this.props;
     const { updateInAllAction } = this.props;
@@ -161,7 +160,6 @@ class App extends Component {
   };
 
   handleActiveButtonClick = () => {
-    console.log("in active");
     const { tasks } = this.props;
     const { updateTasksToShowWithoutTasksAction } = this.props;
     const { updateInAllAction } = this.props;
@@ -186,7 +184,6 @@ class App extends Component {
   };
 
   handleAllcompletedButtonClick = () => {
-    console.log("in completed");
     const { tasks } = this.props;
     const { updateTasksToShowWithoutTasksAction } = this.props;
     const { updateInAllAction } = this.props;
@@ -204,11 +201,9 @@ class App extends Component {
     this.colorAll = "secondary";
     this.colorCompleted = "primary";
 
-    console.log(this.props.tasks);
-    console.log(toUpdataTasksToShow);
+    
 
     updateTasksToShowWithoutTasksAction(toUpdataTasksToShow);
-    console.log(this.props.tasksToShow);
 
     updateInAllAction(0);
     updateInCompletedAction(1);
