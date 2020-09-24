@@ -28,7 +28,7 @@ class App extends Component {
     super();
 
     this.increment = 0;
- 
+
     this.colorActif = "secondary";
     this.colorAll = "primary";
     this.colorCompleted = "secondary";
@@ -40,10 +40,7 @@ class App extends Component {
     const db = firestore.firestore();
     db.collection("tasks").onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change) => {
-
-
         if (change.type === "added") {
-         
           const actualTasks = this.props.tasks;
           let data = {};
           data = {
@@ -54,10 +51,9 @@ class App extends Component {
             done: change.doc.data().done,
           };
 
-         // actualTasks.push(data);
-          this.props.updateTasksAction(actualTasks);
-          if (this.props.inAll === 1)
-            this.props.updateTasksToShowAction(data);
+          // actualTasks.push(data);
+          this.props.updateTasksAction(data);
+          if (this.props.inAll === 1) this.props.updateTasksToShowAction(data);
           else if (this.props.inActive === 1) this.activeButtonClick();
           else if (this.props.inCompleted === 1) this.completedButtonClick();
         }
@@ -212,7 +208,7 @@ class App extends Component {
     this.colorAll = "primary";
     this.colorCompleted = "secondary";
 
-    this.props.updateTasksToShowAction(this.props.tasks);
+    this.props.setToSHowToTasksAction();
     this.props.updateInAllAction(1);
     this.props.updateInCompletedAction(0);
     this.props.updateInActiveAction(0);
@@ -220,17 +216,17 @@ class App extends Component {
 
   activeButtonClick = () => {
     const myLoopData = this.props.tasks;
-    const toUpdataTasksToShow = [];
+    const toUpdateTasksToShow = [];
     myLoopData.forEach((el) => {
       if (el.done === 0) {
-        toUpdataTasksToShow.push(el);
+        toUpdateTasksToShow.push(el);
       }
     });
     this.colorActif = "primary";
     this.colorAll = "secondary";
     this.colorCompleted = "secondary";
 
-    this.props.updateTasksToShowAction(toUpdataTasksToShow);
+    this.props.updateTasksToShowWithoutTasksAction(toUpdateTasksToShow);
     this.props.updateInAllAction(0);
     this.props.updateInCompletedAction(0);
     this.props.updateInActiveAction(1);
@@ -248,20 +244,19 @@ class App extends Component {
     this.colorAll = "secondary";
     this.colorCompleted = "primary";
 
-    this.props.updateTasksToShowAction(toUpdataTasksToShow);
+    this.props.updateTasksToShowWithoutTasksAction(toUpdataTasksToShow);
     this.props.updateInAllAction(0);
     this.props.updateInCompletedAction(1);
     this.props.updateInActiveAction(0);
   };
 
   render() {
-
-   
     const tasksToShow = this.props.tasksToShow;
-    
+    console.log(this.props.tasks);
+
+    console.log(this.props.tasksToShow);
 
     // console.log(tasksToShow[0]);
-
 
     return (
       <>
@@ -325,6 +320,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  updateTasksToShowWithoutTasksAction: (payload) =>
+    dispatch(actionCreators.updateTasksToShowWithoutTasksAction(payload)),
+  setToSHowToTasksAction: () =>
+    dispatch(actionCreators.setToSHowToTasksAction()),
   updateTasksAction: (payload) =>
     dispatch(actionCreators.updateTasksAction(payload)),
   updateTasksToShowAction: (payload) =>

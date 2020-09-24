@@ -22,6 +22,12 @@ function tasksReducer(state = initialStates, action) {
         tasksToShow: [...state.tasksToShow, action.payload],
       };
 
+      case "updateTasksToShowWithoutTasks":
+        return {
+          ...state,
+          tasksToShow: action.payload,
+        };
+
     case "updateInAll":
       return {
         ...state,
@@ -40,6 +46,12 @@ function tasksReducer(state = initialStates, action) {
         inCompleted: action.payload,
       };
 
+    case "changeToShowToTasks":
+      // console.log(state.tasks);
+      return {
+        ...state,
+        tasksToShow: state.tasks,
+      };
     default:
       return state;
   }

@@ -5,9 +5,23 @@ function updateTasksAction(tasksData) {
   };
 }
 
+function setToSHowToTasksAction() {
+  return {
+    type: "changeToShowToTasks",
+  };
+}
+
 function updateTasksToShowAction(tasksData) {
   return {
     type: "updateTasksToShow",
+    payload: tasksData,
+  };
+}
+
+
+function updateTasksToShowWithoutTasksAction(tasksData) {
+  return {
+    type: "updateTasksToShowWithoutTasks",
     payload: tasksData,
   };
 }
@@ -20,7 +34,6 @@ function updateInAllAction(inAllValue) {
 }
 
 function updateInActiveAction(inActiveValue) {
-
   return {
     type: "updateInActive",
     payload: inActiveValue,
@@ -40,4 +53,6 @@ export {
   updateInAllAction,
   updateInActiveAction,
   updateInCompletedAction,
+  setToSHowToTasksAction,
+  updateTasksToShowWithoutTasksAction,
 };
