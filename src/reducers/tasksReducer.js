@@ -16,6 +16,12 @@ function tasksReducer(state = initialStates, action) {
         tasks: [...state.tasks, action.payload],
       };
 
+      case "updateTasksFromData":
+        return {
+          ...state,
+          tasks: action.payload,
+        };
+
     case "updateTasksToShow":
       return {
         ...state,

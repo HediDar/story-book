@@ -59,7 +59,7 @@ class App extends Component {
         }
 
         if (change.type === "modified") {
-          const actualTasks = this.props.actualTasks;
+          const actualTasks = this.props.tasks;
           let data = [];
 
           actualTasks.forEach((el) => {
@@ -76,9 +76,10 @@ class App extends Component {
             }
             data.push(el);
           });
-          this.props.updateTaskAction(data);
+          this.props.updateTasksFromDataAction(data);
 
-          if (this.props.inAll === 1) this.props.updateTaskToShowAction(data);
+          if (this.props.inAll === 1)
+            this.props.updateTasksToShowWithoutTasksAction(data);
           else if (this.props.inActive === 1) this.activeButtonClick();
           else if (this.props.inCompleted === 1) this.completedButtonClick();
         }
@@ -91,8 +92,9 @@ class App extends Component {
             }
           });
 
-          this.props.updateTaskAction(data);
-          if (this.props.inAll === 1) this.props.updateTaskToShowAction(data);
+          this.props.updateTasksFromDataAction(data);
+          if (this.props.inAll === 1)
+            this.props.updateTasksToShowWithoutTasksAction(data);
           else if (this.props.inActive === 1) this.activeButtonClick();
           else if (this.props.inCompleted === 1) this.completedButtonClick();
         }
@@ -252,11 +254,6 @@ class App extends Component {
 
   render() {
     const tasksToShow = this.props.tasksToShow;
-    console.log(this.props.tasks);
-
-    console.log(this.props.tasksToShow);
-
-    // console.log(tasksToShow[0]);
 
     return (
       <>
@@ -320,6 +317,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  updateTasksFromDataAction: (payload) =>
+    dispatch(actionCreators.updateTasksFromDataAction(payload)),
   updateTasksToShowWithoutTasksAction: (payload) =>
     dispatch(actionCreators.updateTasksToShowWithoutTasksAction(payload)),
   setToSHowToTasksAction: () =>

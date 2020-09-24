@@ -47,6 +47,13 @@ function updateInCompletedAction(inCompletedValue) {
   };
 }
 
+function updateTasksFromDataAction(tasksData) {
+  return {
+    type: "updateTasksFromData",
+    payload: tasksData,
+  };
+}
+
 export {
   updateTasksAction,
   updateTasksToShowAction,
@@ -55,4 +62,5 @@ export {
   updateInCompletedAction,
   setToSHowToTasksAction,
   updateTasksToShowWithoutTasksAction,
+  updateTasksFromDataAction,
 };
