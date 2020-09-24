@@ -63,8 +63,16 @@ class App extends Component {
         }
 
         if (change.type === "modified") {
-          const actualTasks = this.props.tasks;
-          let data = [];
+          const { tasks } = this.props;
+          const { updateTasksFromDataAction } = this.props;
+          const { inAll } = this.props;
+          const { inActive } = this.props;
+          const { updateTasksToShowWithoutTasksAction } = this.props;
+          const { inCompleted } = this.props;
+
+
+          const actualTasks = tasks;
+          const data = [];
 
           actualTasks.forEach((el) => {
             if (
@@ -80,12 +88,12 @@ class App extends Component {
             }
             data.push(el);
           });
-          this.props.updateTasksFromDataAction(data);
+          updateTasksFromDataAction(data);
 
-          if (this.props.inAll === 1)
-            this.props.updateTasksToShowWithoutTasksAction(data);
-          else if (this.props.inActive === 1) this.activeButtonClick();
-          else if (this.props.inCompleted === 1) this.completedButtonClick();
+          if (inAll === 1)
+            updateTasksToShowWithoutTasksAction(data);
+          else if (inActive === 1) this.activeButtonClick();
+          else if (inCompleted === 1) this.completedButtonClick();
         }
         if (change.type === "removed") {
           const actualTasks = this.props.tasks;
