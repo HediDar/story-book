@@ -6,8 +6,11 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import AddToDO from "./components/AddToDo";
+import { connect } from "react-redux";
+import AddToDo from "./components/AddToDo";
 import ToDosAndDones from "./components/ToDosAndDones";
+import * as actionCreators from "./actions/tasksActions";
+
 import "./App.css";
 
 class App extends Component {
@@ -27,162 +30,171 @@ class App extends Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem("tasksInLocalStorage")) {
-      const data = JSON.parse(localStorage.getItem("tasksInLocalStorage"));
-      if (data.length > 0) this.setState({ tasks: data, tasksToShow: data });
-    }
-
-    if (localStorage.getItem("incrementInLocalStorage")) {
-      this.increment = parseInt(
-        localStorage.getItem("incrementInLocalStorage"),
-        10
-      );
-    }
+    // if (localStorage.getItem("tasksInLocalStorage")) {
+    //   const data = JSON.parse(localStorage.getItem("tasksInLocalStorage"));
+    //   if (data.length > 0) this.setState({ tasks: data, tasksToShow: data });
+    // }
+    // if (localStorage.getItem("incrementInLocalStorage")) {
+    //   this.increment = parseInt(
+    //     localStorage.getItem("incrementInLocalStorage"),
+    //     10
+    //   );
+    // }
   }
 
   componentDidUpdate() {
-    const { tasks } = this.state;
-
-    localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
-    localStorage.setItem("incrementInLocalStorage", this.increment);
+    // const { tasks } = this.state;
+    // localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
+    // localStorage.setItem("incrementInLocalStorage", this.increment);
   }
 
   // when we click first on add button
-  handleAddToDone = (text, textArea, radio) => {
-    const { tasks } = this.state;
-    const { inAll } = this.state;
-    const { inCompleted } = this.state;
-    const { inActive } = this.state;
-    const data = tasks;
-    if (radio.localeCompare("notImportant") === 0)
-      data.push({
-        id: this.increment,
-        important: 0,
-        name: text,
-        description: textArea,
-        done: 0,
-      });
-    else
-      data.push({
-        id: this.increment,
-        important: 1,
-        name: text,
-        description: textArea,
-        done: 0,
-      });
+  // handleAddToDone = (text, textArea, radio) => {
+  //   const { tasks } = this.state;
+  //   const { inAll } = this.state;
+  //   const { inCompleted } = this.state;
+  //   const { inActive } = this.state;
+  //   const data = tasks;
+  //   if (radio.localeCompare("notImportant") === 0)
+  //     data.push({
+  //       id: this.increment,
+  //       important: 0,
+  //       name: text,
+  //       description: textArea,
+  //       done: 0,
+  //     });
+  //   else
+  //     data.push({
+  //       id: this.increment,
+  //       important: 1,
+  //       name: text,
+  //       description: textArea,
+  //       done: 0,
+  //     });
 
-    this.increment += 1;
-    this.setState({ tasks: data });
+  //   this.increment += 1;
+  //   this.setState({ tasks: data });
 
-    if (inAll === 1) this.setState({ tasksToShow: data });
-    else if (inActive === 1) this.activeButtonClick();
-    else if (inCompleted === 1) this.completedButtonClick();
-  };
+  //   if (inAll === 1) this.setState({ tasksToShow: data });
+  //   else if (inActive === 1) this.activeButtonClick();
+  //   else if (inCompleted === 1) this.completedButtonClick();
+  // };
 
   // when we click on delete task
 
-  handleOnDoneTask = (value) => {
-    const { tasks } = this.state;
-    const { inAll } = this.state;
-    const { inCompleted } = this.state;
-    const { inActive } = this.state;
-    const data = tasks;
-    let k = -1;
-    data.forEach((el) => {
-      k += 1;
-      if (el.id === value) {
-        data[k].done = 1;
-      }
-    });
-    this.setState({ tasks: data });
-    if (inAll === 1) this.setState({ tasksToShow: data });
-    else if (inActive === 1) this.activeButtonClick();
-    else if (inCompleted === 1) this.completedButtonClick();
-  };
+  // handleOnDoneTask = (value) => {
+  //   const { tasks } = this.state;
+  //   const { inAll } = this.state;
+  //   const { inCompleted } = this.state;
+  //   const { inActive } = this.state;
+  //   const data = tasks;
+  //   let k = -1;
+  //   data.forEach((el) => {
+  //     k += 1;
+  //     if (el.id === value) {
+  //       data[k].done = 1;
+  //     }
+  //   });
+  //   this.setState({ tasks: data });
+  //   if (inAll === 1) this.setState({ tasksToShow: data });
+  //   else if (inActive === 1) this.activeButtonClick();
+  //   else if (inCompleted === 1) this.completedButtonClick();
+  // };
 
-  handleonDeleteDone = (value) => {
-    const { inActive } = this.state;
-    const { inCompleted } = this.state;
-    const { inAll } = this.state;
-    const { tasks } = this.state;
+  // handleonDeleteDone = (value) => {
+  //   const { inActive } = this.state;
+  //   const { inCompleted } = this.state;
+  //   const { inAll } = this.state;
+  //   const { tasks } = this.state;
 
-    const data = [];
-    const actualTasks = tasks;
+  //   const data = [];
+  //   const actualTasks = tasks;
 
-    actualTasks.forEach((el) => {
-      if (el.id !== value) {
-        data.push(el);
-      }
-    });
+  //   actualTasks.forEach((el) => {
+  //     if (el.id !== value) {
+  //       data.push(el);
+  //     }
+  //   });
 
-    this.setState({ tasks: data }, () => {
-      if (inAll === 1) this.setState({ tasksToShow: tasks });
-      else if (inActive === 1) this.activeButtonClick();
-      else if (inCompleted === 1) this.completedButtonClick();
-    });
-  };
+  //   this.setState({ tasks: data }, () => {
+  //     if (inAll === 1) this.setState({ tasksToShow: tasks });
+  //     else if (inActive === 1) this.activeButtonClick();
+  //     else if (inCompleted === 1) this.completedButtonClick();
+  //   });
+  // };
 
-  handleonImportant = (value) => {
-    const { tasks } = this.state;
-    const { inAll } = this.state;
-    const { inActive } = this.state;
-    const { inCompleted } = this.state;
+  // handleonImportant = (value) => {
+  //   const { tasks } = this.state;
+  //   const { inAll } = this.state;
+  //   const { inActive } = this.state;
+  //   const { inCompleted } = this.state;
 
-    const actualTasks = tasks;
-    actualTasks.forEach((el, index) => {
-      if (el.id === value) {
-        if (el.important === 1) actualTasks[index].important = 0;
-        else if (el.important === 0) actualTasks[index].important = 1;
-      }
-    });
-    this.setState({ tasks: actualTasks });
-    if (inAll === 1) this.setState({ tasksToShow: actualTasks });
-    else if (inActive === 1) this.activeButtonClick();
-    else if (inCompleted === 1) this.completedButtonClick();
-  };
+  //   const actualTasks = tasks;
+  //   actualTasks.forEach((el, index) => {
+  //     if (el.id === value) {
+  //       if (el.important === 1) actualTasks[index].important = 0;
+  //       else if (el.important === 0) actualTasks[index].important = 1;
+  //     }
+  //   });
+  //   this.setState({ tasks: actualTasks });
+  //   if (inAll === 1) this.setState({ tasksToShow: actualTasks });
+  //   else if (inActive === 1) this.activeButtonClick();
+  //   else if (inCompleted === 1) this.completedButtonClick();
+  // };
 
   allButtonClick = () => {
-    const { tasks } = this.state;
+    console.log("in all");
+
+    const { setToSHowToTasksAction } = this.props;
+    const { updateInAllAction } = this.props;
+    const { updateInCompletedAction } = this.props;
+    const { updateInActiveAction } = this.props;
+
     this.colorActif = "secondary";
     this.colorAll = "primary";
     this.colorCompleted = "secondary";
-    this.setState({
-      tasksToShow: tasks,
-      inAll: 1,
-      inActive: 0,
-      inCompleted: 0,
-    });
+
+    setToSHowToTasksAction();
+    updateInAllAction(1);
+    updateInCompletedAction(0);
+    updateInActiveAction(0);
   };
 
-  activeButtonClick = () => {
-    const { tasks } = this.state;
+  handleActiveButtonClick = () => {
+    console.log("in active");
+    const { tasks } = this.props;
+    const { updateTasksToShowWithoutTasksAction } = this.props;
+    const { updateInAllAction } = this.props;
+    const { updateInCompletedAction } = this.props;
+    const { updateInActiveAction } = this.props;
+
     const myLoopData = tasks;
-    const toUpdataTasksToShow = [];
-
-
+    const toUpdateTasksToShow = [];
     myLoopData.forEach((el) => {
       if (el.done === 0) {
-        toUpdataTasksToShow.push(el);
+        toUpdateTasksToShow.push(el);
       }
     });
-
     this.colorActif = "primary";
     this.colorAll = "secondary";
     this.colorCompleted = "secondary";
 
-    this.setState({
-      tasksToShow: toUpdataTasksToShow,
-      inAll: 0,
-      inActive: 1,
-      inCompleted: 0,
-    });
+    updateTasksToShowWithoutTasksAction(toUpdateTasksToShow);
+    updateInAllAction(0);
+    updateInCompletedAction(0);
+    updateInActiveAction(1);
   };
 
-  completedButtonClick = () => {
-    const { tasks } = this.state;
+  handleAllcompletedButtonClick = () => {
+    console.log("in completed");
+    const { tasks } = this.props;
+    const { updateTasksToShowWithoutTasksAction } = this.props;
+    const { updateInAllAction } = this.props;
+    const { updateInCompletedAction } = this.props;
+    const { updateInActiveAction } = this.props;
+
     const myLoopData = tasks;
     const toUpdataTasksToShow = [];
-
     myLoopData.forEach((el) => {
       if (el.done === 1) {
         toUpdataTasksToShow.push(el);
@@ -192,20 +204,49 @@ class App extends Component {
     this.colorAll = "secondary";
     this.colorCompleted = "primary";
 
-    this.setState({
-      tasksToShow: toUpdataTasksToShow,
-      inAll: 0,
-      inActive: 0,
-      inCompleted: 1,
-    });
+    console.log(this.props.tasks);
+    console.log(toUpdataTasksToShow);
+
+    updateTasksToShowWithoutTasksAction(toUpdataTasksToShow);
+    console.log(this.props.tasksToShow);
+
+    updateInAllAction(0);
+    updateInCompletedAction(1);
+    updateInActiveAction(0);
   };
 
+  // completedButtonClick = () => {
+  //   const { tasks } = this.state;
+  //   const myLoopData = tasks;
+  //   const toUpdataTasksToShow = [];
+
+  //   myLoopData.forEach((el) => {
+  //     if (el.done === 1) {
+  //       toUpdataTasksToShow.push(el);
+  //     }
+  //   });
+  //   this.colorActif = "secondary";
+  //   this.colorAll = "secondary";
+  //   this.colorCompleted = "primary";
+
+  //   this.setState({
+  //     tasksToShow: toUpdataTasksToShow,
+  //     inAll: 0,
+  //     inActive: 0,
+  //     inCompleted: 1,
+  //   });
+  // };
+
   render() {
-    const { tasksToShow } = this.state;
+    const { tasksToShow } = this.props;
 
     return (
       <>
-        <AddToDO onAddTask={this.handleAddToDone} />
+        <AddToDo
+          onAll={this.allButtonClick}
+          onActive={this.handleActiveButtonClick}
+          onCompleted={this.handleAllcompletedButtonClick}
+        />
         <br />
         <br />
 
@@ -228,13 +269,13 @@ class App extends Component {
                   </Button>
                   <Button
                     color={this.colorActif}
-                    onClick={() => this.activeButtonClick()}
+                    onClick={() => this.handleActiveButtonClick()}
                   >
                     Show active
                   </Button>
                   <Button
                     color={this.colorCompleted}
-                    onClick={() => this.completedButtonClick()}
+                    onClick={() => this.handleAllcompletedButtonClick()}
                   >
                     Show completed
                   </Button>
@@ -246,10 +287,9 @@ class App extends Component {
             <TableRow>
               <TableCell colSpan="4" component="th" scope="row">
                 <ToDosAndDones
-                  tasks={tasksToShow}
-                  onDoneTaskApp={this.handleOnDoneTask}
-                  onDeleteTaskApp={this.handleonDeleteDone}
-                  onMakeImportant={this.handleonImportant}
+                  onAll2={this.allButtonClick}
+                  onActive2={this.handleActiveButtonClick}
+                  onCompleted2={this.handleAllcompletedButtonClick}
                 />
               </TableCell>
             </TableRow>
@@ -260,4 +300,21 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  ...state,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setToSHowToTasksAction: () =>
+    dispatch(actionCreators.setToSHowToTasksAction()),
+  updateTasksToShowWithoutTasksAction: (payload) =>
+    dispatch(actionCreators.updateTasksToShowWithoutTasksAction(payload)),
+  updateInAllAction: (payload) =>
+    dispatch(actionCreators.updateInAllAction(payload)),
+  updateInActiveAction: (payload) =>
+    dispatch(actionCreators.updateInActiveAction(payload)),
+  updateInCompletedAction: (payload) =>
+    dispatch(actionCreators.updateInCompletedAction(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

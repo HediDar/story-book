@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import {
   RadioGroup,
   FormControlLabel,
@@ -8,8 +9,9 @@ import {
   Grid,
   Radio,
 } from "@material-ui/core";
+import * as actionCreators from "../actions/tasksActions";
 
-const AddToDo = ({ onAddTask }) => {
+const AddToDo = (props) => {
   const [text, setText] = useState("");
   const [textArea, setTextArea] = useState("");
   const [radio, setRadio] = useState("notImportant");
@@ -17,7 +19,43 @@ const AddToDo = ({ onAddTask }) => {
   function onClickCalls() {
     if (text === "") alert("you need to name your task");
     else {
-      onAddTask(text, textArea, radio);
+      const { tasks } = props;
+      const { inAll } = props;
+      const { inCompleted } = props;
+      const { inActive } = props;
+      const { increment } = props;
+      const { updateIncrementAction } = props;
+      const { updateTasksFromDataAction } = props;
+      const { updateTasksToShowWithoutTasksAction } = props;
+
+      const data = tasks;
+      if (radio.localeCompare("notImportant") === 0)
+        data.push({
+          id: increment,
+          important: 0,
+          name: text,
+          description: textArea,
+          done: 0,
+        });
+      else
+        data.push({
+          id: increment,
+          important: 1,
+          name: text,
+          description: textArea,
+          done: 0,
+        });
+
+      updateIncrementAction();
+      updateTasksFromDataAction(data);
+
+      localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
+     localStorage.setItem("incrementInLocalStorage", increment);
+
+      if (inAll === 1) updateTasksToShowWithoutTasksAction(data);
+      else if (inActive === 1) props.onActive();
+      else if (inCompleted === 1) props.onCompleted();
+
       setText("");
       setTextArea("");
       setRadio("notImportant");
@@ -87,10 +125,16 @@ const AddToDo = ({ onAddTask }) => {
     </>
   );
 };
-AddToDo.propTypes = {
-  onAddTask: PropTypes.func,
-};
-AddToDo.defaultProps = {
-  onAddTask: () => {},
-};
-export default AddToDo;
+const mapStateToProps = (state) => ({
+  ...state,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  updateIncrementAction: () => dispatch(actionCreators.updateIncrementAction()),
+  updateTasksFromDataAction: (payload) =>
+    dispatch(actionCreators.updateTasksFromDataAction(payload)),
+  updateTasksToShowWithoutTasksAction: (payload) =>
+    dispatch(actionCreators.updateTasksToShowWithoutTasksAction(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddToDo);

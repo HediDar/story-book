@@ -18,7 +18,6 @@ function updateTasksToShowAction(tasksData) {
   };
 }
 
-
 function updateTasksToShowWithoutTasksAction(tasksData) {
   return {
     type: "updateTasksToShowWithoutTasks",
@@ -54,7 +53,22 @@ function updateTasksFromDataAction(tasksData) {
   };
 }
 
+function updateIncrementAction() {
+  return {
+    type: "updateIncrement",
+  };
+}
+
+function setIncrementAction(number) {
+  return {
+    type: "setIncrementAction",
+    payload: number,
+  };
+}
+
 export {
+  setIncrementAction,
+  updateIncrementAction,
   updateTasksAction,
   updateTasksToShowAction,
   updateInAllAction,

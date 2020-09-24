@@ -28,7 +28,7 @@ const SingleTask = (props) => {
   const { task } = props;
   const { onDone } = props;
   const { onDeleteTask } = props;
-  const { makeImportant } = props;
+  const { onImportant } = props;
 
   const classes = useStyles();
 
@@ -50,7 +50,7 @@ const SingleTask = (props) => {
           </AccordionDetails>
           <Divider />
           <AccordionActions>
-            <Button color="secondary" onClick={() => makeImportant(task.id)}>
+            <Button color="secondary" onClick={() => onImportant(task.id)}>
               {" "}
               remove from important
             </Button>
@@ -84,7 +84,7 @@ const SingleTask = (props) => {
           </AccordionDetails>
           <Divider />
           <AccordionActions>
-            <Button color="secondary" onClick={() => makeImportant(task.id)}>
+            <Button color="secondary" onClick={() => onImportant(task.id)}>
               {" "}
               make Important
             </Button>
@@ -124,16 +124,16 @@ const SingleTask = (props) => {
     </>
   );
 };
-SingleTask.propTypes = {
-  task: PropTypes.shape(),
-  onDone: PropTypes.func,
-  onDeleteTask: PropTypes.func,
-  makeImportant: PropTypes.func,
-};
-SingleTask.defaultProps = {
-  task: {},
-  onDone: () => {},
-  onDeleteTask: () => {},
-  makeImportant: () => {},
-};
+// SingleTask.propTypes = {
+//   task: PropTypes.shape(),
+//   onDone: PropTypes.func,
+//   onDeleteTask: PropTypes.func,
+//   makeImportant: PropTypes.func,
+// };
+// SingleTask.defaultProps = {
+//   task: {},
+//   onDone: () => {},
+//   onDeleteTask: () => {},
+//   makeImportant: () => {},
+// };
 export default SingleTask;
