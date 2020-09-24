@@ -6,273 +6,183 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-
-import * as actionCreators from "./actions/tasksActions";
-
-// import {
-//   updateTasksAction,
-//   updateTasksToShowAction,
-//   updateInAllAction,
-//   updateInActiveAction,
-//   updateInCompletedAction,
-// } from "./actions/tasksActions";
 import AddToDO from "./components/AddToDo";
 import ToDosAndDones from "./components/ToDosAndDones";
-import firestore from "./firebase/Firestore";
-
 import "./App.css";
 
 class App extends Component {
   constructor() {
     super();
-
     this.increment = 0;
-
+    this.state = {
+      tasks: [],
+      tasksToShow: [],
+      inAll: 1,
+      inActive: 0,
+      inCompleted: 0,
+    };
     this.colorActif = "secondary";
     this.colorAll = "primary";
     this.colorCompleted = "secondary";
   }
 
   componentDidMount() {
-    // console.log(this.props);
+    if (localStorage.getItem("tasksInLocalStorage")) {
+      const data = JSON.parse(localStorage.getItem("tasksInLocalStorage"));
+      if (data.length > 0) this.setState({ tasks: data, tasksToShow: data });
+    }
 
-    const db = firestore.firestore();
-    db.collection("tasks").onSnapshot((snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          const { inAll } = this.props;
-          const { updateTasksToShowAction } = this.props;
-          const { updateTasksAction } = this.props;
+    if (localStorage.getItem("incrementInLocalStorage")) {
+      this.increment = parseInt(
+        localStorage.getItem("incrementInLocalStorage"),
+        10
+      );
+    }
+  }
 
-          const { inActive } = this.props;
-          const { inCompleted } = this.props;
-          const data = {
-            id: change.doc.id,
-            important: change.doc.data().important,
-            name: change.doc.data().name,
-            description: change.doc.data().description,
-            done: change.doc.data().done,
-          };
+  componentDidUpdate() {
+    const { tasks } = this.state;
 
-          // actualTasks.push(data);
-          updateTasksAction(data);
-          if (inAll === 1) updateTasksToShowAction(data);
-          else if (inActive === 1) this.activeButtonClick();
-          else if (inCompleted === 1) this.completedButtonClick();
-        }
-
-        if (change.type === "modified") {
-          const { tasks } = this.props;
-          const { updateTasksFromDataAction } = this.props;
-          const { inAll } = this.props;
-          const { inActive } = this.props;
-          const { updateTasksToShowWithoutTasksAction } = this.props;
-          const { inCompleted } = this.props;
-
-          const actualTasks = tasks;
-          const data = [];
-
-          actualTasks.forEach((el) => {
-            if (
-              el.id === change.doc.id &&
-              el.important !== change.doc.data().important
-            ) {
-              el.important = change.doc.data().important;
-            } else if (
-              el.id === change.doc.id &&
-              el.done !== change.doc.data().done
-            ) {
-              el.done = change.doc.data().done;
-            }
-            data.push(el);
-          });
-          updateTasksFromDataAction(data);
-
-          if (inAll === 1) updateTasksToShowWithoutTasksAction(data);
-          else if (inActive === 1) this.activeButtonClick();
-          else if (inCompleted === 1) this.completedButtonClick();
-        }
-        if (change.type === "removed") {
-          const { tasks } = this.props;
-          const { updateTasksFromDataAction } = this.props;
-          const { updateTasksToShowWithoutTasksAction } = this.props;
-          const { inActive } = this.props;
-          const { inCompleted } = this.props;
-          const { inAll } = this.props;
-
-          const actualTasks = tasks;
-          const data = [];
-          actualTasks.forEach((el) => {
-            if (el.id !== change.doc.id) {
-              data.push(el);
-            }
-          });
-
-          updateTasksFromDataAction(data);
-          if (inAll === 1) updateTasksToShowWithoutTasksAction(data);
-          else if (inActive === 1) this.activeButtonClick();
-          else if (inCompleted === 1) this.completedButtonClick();
-        }
-      });
-    });
+    localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
+    localStorage.setItem("incrementInLocalStorage", this.increment);
   }
 
   // when we click first on add button
   handleAddToDone = (text, textArea, radio) => {
-    const db = firestore.firestore();
-
-    if (radio.localeCompare("notImportant") === 0) {
-      db.collection("tasks").add({
-        name: text,
-        description: textArea,
-        done: 0,
+    const { tasks } = this.state;
+    const { inAll } = this.state;
+    const { inCompleted } = this.state;
+    const { inActive } = this.state;
+    const data = tasks;
+    if (radio.localeCompare("notImportant") === 0)
+      data.push({
+        id: this.increment,
         important: 0,
-      });
-    } else {
-      db.collection("tasks").add({
         name: text,
         description: textArea,
         done: 0,
-        important: 1,
       });
-    }
+    else
+      data.push({
+        id: this.increment,
+        important: 1,
+        name: text,
+        description: textArea,
+        done: 0,
+      });
+
+    this.increment += 1;
+    this.setState({ tasks: data });
+
+    if (inAll === 1) this.setState({ tasksToShow: data });
+    else if (inActive === 1) this.activeButtonClick();
+    else if (inCompleted === 1) this.completedButtonClick();
   };
 
   // when we click on delete task
 
   handleOnDoneTask = (value) => {
-    const { tasks } = this.props;
-    const db = firestore.firestore();
+    const { tasks } = this.state;
+    const { inAll } = this.state;
+    const { inCompleted } = this.state;
+    const { inActive } = this.state;
     const data = tasks;
-    let doneVar = 0;
-
+    let k = -1;
     data.forEach((el) => {
+      k += 1;
       if (el.id === value) {
-        if (el.done === 1) doneVar = 1;
-        else doneVar = 0;
+        data[k].done = 1;
       }
     });
-    if (doneVar === 0)
-      db.collection("tasks")
-        .doc(value)
-        .update({ done: 1 })
-        .then(() => {
-          console.log("update successful");
-        })
-        .catch((error) => {
-          console.error("Error updating document: ", error);
-        });
-    else
-      db.collection("tasks")
-        .doc(value)
-        .update({ done: 0 })
-        .then(() => {
-          console.log("update successful");
-        })
-        .catch((error) => {
-          console.error("Error updating document: ", error);
-        });
+    this.setState({ tasks: data });
+    if (inAll === 1) this.setState({ tasksToShow: data });
+    else if (inActive === 1) this.activeButtonClick();
+    else if (inCompleted === 1) this.completedButtonClick();
   };
 
   handleonDeleteDone = (value) => {
-    const db = firestore.firestore();
+    const { inActive } = this.state;
+    const { inCompleted } = this.state;
+    const { inAll } = this.state;
+    const { tasks } = this.state;
 
-    db.collection("tasks")
-      .doc(value)
-      .delete()
-      .then(() => {
-        console.log("delete successful");
-      })
-      .catch((error) => {
-        console.error("Error removing document: ", error);
-      });
+    const data = [];
+    const actualTasks = tasks;
+
+    actualTasks.forEach((el) => {
+      if (el.id !== value) {
+        data.push(el);
+      }
+    });
+
+    this.setState({ tasks: data }, () => {
+      if (inAll === 1) this.setState({ tasksToShow: tasks });
+      else if (inActive === 1) this.activeButtonClick();
+      else if (inCompleted === 1) this.completedButtonClick();
+    });
   };
 
   handleonImportant = (value) => {
-    const { tasks } = this.props;
-    const db = firestore.firestore();
-    const data = tasks;
-    let importantVar = 0;
+    const { tasks } = this.state;
+    const { inAll } = this.state;
+    const { inActive } = this.state;
+    const { inCompleted } = this.state;
 
-    data.forEach((el) => {
+    const actualTasks = tasks;
+    actualTasks.forEach((el, index) => {
       if (el.id === value) {
-        if (el.important === 1) importantVar = 1;
-        else importantVar = 0;
+        if (el.important === 1) actualTasks[index].important = 0;
+        else if (el.important === 0) actualTasks[index].important = 1;
       }
     });
-    if (importantVar === 0)
-      db.collection("tasks")
-        .doc(value)
-        .update({ important: 1 })
-        .then(() => {
-          console.log("update successful");
-        })
-        .catch((error) => {
-          console.error("Error updating document: ", error);
-        });
-    else
-      db.collection("tasks")
-        .doc(value)
-        .update({ important: 0 })
-        .then(() => {
-          console.log("update successful");
-        })
-        .catch((error) => {
-          console.error("Error updating document: ", error);
-        });
+    this.setState({ tasks: actualTasks });
+    if (inAll === 1) this.setState({ tasksToShow: actualTasks });
+    else if (inActive === 1) this.activeButtonClick();
+    else if (inCompleted === 1) this.completedButtonClick();
   };
 
   allButtonClick = () => {
-    const { setToSHowToTasksAction } = this.props;
-    const { updateInAllAction } = this.props;
-    const { updateInCompletedAction } = this.props;
-    const { updateInActiveAction } = this.props;
-
+    const { tasks } = this.state;
     this.colorActif = "secondary";
     this.colorAll = "primary";
     this.colorCompleted = "secondary";
-
-    setToSHowToTasksAction();
-    updateInAllAction(1);
-    updateInCompletedAction(0);
-    updateInActiveAction(0);
+    this.setState({
+      tasksToShow: tasks,
+      inAll: 1,
+      inActive: 0,
+      inCompleted: 0,
+    });
   };
 
   activeButtonClick = () => {
-    const { tasks } = this.props;
-    const { updateTasksToShowWithoutTasksAction } = this.props;
-    const { updateInAllAction } = this.props;
-    const { updateInCompletedAction } = this.props;
-    const { updateInActiveAction } = this.props;
-
+    const { tasks } = this.state;
     const myLoopData = tasks;
-    const toUpdateTasksToShow = [];
+    const toUpdataTasksToShow = [];
+
+
     myLoopData.forEach((el) => {
       if (el.done === 0) {
-        toUpdateTasksToShow.push(el);
+        toUpdataTasksToShow.push(el);
       }
     });
+
     this.colorActif = "primary";
     this.colorAll = "secondary";
     this.colorCompleted = "secondary";
 
-    updateTasksToShowWithoutTasksAction(toUpdateTasksToShow);
-    updateInAllAction(0);
-    updateInCompletedAction(0);
-    updateInActiveAction(1);
+    this.setState({
+      tasksToShow: toUpdataTasksToShow,
+      inAll: 0,
+      inActive: 1,
+      inCompleted: 0,
+    });
   };
 
   completedButtonClick = () => {
-    const { tasks } = this.props;
-    const { updateTasksToShowWithoutTasksAction } = this.props;
-    const { updateInAllAction } = this.props;
-    const { updateInCompletedAction } = this.props;
-    const { updateInActiveAction } = this.props;
-
+    const { tasks } = this.state;
     const myLoopData = tasks;
     const toUpdataTasksToShow = [];
+
     myLoopData.forEach((el) => {
       if (el.done === 1) {
         toUpdataTasksToShow.push(el);
@@ -282,15 +192,16 @@ class App extends Component {
     this.colorAll = "secondary";
     this.colorCompleted = "primary";
 
-    updateTasksToShowWithoutTasksAction(toUpdataTasksToShow);
-    updateInAllAction(0);
-    updateInCompletedAction(1);
-    updateInActiveAction(0);
+    this.setState({
+      tasksToShow: toUpdataTasksToShow,
+      inAll: 0,
+      inActive: 0,
+      inCompleted: 1,
+    });
   };
 
   render() {
-    const { tasksToShow } = this.props;
-    const tasksToShow2 = tasksToShow;
+    const { tasksToShow } = this.state;
 
     return (
       <>
@@ -302,7 +213,7 @@ class App extends Component {
           <TableHead>
             <TableRow>
               <TableCell>
-                {tasksToShow2.length}
+                {tasksToShow.length}
                 {" items displayed"}{" "}
               </TableCell>
               <TableCell align="right"> </TableCell>
@@ -335,7 +246,7 @@ class App extends Component {
             <TableRow>
               <TableCell colSpan="4" component="th" scope="row">
                 <ToDosAndDones
-                  tasks={tasksToShow2}
+                  tasks={tasksToShow}
                   onDoneTaskApp={this.handleOnDoneTask}
                   onDeleteTaskApp={this.handleonDeleteDone}
                   onMakeImportant={this.handleonImportant}
@@ -349,59 +260,4 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
-  tasks: PropTypes.arrayOf(PropTypes.object),
-  tasksToShow: PropTypes.arrayOf(PropTypes.object),
-  inAll: PropTypes.number,
-  inActive: PropTypes.number,
-  inCompleted: PropTypes.number,
-  updateTasksFromDataAction: PropTypes.func,
-  updateTasksToShowWithoutTasksAction: PropTypes.func,
-  setToSHowToTasksAction: PropTypes.func,
-  updateTasksAction: PropTypes.func,
-  updateTasksToShowAction: PropTypes.func,
-  updateInAllAction: PropTypes.func,
-  updateInActiveAction: PropTypes.func,
-  updateInCompletedAction: PropTypes.func,
-};
-
-App.defaultProps = {
-  inAll: 1,
-  inActive: 0,
-  inCompleted: 0,
-  tasks: [{}],
-  tasksToShow: [{}],
-  updateTasksFromDataAction: () => {},
-  updateTasksToShowWithoutTasksAction: () => {},
-  setToSHowToTasksAction: () => {},
-  updateTasksAction: () => {},
-  updateTasksToShowAction: () => {},
-  updateInAllAction: () => {},
-  updateInActiveAction: () => {},
-  updateInCompletedAction: () => {},
-};
-
-const mapStateToProps = (state) => ({
-  ...state,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  updateTasksFromDataAction: (payload) =>
-    dispatch(actionCreators.updateTasksFromDataAction(payload)),
-  updateTasksToShowWithoutTasksAction: (payload) =>
-    dispatch(actionCreators.updateTasksToShowWithoutTasksAction(payload)),
-  setToSHowToTasksAction: () =>
-    dispatch(actionCreators.setToSHowToTasksAction()),
-  updateTasksAction: (payload) =>
-    dispatch(actionCreators.updateTasksAction(payload)),
-  updateTasksToShowAction: (payload) =>
-    dispatch(actionCreators.updateTasksToShowAction(payload)),
-  updateInAllAction: (payload) =>
-    dispatch(actionCreators.updateInAllAction(payload)),
-  updateInActiveAction: (payload) =>
-    dispatch(actionCreators.updateInActiveAction(payload)),
-  updateInCompletedAction: (payload) =>
-    dispatch(actionCreators.updateInCompletedAction(payload)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

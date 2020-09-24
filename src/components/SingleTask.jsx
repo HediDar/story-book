@@ -66,7 +66,6 @@ const SingleTask = (props) => {
         </Accordion>
       </>
     );
-
   if (task.done === 0 && task.important === 0)
     return (
       <>
@@ -100,7 +99,6 @@ const SingleTask = (props) => {
         </Accordion>
       </>
     );
-
   return (
     <>
       <Accordion defaultExpanded style={{ backgroundColor: "lightgrey" }}>
@@ -126,19 +124,16 @@ const SingleTask = (props) => {
     </>
   );
 };
-
 SingleTask.propTypes = {
   task: PropTypes.shape(),
   onDone: PropTypes.func,
   onDeleteTask: PropTypes.func,
   makeImportant: PropTypes.func,
 };
-
 SingleTask.defaultProps = {
   task: {},
   onDone: () => {},
   onDeleteTask: () => {},
   makeImportant: () => {},
 };
-
 export default SingleTask;
