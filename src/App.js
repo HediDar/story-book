@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Table from "@material-ui/core/Table";
+import PropTypes from "prop-types";
 import TableBody from "@material-ui/core/TableBody";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
@@ -22,124 +23,13 @@ class App extends Component {
     this.colorCompleted = "secondary";
   }
 
-  componentDidMount() {
-    // if (localStorage.getItem("tasksInLocalStorage")) {
-    //   const data = JSON.parse(localStorage.getItem("tasksInLocalStorage"));
-    //   if (data.length > 0) this.setState({ tasks: data, tasksToShow: data });
-    // }
-    // if (localStorage.getItem("incrementInLocalStorage")) {
-    //   this.increment = parseInt(
-    //     localStorage.getItem("incrementInLocalStorage"),
-    //     10
-    //   );
-    // }
-  }
-
-  componentDidUpdate() {
-    // const { tasks } = this.state;
-    // localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
-    // localStorage.setItem("incrementInLocalStorage", this.increment);
-  }
-
-  // when we click first on add button
-  // handleAddToDone = (text, textArea, radio) => {
-  //   const { tasks } = this.state;
-  //   const { inAll } = this.state;
-  //   const { inCompleted } = this.state;
-  //   const { inActive } = this.state;
-  //   const data = tasks;
-  //   if (radio.localeCompare("notImportant") === 0)
-  //     data.push({
-  //       id: this.increment,
-  //       important: 0,
-  //       name: text,
-  //       description: textArea,
-  //       done: 0,
-  //     });
-  //   else
-  //     data.push({
-  //       id: this.increment,
-  //       important: 1,
-  //       name: text,
-  //       description: textArea,
-  //       done: 0,
-  //     });
-
-  //   this.increment += 1;
-  //   this.setState({ tasks: data });
-
-  //   if (inAll === 1) this.setState({ tasksToShow: data });
-  //   else if (inActive === 1) this.activeButtonClick();
-  //   else if (inCompleted === 1) this.completedButtonClick();
-  // };
-
-  // when we click on delete task
-
-  // handleOnDoneTask = (value) => {
-  //   const { tasks } = this.state;
-  //   const { inAll } = this.state;
-  //   const { inCompleted } = this.state;
-  //   const { inActive } = this.state;
-  //   const data = tasks;
-  //   let k = -1;
-  //   data.forEach((el) => {
-  //     k += 1;
-  //     if (el.id === value) {
-  //       data[k].done = 1;
-  //     }
-  //   });
-  //   this.setState({ tasks: data });
-  //   if (inAll === 1) this.setState({ tasksToShow: data });
-  //   else if (inActive === 1) this.activeButtonClick();
-  //   else if (inCompleted === 1) this.completedButtonClick();
-  // };
-
-  // handleonDeleteDone = (value) => {
-  //   const { inActive } = this.state;
-  //   const { inCompleted } = this.state;
-  //   const { inAll } = this.state;
-  //   const { tasks } = this.state;
-
-  //   const data = [];
-  //   const actualTasks = tasks;
-
-  //   actualTasks.forEach((el) => {
-  //     if (el.id !== value) {
-  //       data.push(el);
-  //     }
-  //   });
-
-  //   this.setState({ tasks: data }, () => {
-  //     if (inAll === 1) this.setState({ tasksToShow: tasks });
-  //     else if (inActive === 1) this.activeButtonClick();
-  //     else if (inCompleted === 1) this.completedButtonClick();
-  //   });
-  // };
-
-  // handleonImportant = (value) => {
-  //   const { tasks } = this.state;
-  //   const { inAll } = this.state;
-  //   const { inActive } = this.state;
-  //   const { inCompleted } = this.state;
-
-  //   const actualTasks = tasks;
-  //   actualTasks.forEach((el, index) => {
-  //     if (el.id === value) {
-  //       if (el.important === 1) actualTasks[index].important = 0;
-  //       else if (el.important === 0) actualTasks[index].important = 1;
-  //     }
-  //   });
-  //   this.setState({ tasks: actualTasks });
-  //   if (inAll === 1) this.setState({ tasksToShow: actualTasks });
-  //   else if (inActive === 1) this.activeButtonClick();
-  //   else if (inCompleted === 1) this.completedButtonClick();
-  // };
-
   allButtonClick = () => {
-    const { setToSHowToTasksAction } = this.props;
-    const { updateInAllAction } = this.props;
-    const { updateInCompletedAction } = this.props;
-    const { updateInActiveAction } = this.props;
+    const {
+      setToSHowToTasksAction,
+      updateInAllAction,
+      updateInCompletedAction,
+      updateInActiveAction,
+    } = this.props;
 
     this.colorActif = "secondary";
     this.colorAll = "primary";
@@ -152,13 +42,15 @@ class App extends Component {
   };
 
   handleActiveButtonClick = () => {
-    this.props.updateTestActiveAction(0);
-
-    const { tasks } = this.props;
-    const { updateTasksToShowWithoutTasksAction } = this.props;
-    const { updateInAllAction } = this.props;
-    const { updateInCompletedAction } = this.props;
-    const { updateInActiveAction } = this.props;
+    const {
+      tasks,
+      updateTasksToShowWithoutTasksAction,
+      updateTestActiveAction,
+      updateInAllAction,
+      updateInCompletedAction,
+      updateInActiveAction,
+    } = this.props;
+    updateTestActiveAction(0);
 
     const data = tasks.filter((el) => el.done === 0);
 
@@ -173,13 +65,16 @@ class App extends Component {
   };
 
   handleAllcompletedButtonClick = () => {
-    this.props.updateTestCompletedAction(0);
+    const {
+      updateInActiveAction,
+      updateInCompletedAction,
+      tasks,
+      updateTestCompletedAction,
+      updateTasksToShowWithoutTasksAction,
+      updateInAllAction,
+    } = this.props;
 
-    const { tasks } = this.props;
-    const { updateTasksToShowWithoutTasksAction } = this.props;
-    const { updateInAllAction } = this.props;
-    const { updateInCompletedAction } = this.props;
-    const { updateInActiveAction } = this.props;
+    updateTestCompletedAction(0);
 
     const myLoopData = tasks;
     const toUpdataTasksToShow = [];
@@ -261,6 +156,30 @@ class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  setToSHowToTasksAction: PropTypes.func,
+  updateInAllAction: PropTypes.func,
+  updateInCompletedAction: PropTypes.func,
+  updateInActiveAction: PropTypes.func,
+  updateTasksToShowWithoutTasksAction: PropTypes.func,
+  updateTestActiveAction: PropTypes.func,
+  updateTestCompletedAction: PropTypes.func,
+  tasks: PropTypes.arrayOf(PropTypes.object),
+  tasksToShow: PropTypes.arrayOf(PropTypes.object),
+};
+
+App.defaultProps = {
+  updateTestCompletedAction: () => {},
+  updateTasksToShowWithoutTasksAction: () => {},
+  updateTestActiveAction: () => {},
+  setToSHowToTasksAction: () => {},
+  updateInAllAction: () => {},
+  updateInCompletedAction: () => {},
+  updateInActiveAction: () => {},
+  tasksToShow: [{}],
+  tasks: [{}],
+};
 
 const mapStateToProps = (state) => ({
   ...state,

@@ -67,8 +67,6 @@ class ToDosAndDones extends Component {
       inAll,
       inCompleted,
       inActive,
-      onActive2,
-      onCompleted2,
       updateTasksFromDataRemoveMapAction,
     } = this.props;
 
@@ -145,6 +143,43 @@ class ToDosAndDones extends Component {
     );
   }
 }
+
+ToDosAndDones.propTypes = {
+  updateTestCompletedAction: PropTypes.func,
+  updateTestActiveAction: PropTypes.func,
+  updateTasksFromDataRemoveMapAction: PropTypes.func,
+  updateTasksFromDataAction: PropTypes.func,
+  updateTasksToShowWithoutTasksAction: PropTypes.func,
+  setIncrementAction: PropTypes.func,
+  onActive2: PropTypes.number,
+  onCompleted2: PropTypes.number,
+  testActive: PropTypes.number,
+  testCompleted: PropTypes.number,
+  tasks: PropTypes.arrayOf(PropTypes.object),
+  inAll: PropTypes.number,
+  inActive: PropTypes.number,
+  inCompleted: PropTypes.number,
+  updateTasksFromDataMapAction: PropTypes.func,
+};
+
+ToDosAndDones.defaultProps = {
+  updateTasksFromDataAction: () => {},
+  updateTasksToShowWithoutTasksAction: () => {},
+  setIncrementAction: () => {},
+  updateTestCompletedAction: () => {},
+  updateTestActiveAction: () => {},
+  updateTasksFromDataRemoveMapAction: () => {},
+  onActive2: 0,
+  onCompleted2: 0,
+  testActive: 0,
+  testCompleted: 0,
+  tasks: [{}],
+  inAll: 1,
+  inActive: 0,
+  inCompleted: 0,
+  updateTasksFromDataMapAction: () => {},
+};
+
 const mapStateToProps = (state) => {
   return {
     tasksToShow: state.tasksToShow,
