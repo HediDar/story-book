@@ -6,10 +6,6 @@ import SingleTask from "./SingleTask";
 import * as actionCreators from "../actions/tasksActions";
 
 class ToDosAndDones extends Component {
-  componentDidUpdate() {
-    console.log("gggg");
-  }
-
   componentDidMount() {
     if (localStorage.getItem("tasksInLocalStorage")) {
       const { updateTasksFromDataAction } = this.props;
@@ -36,7 +32,7 @@ class ToDosAndDones extends Component {
     const { inCompleted } = this.props;
     const { updateTasksToShowWithoutTasksAction } = this.props;
     const { updateTasksFromDataAction } = this.props;
-    const { onAll2 } = this.props;
+    const { onCompleted2 } = this.props;
     const { onActive2 } = this.props;
 
     const actualTasks = tasks.map((el) => {
@@ -51,21 +47,17 @@ class ToDosAndDones extends Component {
       return el;
     });
 
-    console.log();
-
     updateTasksFromDataAction(actualTasks);
-    console.log(this.props.tasksToShow);
+    localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
+
 
     if (inAll === 1) {
-      console.log("inAll");
       updateTasksToShowWithoutTasksAction(actualTasks);
       console.log(this.props.tasksToShow);
     } else if (inActive === 1) {
-      console.log("inActiiii");
-      onAll2();
-    } else if (inCompleted === 1) {
-      console.log("completed");
       onActive2();
+    } else if (inCompleted === 1) {
+      onCompleted2();
     }
   };
 
@@ -86,17 +78,28 @@ class ToDosAndDones extends Component {
     });
 
     this.props.updateTasksFromDataAction(data);
+    localStorage.setItem("tasksInLocalStorage", JSON.stringify(this.props.tasks));
+
+
     if (inAll === 1) this.props.updateTasksToShowWithoutTasksAction(data);
-    else if (inActive === 1) onAll2();
-    else if (inCompleted === 1) onActive2();
+    else if (inActive === 1) onActive2();
+    else if (inCompleted === 1) onAll2();
+
+    
   };
 
   onDeleteHandle = (id) => {
     console.log("handle delete id= " + id);
+
+
+
+
+
+    localStorage.setItem("tasksInLocalStorage", JSON.stringify(this.props.tasks));
+
   };
 
   render() {
-    console.log("in render");
     const { tasksToShow } = this.props;
     const { onDoneTaskApp } = this.props;
     const { onDeleteTaskApp } = this.props;
