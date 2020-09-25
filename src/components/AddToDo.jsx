@@ -70,8 +70,7 @@ const AddToDo = (props) => {
       if (inAll === 1) updateTasksToShowWithoutTasksAction(data);
       else if (inActive === 1) {
         updateTestActiveAction(1);
-      } //onActive();
-      else if (inCompleted === 1) {
+      } else if (inCompleted === 1) {
         updateTestCompletedAction(1);
       }
 
@@ -144,6 +143,40 @@ const AddToDo = (props) => {
     </>
   );
 };
+
+AddToDo.propTypes = {
+  tasks: PropTypes.arrayOf(PropTypes.object),
+  onActive: PropTypes.number,
+  inAll: PropTypes.number,
+  testActive: PropTypes.number,
+  testCompleted: PropTypes.number,
+  onCompleted: PropTypes.number,
+  inCompleted: PropTypes.number,
+  inActive: PropTypes.number,
+  increment: PropTypes.number,
+  updateTestCompletedAction: PropTypes.func,
+  updateTasksToShowWithoutTasksAction: PropTypes.func,
+  updateTestActiveAction: PropTypes.func,
+  updateIncrementAction: PropTypes.func,
+  updateTasksFromDataAction: PropTypes.func,
+};
+AddToDo.defaultProps = {
+  tasks: [{}],
+  onActive: 0,
+  testActive: 0,
+  testCompleted: 0,
+  inCompleted: 0,
+  onCompleted: 0,
+  inActive: 0,
+  increment: 0,
+  inAll: 1,
+  updateTestCompletedAction: () => {},
+  updateTasksToShowWithoutTasksAction: () => {},
+  updateTestActiveAction: () => {},
+  updateIncrementAction: () => {},
+  updateTasksFromDataAction: () => {},
+};
+
 const mapStateToProps = (state) => ({
   ...state,
 });
