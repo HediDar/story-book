@@ -31,8 +31,8 @@ class ToDosAndDones extends Component {
     const { onActive2 } = this.props;
     const { onCompleted2 } = this.props;
 
-  if (this.testActive===1) onActive2();
-  else if(this.testCompleted===1)onCompleted2();
+    if (this.props.testActive === 1) onActive2();
+    else if (this.props.testCompleted === 1) onCompleted2();
   }
 
   onImportantHandle = (id) => {
@@ -93,8 +93,8 @@ class ToDosAndDones extends Component {
     );
 
     if (inAll === 1) this.props.updateTasksToShowWithoutTasksAction(data);
-    else if (inActive === 1) onActive2();
-    else if (inCompleted === 1) onCompleted2();
+    else if (inActive === 1) this.props.updateTestActiveAction(1);
+    else if (inCompleted === 1) this.props.updateTestCompletedAction(1);
   };
 
   onDeleteHandle = (id) => {
@@ -102,17 +102,16 @@ class ToDosAndDones extends Component {
     const { inCompleted } = this.props;
     const { inAll } = this.props;
     const { tasks } = this.props;
-    this.testCompleted=0;
-    this.testActive=0;
+    this.testCompleted = 0;
+    this.testActive = 0;
 
     const data = tasks.filter((el) => el.id !== id);
 
     this.props.updateTasksFromDataAction(data);
 
     if (inAll === 1) this.props.updateTasksToShowWithoutTasksAction(data);
-    else if (inActive === 1) this.testActive=1;  //onActive2();
-    else if (inCompleted === 1) this.testCompleted=1;//onCompleted2();
-
+    else if (inActive === 1) this.props.updateTestActiveAction(1);
+    else if (inCompleted === 1) this.props.updateTestCompletedAction(1);
     localStorage.setItem(
       "tasksInLocalStorage",
       JSON.stringify(this.props.tasks)
@@ -167,6 +166,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  updateTestActiveAction: (payload) =>
+    dispatch(actionCreators.updateTestActiveAction(payload)),
+  updateTestCompletedAction: (payload) =>
+    dispatch(actionCreators.updateTestCompletedAction(payload)),
   setIncrementAction: (payload) =>
     dispatch(actionCreators.setIncrementAction(payload)),
   updateIncrementAction: () => dispatch(actionCreators.updateIncrementAction()),
