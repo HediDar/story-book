@@ -58,11 +58,10 @@ class ToDosAndDones extends Component {
     });
 
     updateTasksFromDataAction(actualTasks);
-    localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
+    localStorage.setItem("tasksInLocalStorage", JSON.stringify(actualTasks));
 
     if (inAll === 1) {
       updateTasksToShowWithoutTasksAction(actualTasks);
-      console.log(this.props.tasksToShow);
     } else if (inActive === 1) {
       onActive2();
     } else if (inCompleted === 1) {
@@ -89,7 +88,7 @@ class ToDosAndDones extends Component {
     this.props.updateTasksFromDataAction(data);
     localStorage.setItem(
       "tasksInLocalStorage",
-      JSON.stringify(this.props.tasks)
+      JSON.stringify(data)
     );
 
     if (inAll === 1) this.props.updateTasksToShowWithoutTasksAction(data);
@@ -114,7 +113,7 @@ class ToDosAndDones extends Component {
     else if (inCompleted === 1) this.props.updateTestCompletedAction(1);
     localStorage.setItem(
       "tasksInLocalStorage",
-      JSON.stringify(this.props.tasks)
+      JSON.stringify(data)
     );
   };
 

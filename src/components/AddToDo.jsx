@@ -58,7 +58,7 @@ const AddToDo = (props) => {
       updateIncrementAction();
       updateTasksFromDataAction(data);
 
-      localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
+      localStorage.setItem("tasksInLocalStorage", JSON.stringify(data));
       localStorage.setItem("incrementInLocalStorage", increment);
 
       if (inAll === 1) updateTasksToShowWithoutTasksAction(data);
@@ -145,8 +145,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   updateTestActiveAction: (payload) =>
     dispatch(actionCreators.updateTestActiveAction(payload)),
-  updateTestCompletedAction: () =>
-    dispatch(actionCreators.updateTestCompletedAction()),
+  updateTestCompletedAction: (payload) =>
+    dispatch(actionCreators.updateTestCompletedAction(payload)),
   updateIncrementAction: () => dispatch(actionCreators.updateIncrementAction()),
   updateTasksFromDataAction: (payload) =>
     dispatch(actionCreators.updateTasksFromDataAction(payload)),
