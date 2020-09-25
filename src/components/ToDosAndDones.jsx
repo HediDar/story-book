@@ -36,30 +36,14 @@ class ToDosAndDones extends Component {
   }
 
   onImportantHandle = (id) => {
-    const { tasks } = this.props;
     const { inAll } = this.props;
     const { inActive } = this.props;
     const { inCompleted } = this.props;
     const { updateTasksToShowWithoutTasksAction } = this.props;
-    const { updateTasksFromDataAction } = this.props;
     const { onCompleted2 } = this.props;
     const { onActive2 } = this.props;
 
     this.props.updateTasksFromDataMapAction(id);
-    // const actualTasks = tasks.map((el) => {
-    //   if (el.id === id) {
-    //     if (el.important === 1) {
-    //       el.important = 0;
-    //       return el;
-    //     }
-    //     el.important = 1;
-    //     return el;
-    //   }
-    //   return el;
-    // });
-
-    // updateTasksFromDataAction(actualTasks);
-
     localStorage.setItem(
       "tasksInLocalStorage",
       JSON.stringify(this.props.tasks)
@@ -90,8 +74,12 @@ class ToDosAndDones extends Component {
       return el;
     });
 
-    this.props.updateTasksFromDataAction(data);
-    localStorage.setItem("tasksInLocalStorage", JSON.stringify(data));
+    this.props.updateTasksFromDataRemoveMapAction(id);
+
+    localStorage.setItem(
+      "tasksInLocalStorage",
+      JSON.stringify(this.props.tasks)
+    );
 
     if (inAll === 1) this.props.updateTasksToShowWithoutTasksAction(data);
     else if (inActive === 1) this.props.updateTestActiveAction(1);
@@ -164,6 +152,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  updateTasksFromDataRemoveMapAction: (payload) =>
+    dispatch(actionCreators.updateTasksFromDataRemoveMapAction(payload)),
   updateTasksFromDataMapAction: (payload) =>
     dispatch(actionCreators.updateTasksFromDataMapAction(payload)),
   updateTestActiveAction: (payload) =>

@@ -61,6 +61,14 @@ function updateTasksFromDataMapAction(id) {
   };
 }
 
+function updateTasksFromDataRemoveMapAction(id) {
+  return {
+    type: "updateTasksFromDataRemoveMap",
+    payload: id,
+  };
+}
+
+
 function updateIncrementAction() {
   return {
     type: "updateIncrement",
@@ -89,6 +97,7 @@ function updateTestCompletedAction(number) {
 }
 
 export {
+  updateTasksFromDataRemoveMapAction,
   updateTasksFromDataMapAction,
   updateTestActiveAction,
   updateTestCompletedAction,

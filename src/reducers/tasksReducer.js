@@ -49,6 +49,18 @@ function tasksReducer(state = initialStates, action) {
         tasks: action.payload,
       };
 
+    case "updateTasksFromDataRemoveMap":
+      return {
+        ...state,
+        tasks: state.tasks.map((el) => {
+          if (el.id === action.payload) {
+            el.done = 1;
+            return el;
+          }
+          return el;
+        }),
+      };
+
     case "updateTasksFromDataMap":
       return {
         ...state,
