@@ -28,7 +28,7 @@ const AddToDo = (props) => {
       const { updateTasksFromDataAction } = props;
       const { updateTasksToShowWithoutTasksAction } = props;
 
-      const data = tasks;
+      const data = [...tasks];
       if (radio.localeCompare("notImportant") === 0)
         data.push({
           id: increment,
@@ -51,6 +51,10 @@ const AddToDo = (props) => {
 
       localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
      localStorage.setItem("incrementInLocalStorage", increment);
+
+
+     console.log(data);
+     console.log(props.tasks);
 
       if (inAll === 1) updateTasksToShowWithoutTasksAction(data);
       else if (inActive === 1) props.onActive();
