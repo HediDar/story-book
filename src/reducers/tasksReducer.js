@@ -20,19 +20,16 @@ function tasksReducer(state = initialStates, action) {
       };
 
     case "updateTestActive":
-        return {
-          ...state,
-          testActive: action.payload,
-        };
-     
+      return {
+        ...state,
+        testActive: action.payload,
+      };
 
     case "updateTestCompleted":
-     
-        return {
-          ...state,
-          testCompleted: action.payload,
-        };
-      
+      return {
+        ...state,
+        testCompleted: action.payload,
+      };
 
     case "setIncrementAction":
       return {
@@ -50,6 +47,22 @@ function tasksReducer(state = initialStates, action) {
       return {
         ...state,
         tasks: action.payload,
+      };
+
+    case "updateTasksFromDataMap":
+      return {
+        ...state,
+        tasks: state.tasks.map((el) => {
+          if (el.id === action.payload) {
+            if (el.important === 1) {
+              el.important = 0;
+              return el;
+            }
+            el.important = 1;
+            return el;
+          }
+          return el;
+        }),
       };
 
     case "updateTasksToShow":
