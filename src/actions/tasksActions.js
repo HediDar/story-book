@@ -66,7 +66,23 @@ function setIncrementAction(number) {
   };
 }
 
+function updateTestActiveAction(number) {
+  return {
+    type: "updateTestActive",
+    payload: number,
+  };
+}
+
+function updateTestCompletedAction(number) {
+  return {
+    type: "updateTestCompleted",
+    payload: number,
+  };
+}
+
 export {
+  updateTestActiveAction,
+  updateTestCompletedAction,
   setIncrementAction,
   updateIncrementAction,
   updateTasksAction,

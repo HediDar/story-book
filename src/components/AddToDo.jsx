@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import {
   RadioGroup,
@@ -15,6 +16,14 @@ const AddToDo = (props) => {
   const [text, setText] = useState("");
   const [textArea, setTextArea] = useState("");
   const [radio, setRadio] = useState("notImportant");
+
+  const didMountRef = useRef(false);
+  useEffect(() => {
+    if (didMountRef.current) {
+      if (props.testActive === 1) props.onActive();
+      else if (props.testCompleted === 1) props.onCompleted();
+    } else didMountRef.current = true;
+  });
 
   function onClickCalls() {
     if (text === "") alert("you need to name your task");
@@ -50,15 +59,15 @@ const AddToDo = (props) => {
       updateTasksFromDataAction(data);
 
       localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
-     localStorage.setItem("incrementInLocalStorage", increment);
-
-
-     console.log(data);
-     console.log(props.tasks);
+      localStorage.setItem("incrementInLocalStorage", increment);
 
       if (inAll === 1) updateTasksToShowWithoutTasksAction(data);
-      else if (inActive === 1) props.onActive();
-      else if (inCompleted === 1) props.onCompleted();
+      else if (inActive === 1) {
+        props.updateTestActiveAction(1);
+      } //props.onActive();
+      else if (inCompleted === 1) {
+        props.updateTestCompletedAction(1);
+      }
 
       setText("");
       setTextArea("");
@@ -134,6 +143,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  updateTestActiveAction: (payload) =>
+    dispatch(actionCreators.updateTestActiveAction(payload)),
+  updateTestCompletedAction: () =>
+    dispatch(actionCreators.updateTestCompletedAction()),
   updateIncrementAction: () => dispatch(actionCreators.updateIncrementAction()),
   updateTasksFromDataAction: (payload) =>
     dispatch(actionCreators.updateTasksFromDataAction(payload)),

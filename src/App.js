@@ -152,13 +152,13 @@ class App extends Component {
   };
 
   handleActiveButtonClick = () => {
+    this.props.updateTestActiveAction(0);
+
     const { tasks } = this.props;
     const { updateTasksToShowWithoutTasksAction } = this.props;
     const { updateInAllAction } = this.props;
     const { updateInCompletedAction } = this.props;
     const { updateInActiveAction } = this.props;
-
-    
 
     const data = tasks.filter((el) => el.done === 0);
 
@@ -173,6 +173,8 @@ class App extends Component {
   };
 
   handleAllcompletedButtonClick = () => {
+    this.props.updateTestCompletedAction(0);
+
     const { tasks } = this.props;
     const { updateTasksToShowWithoutTasksAction } = this.props;
     const { updateInAllAction } = this.props;
@@ -265,6 +267,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  updateTestActiveAction: (payload) =>
+    dispatch(actionCreators.updateTestActiveAction(payload)),
+  updateTestCompletedAction: (payload) =>
+    dispatch(actionCreators.updateTestCompletedAction(payload)),
   setToSHowToTasksAction: () =>
     dispatch(actionCreators.setToSHowToTasksAction()),
   updateTasksToShowWithoutTasksAction: (payload) =>

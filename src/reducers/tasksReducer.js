@@ -5,6 +5,8 @@ const initialStates = {
   inCompleted: 0,
   inActive: 0,
   increment: 0,
+  testActive: 0,
+  testCompleted: 0,
 };
 
 function tasksReducer(state = initialStates, action) {
@@ -16,6 +18,21 @@ function tasksReducer(state = initialStates, action) {
         ...state,
         tasks: [...state.tasks, action.payload],
       };
+
+    case "updateTestActive":
+        return {
+          ...state,
+          testActive: action.payload,
+        };
+     
+
+    case "updateTestCompleted":
+     
+        return {
+          ...state,
+          testCompleted: action.payload,
+        };
+      
 
     case "setIncrementAction":
       return {
@@ -30,8 +47,6 @@ function tasksReducer(state = initialStates, action) {
       };
 
     case "updateTasksFromData":
-
-
       return {
         ...state,
         tasks: action.payload,
@@ -44,7 +59,6 @@ function tasksReducer(state = initialStates, action) {
       };
 
     case "updateTasksToShowWithoutTasks":
-      
       return {
         ...state,
         tasksToShow: action.payload,
