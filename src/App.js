@@ -24,21 +24,15 @@ class App extends Component {
   }
 
   allButtonClick = () => {
-    const {
-      setToSHowToTasksAction,
-      updateInAllAction,
-      updateInCompletedAction,
-      updateInActiveAction,
-    } = this.props;
+    const { setToSHowToTasksAction, changeDisplayModeAction } = this.props;
 
     this.colorActif = "secondary";
     this.colorAll = "primary";
     this.colorCompleted = "secondary";
 
     setToSHowToTasksAction();
-    updateInAllAction(1);
-    updateInCompletedAction(0);
-    updateInActiveAction(0);
+
+    changeDisplayModeAction("all");
   };
 
   handleActiveButtonClick = () => {
@@ -46,9 +40,7 @@ class App extends Component {
       tasks,
       updateTasksToShowWithoutTasksAction,
       updateTestActiveAction,
-      updateInAllAction,
-      updateInCompletedAction,
-      updateInActiveAction,
+      changeDisplayModeAction,
     } = this.props;
     updateTestActiveAction(0);
 
@@ -59,19 +51,15 @@ class App extends Component {
     this.colorCompleted = "secondary";
 
     updateTasksToShowWithoutTasksAction(data);
-    updateInAllAction(0);
-    updateInCompletedAction(0);
-    updateInActiveAction(1);
+    changeDisplayModeAction("actif");
   };
 
   handleAllcompletedButtonClick = () => {
     const {
-      updateInActiveAction,
-      updateInCompletedAction,
       tasks,
+      changeDisplayModeAction,
       updateTestCompletedAction,
       updateTasksToShowWithoutTasksAction,
-      updateInAllAction,
     } = this.props;
 
     updateTestCompletedAction(0);
@@ -89,9 +77,7 @@ class App extends Component {
 
     updateTasksToShowWithoutTasksAction(toUpdataTasksToShow);
 
-    updateInAllAction(0);
-    updateInCompletedAction(1);
-    updateInActiveAction(0);
+    changeDisplayModeAction("done");
   };
 
   render() {
@@ -186,6 +172,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  changeDisplayModeAction: (payload) =>
+    dispatch(actionCreators.changeDisplayModeAction(payload)),
   updateTestActiveAction: (payload) =>
     dispatch(actionCreators.updateTestActiveAction(payload)),
   updateTestCompletedAction: (payload) =>

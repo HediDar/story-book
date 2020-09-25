@@ -31,13 +31,11 @@ const AddToDo = (props) => {
     if (text === "") alert("you need to name your task");
     else {
       const {
+        displayMode,
         updateTestCompletedAction,
         updateTestActiveAction,
         updateTasksToShowWithoutTasksAction,
         tasks,
-        inAll,
-        inCompleted,
-        inActive,
         increment,
         updateIncrementAction,
         updateTasksFromDataAction,
@@ -67,10 +65,11 @@ const AddToDo = (props) => {
       localStorage.setItem("tasksInLocalStorage", JSON.stringify(data));
       localStorage.setItem("incrementInLocalStorage", increment);
 
-      if (inAll === 1) updateTasksToShowWithoutTasksAction(data);
-      else if (inActive === 1) {
+      if (displayMode.localeCompare("all") === 0)
+        updateTasksToShowWithoutTasksAction(data);
+      else if (displayMode.localeCompare("actif") === 0) {
         updateTestActiveAction(1);
-      } else if (inCompleted === 1) {
+      } else if (displayMode.localeCompare("done") === 0) {
         updateTestCompletedAction(1);
       }
 
@@ -182,6 +181,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  hangeDisplayModeAction: (payload) =>
+    dispatch(actionCreators.changeDisplayModeAction(payload)),
   updateTestActiveAction: (payload) =>
     dispatch(actionCreators.updateTestActiveAction(payload)),
   updateTestCompletedAction: (payload) =>

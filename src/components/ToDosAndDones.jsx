@@ -38,9 +38,7 @@ class ToDosAndDones extends Component {
     const {
       updateTasksFromDataMapAction,
       tasks,
-      inAll,
-      inActive,
-      inCompleted,
+      displayMode,
       updateTasksToShowWithoutTasksAction,
       onCompleted2,
       onActive2,
@@ -49,24 +47,22 @@ class ToDosAndDones extends Component {
     updateTasksFromDataMapAction(id);
     localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
 
-    if (inAll === 1) {
+    if (displayMode.localeCompare("all") === 0) {
       updateTasksToShowWithoutTasksAction(tasks);
-    } else if (inActive === 1) {
+    } else if (displayMode.localeCompare("actif") === 0) {
       onActive2();
-    } else if (inCompleted === 1) {
+    } else if (displayMode.localeCompare("done") === 0) {
       onCompleted2();
     }
   };
 
   onDoneHandle = (id) => {
     const {
+      displayMode,
       updateTestCompletedAction,
       updateTestActiveAction,
       updateTasksToShowWithoutTasksAction,
       tasks,
-      inAll,
-      inCompleted,
-      inActive,
       updateTasksFromDataRemoveMapAction,
     } = this.props;
 
@@ -82,20 +78,21 @@ class ToDosAndDones extends Component {
 
     localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
 
-    if (inAll === 1) updateTasksToShowWithoutTasksAction(data);
-    else if (inActive === 1) updateTestActiveAction(1);
-    else if (inCompleted === 1) updateTestCompletedAction(1);
+    if (displayMode.localeCompare("all") === 0)
+      updateTasksToShowWithoutTasksAction(data);
+    else if (displayMode.localeCompare("actif") === 0)
+      updateTestActiveAction(1);
+    else if (displayMode.localeCompare("done") === 0)
+      updateTestCompletedAction(1);
   };
 
   onDeleteHandle = (id) => {
     const {
+      displayMode,
       updateTestCompletedAction,
       updateTestActiveAction,
       updateTasksToShowWithoutTasksAction,
       updateTasksFromDataAction,
-      inActive,
-      inCompleted,
-      inAll,
       tasks,
     } = this.props;
 
@@ -103,9 +100,12 @@ class ToDosAndDones extends Component {
 
     updateTasksFromDataAction(data);
 
-    if (inAll === 1) updateTasksToShowWithoutTasksAction(data);
-    else if (inActive === 1) updateTestActiveAction(1);
-    else if (inCompleted === 1) updateTestCompletedAction(1);
+    if (displayMode.localeCompare("all") === 0)
+      updateTasksToShowWithoutTasksAction(data);
+    else if (displayMode.localeCompare("actif") === 0)
+      updateTestActiveAction(1);
+    else if (displayMode.localeCompare("done") === 0)
+      updateTestCompletedAction(1);
     localStorage.setItem("tasksInLocalStorage", JSON.stringify(data));
   };
 
@@ -156,9 +156,7 @@ ToDosAndDones.propTypes = {
   testActive: PropTypes.number,
   testCompleted: PropTypes.number,
   tasks: PropTypes.arrayOf(PropTypes.object),
-  inAll: PropTypes.number,
-  inActive: PropTypes.number,
-  inCompleted: PropTypes.number,
+
   updateTasksFromDataMapAction: PropTypes.func,
 };
 
@@ -174,18 +172,13 @@ ToDosAndDones.defaultProps = {
   testActive: 0,
   testCompleted: 0,
   tasks: [{}],
-  inAll: 1,
-  inActive: 0,
-  inCompleted: 0,
   updateTasksFromDataMapAction: () => {},
 };
 
 const mapStateToProps = (state) => {
   return {
     tasksToShow: state.tasksToShow,
-    inAll: state.inAll,
-    inCompleted: state.inCompleted,
-    inActive: state.inActive,
+    displayMode: state.displayMode,
     tasks: state.tasks,
   };
 };

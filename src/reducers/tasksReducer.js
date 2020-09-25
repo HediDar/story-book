@@ -1,9 +1,14 @@
+import {
+  ADD_TASK,
+  DISPLAY_MODE,
+  REMOVE_TASK,
+  UPDATE_TASKS,
+} from "../actions/actions-types";
+
 const initialStates = {
   tasks: [],
+  displayMode: "all",
   tasksToShow: [],
-  inAll: 1,
-  inCompleted: 0,
-  inActive: 0,
   increment: 0,
   testActive: 0,
   testCompleted: 0,
@@ -11,9 +16,37 @@ const initialStates = {
 
 function tasksReducer(state = initialStates, action) {
   // if state is empty, we take initialStates
+  const data = [...state.tasks];
   switch (action.type) {
     // the case is the type
-    case "updateTasks":
+
+    case ADD_TASK:
+      data.push({
+        id: action.payload.id,
+        important: action.payload.important,
+        name: action.payload.name,
+        description: action.payload.description,
+        done: 0,
+      });
+      return {
+        ...state,
+        tasks: data,
+      };
+
+    case REMOVE_TASK:
+      return {
+        ...state,
+        tasks: state.tasks.filter((el) => el.id !== action.payload),
+      };
+
+    case DISPLAY_MODE:
+      return {
+        ...state,
+        displayMode: action.payload,
+      };
+
+    // old actions
+    case UPDATE_TASKS:
       return {
         ...state,
         tasks: [...state.tasks, action.payload],

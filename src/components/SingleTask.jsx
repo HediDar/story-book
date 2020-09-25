@@ -99,30 +99,32 @@ const SingleTask = (props) => {
         </Accordion>
       </>
     );
-  return (
-    <>
-      <Accordion defaultExpanded style={{ backgroundColor: "lightgrey" }}>
-        <AccordionSummary aria-controls="panel1c-content" id="panel1c-header">
-          <div>
-            <Typography>{task.name}</Typography>
-          </div>
-        </AccordionSummary>
-        <AccordionDetails>
-          <div>
-            <Typography className={classes.secondaryHeading}>
-              {task.description}
-            </Typography>
-          </div>
-        </AccordionDetails>
-        <Divider />
-        <AccordionActions>
-          <Button color="secondary" onClick={() => onDeleteTask(task.id)}>
-            Delete
-          </Button>
-        </AccordionActions>
-      </Accordion>
-    </>
-  );
+  if (task.done === 1)
+    return (
+      <>
+        <Accordion defaultExpanded style={{ backgroundColor: "lightgrey" }}>
+          <AccordionSummary aria-controls="panel1c-content" id="panel1c-header">
+            <div>
+              <Typography>{task.name}</Typography>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div>
+              <Typography className={classes.secondaryHeading}>
+                {task.description}
+              </Typography>
+            </div>
+          </AccordionDetails>
+          <Divider />
+          <AccordionActions>
+            <Button color="secondary" onClick={() => onDeleteTask(task.id)}>
+              Delete
+            </Button>
+          </AccordionActions>
+        </Accordion>
+      </>
+    );
+  return <></>;
 };
 // SingleTask.propTypes = {
 //   task: PropTypes.shape(),
