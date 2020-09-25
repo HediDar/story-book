@@ -23,6 +23,16 @@ class ToDosAndDones extends Component {
         );
       }
     }
+    this.testActive = 0;
+    this.testCompleted = 0;
+  }
+
+  componentDidUpdate() {
+    const { onActive2 } = this.props;
+    const { onCompleted2 } = this.props;
+
+  if (this.testActive===1) onActive2();
+  else if(this.testCompleted===1)onCompleted2();
   }
 
   onImportantHandle = (id) => {
@@ -50,7 +60,6 @@ class ToDosAndDones extends Component {
     updateTasksFromDataAction(actualTasks);
     localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
 
-
     if (inAll === 1) {
       updateTasksToShowWithoutTasksAction(actualTasks);
       console.log(this.props.tasksToShow);
@@ -66,8 +75,8 @@ class ToDosAndDones extends Component {
     const { inAll } = this.props;
     const { inCompleted } = this.props;
     const { inActive } = this.props;
-    const { onAll2 } = this.props;
     const { onActive2 } = this.props;
+    const { onCompleted2 } = this.props;
 
     const data = tasks.map((el) => {
       if (el.id === id) {
@@ -78,25 +87,36 @@ class ToDosAndDones extends Component {
     });
 
     this.props.updateTasksFromDataAction(data);
-    localStorage.setItem("tasksInLocalStorage", JSON.stringify(this.props.tasks));
-
+    localStorage.setItem(
+      "tasksInLocalStorage",
+      JSON.stringify(this.props.tasks)
+    );
 
     if (inAll === 1) this.props.updateTasksToShowWithoutTasksAction(data);
     else if (inActive === 1) onActive2();
-    else if (inCompleted === 1) onAll2();
-
-    
+    else if (inCompleted === 1) onCompleted2();
   };
 
   onDeleteHandle = (id) => {
-    console.log("handle delete id= " + id);
+    const { inActive } = this.props;
+    const { inCompleted } = this.props;
+    const { inAll } = this.props;
+    const { tasks } = this.props;
+    this.testCompleted=0;
+    this.testActive=0;
 
+    const data = tasks.filter((el) => el.id !== id);
 
+    this.props.updateTasksFromDataAction(data);
 
+    if (inAll === 1) this.props.updateTasksToShowWithoutTasksAction(data);
+    else if (inActive === 1) this.testActive=1;  //onActive2();
+    else if (inCompleted === 1) this.testCompleted=1;//onCompleted2();
 
-
-    localStorage.setItem("tasksInLocalStorage", JSON.stringify(this.props.tasks));
-
+    localStorage.setItem(
+      "tasksInLocalStorage",
+      JSON.stringify(this.props.tasks)
+    );
   };
 
   render() {

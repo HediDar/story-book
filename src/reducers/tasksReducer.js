@@ -30,6 +30,8 @@ function tasksReducer(state = initialStates, action) {
       };
 
     case "updateTasksFromData":
+
+
       return {
         ...state,
         tasks: action.payload,

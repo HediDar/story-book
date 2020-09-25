@@ -158,18 +158,15 @@ class App extends Component {
     const { updateInCompletedAction } = this.props;
     const { updateInActiveAction } = this.props;
 
-    const myLoopData = tasks;
-    const toUpdateTasksToShow = [];
-    myLoopData.forEach((el) => {
-      if (el.done === 0) {
-        toUpdateTasksToShow.push(el);
-      }
-    });
+    
+
+    const data = tasks.filter((el) => el.done === 0);
+
     this.colorActif = "primary";
     this.colorAll = "secondary";
     this.colorCompleted = "secondary";
 
-    updateTasksToShowWithoutTasksAction(toUpdateTasksToShow);
+    updateTasksToShowWithoutTasksAction(data);
     updateInAllAction(0);
     updateInCompletedAction(0);
     updateInActiveAction(1);
@@ -199,28 +196,6 @@ class App extends Component {
     updateInCompletedAction(1);
     updateInActiveAction(0);
   };
-
-  // completedButtonClick = () => {
-  //   const { tasks } = this.state;
-  //   const myLoopData = tasks;
-  //   const toUpdataTasksToShow = [];
-
-  //   myLoopData.forEach((el) => {
-  //     if (el.done === 1) {
-  //       toUpdataTasksToShow.push(el);
-  //     }
-  //   });
-  //   this.colorActif = "secondary";
-  //   this.colorAll = "secondary";
-  //   this.colorCompleted = "primary";
-
-  //   this.setState({
-  //     tasksToShow: toUpdataTasksToShow,
-  //     inAll: 0,
-  //     inActive: 0,
-  //     inCompleted: 1,
-  //   });
-  // };
 
   render() {
     const { tasksToShow } = this.props;
