@@ -19,23 +19,29 @@ const AddToDo = (props) => {
 
   const didMountRef = useRef(false);
   useEffect(() => {
+    const { onActive, testActive, testCompleted, onCompleted } = props;
+
     if (didMountRef.current) {
-      if (props.testActive === 1) props.onActive();
-      else if (props.testCompleted === 1) props.onCompleted();
+      if (testActive === 1) onActive();
+      else if (testCompleted === 1) onCompleted();
     } else didMountRef.current = true;
   });
 
   function onClickCalls() {
     if (text === "") alert("you need to name your task");
     else {
-      const { tasks } = props;
-      const { inAll } = props;
-      const { inCompleted } = props;
-      const { inActive } = props;
-      const { increment } = props;
-      const { updateIncrementAction } = props;
-      const { updateTasksFromDataAction } = props;
-      const { updateTasksToShowWithoutTasksAction } = props;
+      const {
+        updateTestCompletedAction,
+        updateTestActiveAction,
+        updateTasksToShowWithoutTasksAction,
+        tasks,
+        inAll,
+        inCompleted,
+        inActive,
+        increment,
+        updateIncrementAction,
+        updateTasksFromDataAction,
+      } = props;
 
       const data = [...tasks];
       if (radio.localeCompare("notImportant") === 0)
@@ -63,10 +69,10 @@ const AddToDo = (props) => {
 
       if (inAll === 1) updateTasksToShowWithoutTasksAction(data);
       else if (inActive === 1) {
-        props.updateTestActiveAction(1);
-      } //props.onActive();
+        updateTestActiveAction(1);
+      } //onActive();
       else if (inCompleted === 1) {
-        props.updateTestCompletedAction(1);
+        updateTestCompletedAction(1);
       }
 
       setText("");
