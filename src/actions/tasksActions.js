@@ -1,5 +1,4 @@
 import {
-  SET_LENGTH,
   DISPLAY_MODE,
   REMOVE_TASK,
   ADD_TASK,
@@ -34,12 +33,6 @@ function removeTaskAction(idTaskToRemove) {
   };
 }
 
-function setLengthAction(data) {
-  return {
-    type: SET_LENGTH,
-    payload: data,
-  };
-}
 
 function makeImportantAction(id) {
   return {
@@ -58,7 +51,6 @@ function addToDoneAction(id) {
 export {
   addToDoneAction,
   makeImportantAction,
-  setLengthAction,
   changeDisplayModeAction,
   addTaskAction,
   removeTaskAction,

@@ -2,7 +2,6 @@ import {
   ADD_TASK,
   DISPLAY_MODE,
   REMOVE_TASK,
-  SET_LENGTH,
   ADD_TO_DONE,
   MAKE_IMPORTANT,
 } from "../actions/actions-types";
@@ -51,11 +50,7 @@ function tasksReducer(state = initialStates, action) {
         }),
       };
 
-    case SET_LENGTH:
-      return {
-        ...state,
-        length: action.payload.length,
-      };
+   
 
     case ADD_TASK:
       data.push({

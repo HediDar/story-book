@@ -96,7 +96,6 @@ class ToDosAndDones extends Component {
       });
     }
 
-    // setLengthAction(tasksFiltredToDo2);
 
     return (
       <>
@@ -189,8 +188,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.addToDoneAction(payload)),
   makeImportantAction: (payload) =>
     dispatch(actionCreators.makeImportantAction(payload)),
-  setLengthAction: (payload) =>
-    dispatch(actionCreators.setLengthAction(payload)),
+  
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToDosAndDones);
