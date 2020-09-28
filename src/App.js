@@ -125,6 +125,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   changeDisplayModeAction: (payload) =>
     dispatch(actionCreators.changeDisplayModeAction(payload)),
+  
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
