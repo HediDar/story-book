@@ -18,17 +18,13 @@ function tasksReducer(state = initialStates, action) {
     return {
       ...state,
       tasks: state.tasks.map((el) => {
-        if (el.id === action.payload) {
-          if (el.important === 1) {
-            el.important = 0;
-            return el;
-          }
+        if (el.id === action.payload && el.important === 1) el.important = 0;
+        else if (el.id === action.payload && el.important === 0)
           el.important = 1;
-          return el;
-        }
         return el;
       }),
     };
+
   if (action.type.localeCompare(ADD_TO_DONE) === 0)
     return {
       ...state,
