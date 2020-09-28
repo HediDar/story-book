@@ -4,12 +4,14 @@ import {
   REMOVE_TASK,
   UPDATE_TASKS,
   SET_LENGTH,
+  ADD_TO_DONE,
+  MAKE_IMPORTANT,
 } from "../actions/actions-types";
 
 const initialStates = {
   tasks: [],
   displayMode: "all",
-  length:0,
+  length: 0,
   tasksToShow: [],
   increment: 0,
   testActive: 0,
@@ -21,6 +23,34 @@ function tasksReducer(state = initialStates, action) {
   const data = [...state.tasks];
   switch (action.type) {
     // the case is the type
+
+    case MAKE_IMPORTANT:
+      return {
+        ...state,
+        tasks: state.tasks.map((el) => {
+          if (el.id === action.payload) {
+            if (el.important === 1) {
+              el.important = 0;
+              return el;
+            }
+            el.important = 1;
+            return el;
+          }
+          return el;
+        }),
+      };
+
+    case ADD_TO_DONE:
+      return {
+        ...state,
+        tasks: state.tasks.map((el) => {
+          if (el.id === action.payload) {
+            el.done = 1;
+            return el;
+          }
+          return el;
+        }),
+      };
 
     case SET_LENGTH:
       return {

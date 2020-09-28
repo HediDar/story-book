@@ -1,4 +1,4 @@
-import { SET_LENGTH,UPDATE_TASKS,DISPLAY_MODE, REMOVE_TASK, ADD_TASK } from "./actions-types";
+import { SET_LENGTH,UPDATE_TASKS,DISPLAY_MODE, REMOVE_TASK, ADD_TASK,ADD_TO_DONE,MAKE_IMPORTANT } from "./actions-types";
 
 function updateTasksAction(tasksData) {
   return {
@@ -130,8 +130,27 @@ function setLengthAction(data) {
   };
 }
 
+function makeImportantAction(id) {
+  return {
+    type: MAKE_IMPORTANT,
+    payload: id,
+  };
+}
+
+function addToDoneAction(id) {
+  return {
+    type: ADD_TO_DONE,
+    payload: id,
+  };
+}
+
+
+
+
 
 export {
+  addToDoneAction,
+  makeImportantAction,
   setLengthAction,
   changeDisplayModeAction,
   addTaskAction,

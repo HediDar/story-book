@@ -8,63 +8,14 @@ import * as actionCreators from "../actions/tasksActions";
 class ToDosAndDones extends Component {
   componentDidMount() {}
 
-  componentDidUpdate() {
-    const { onActive2, onCompleted2, testActive, testCompleted } = this.props;
-
-    if (testActive === 1) onActive2();
-    else if (testCompleted === 1) onCompleted2();
-  }
-
   onImportantHandle = (id) => {
-    const {
-      updateTasksFromDataMapAction,
-      tasks,
-      displayMode,
-      updateTasksToShowWithoutTasksAction,
-      onCompleted2,
-      onActive2,
-    } = this.props;
-
-    updateTasksFromDataMapAction(id);
-    localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
-
-    if (displayMode.localeCompare("all") === 0) {
-      updateTasksToShowWithoutTasksAction(tasks);
-    } else if (displayMode.localeCompare("actif") === 0) {
-      onActive2();
-    } else if (displayMode.localeCompare("done") === 0) {
-      onCompleted2();
-    }
+    const { makeImportantAction } = this.props;
+    makeImportantAction(id);
   };
 
   onDoneHandle = (id) => {
-    const {
-      displayMode,
-      updateTestCompletedAction,
-      updateTestActiveAction,
-      updateTasksToShowWithoutTasksAction,
-      tasks,
-      updateTasksFromDataRemoveMapAction,
-    } = this.props;
-
-    const data = tasks.map((el) => {
-      if (el.id === id) {
-        el.done = 1;
-        return el;
-      }
-      return el;
-    });
-
-    updateTasksFromDataRemoveMapAction(id);
-
-    localStorage.setItem("tasksInLocalStorage", JSON.stringify(tasks));
-
-    if (displayMode.localeCompare("all") === 0)
-      updateTasksToShowWithoutTasksAction(data);
-    else if (displayMode.localeCompare("actif") === 0)
-      updateTestActiveAction(1);
-    else if (displayMode.localeCompare("done") === 0)
-      updateTestCompletedAction(1);
+    const { addToDoneAction } = this.props;
+    addToDoneAction(id);
   };
 
   onDeleteHandle = (id) => {
@@ -179,6 +130,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  addToDoneAction: (payload) =>
+    dispatch(actionCreators.addToDoneAction(payload)),
+  makeImportantAction: (payload) =>
+    dispatch(actionCreators.makeImportantAction(payload)),
   setLengthAction: (payload) =>
     dispatch(actionCreators.setLengthAction(payload)),
   updateTasksFromDataRemoveMapAction: (payload) =>
