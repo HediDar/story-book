@@ -3,11 +3,13 @@ import {
   DISPLAY_MODE,
   REMOVE_TASK,
   UPDATE_TASKS,
+  SET_LENGTH,
 } from "../actions/actions-types";
 
 const initialStates = {
   tasks: [],
   displayMode: "all",
+  length:0,
   tasksToShow: [],
   increment: 0,
   testActive: 0,
@@ -19,6 +21,12 @@ function tasksReducer(state = initialStates, action) {
   const data = [...state.tasks];
   switch (action.type) {
     // the case is the type
+
+    case SET_LENGTH:
+      return {
+        ...state,
+        length: action.payload.length,
+      };
 
     case ADD_TASK:
       data.push({

@@ -1,4 +1,4 @@
-import { UPDATE_TASKS,DISPLAY_MODE, REMOVE_TASK, ADD_TASK } from "./actions-types";
+import { SET_LENGTH,UPDATE_TASKS,DISPLAY_MODE, REMOVE_TASK, ADD_TASK } from "./actions-types";
 
 function updateTasksAction(tasksData) {
   return {
@@ -123,8 +123,16 @@ function removeTaskAction(idTaskToRemove) {
   };
 }
 
+function setLengthAction(data) {
+  return {
+    type: SET_LENGTH,
+    payload: data,
+  };
+}
+
 
 export {
+  setLengthAction,
   changeDisplayModeAction,
   addTaskAction,
   removeTaskAction,

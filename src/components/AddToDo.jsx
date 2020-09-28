@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import { useEffect, useRef } from "react";
 import { connect } from "react-redux";
+import uuid from "react-uuid";
 import {
   RadioGroup,
   FormControlLabel,
@@ -30,13 +30,11 @@ const AddToDo = (props) => {
   function onClickCalls() {
     if (text === "") alert("you need to name your task");
     else {
-      const { addTaskAction, updateIncrementAction,increment } = props;
-
-      updateIncrementAction();
+      const { addTaskAction } = props;
 
       if (radio.localeCompare("notImportant") === 0)
-        addTaskAction(increment, text, textArea, 0);
-      else addTaskAction(increment, text, textArea, 1);
+        addTaskAction(uuid(), text, textArea, 0);
+      else addTaskAction(uuid(), text, textArea, 1);
 
       setText("");
       setTextArea("");
@@ -109,36 +107,10 @@ const AddToDo = (props) => {
 };
 
 AddToDo.propTypes = {
-  tasks: PropTypes.arrayOf(PropTypes.object),
-  onActive: PropTypes.number,
-  inAll: PropTypes.number,
-  testActive: PropTypes.number,
-  testCompleted: PropTypes.number,
-  onCompleted: PropTypes.number,
-  inCompleted: PropTypes.number,
-  inActive: PropTypes.number,
-  increment: PropTypes.number,
-  updateTestCompletedAction: PropTypes.func,
-  updateTasksToShowWithoutTasksAction: PropTypes.func,
-  updateTestActiveAction: PropTypes.func,
-  updateIncrementAction: PropTypes.func,
-  updateTasksFromDataAction: PropTypes.func,
+  addTaskAction: PropTypes.func,
 };
 AddToDo.defaultProps = {
-  tasks: [{}],
-  onActive: 0,
-  testActive: 0,
-  testCompleted: 0,
-  inCompleted: 0,
-  onCompleted: 0,
-  inActive: 0,
-  increment: 0,
-  inAll: 1,
-  updateTestCompletedAction: () => {},
-  updateTasksToShowWithoutTasksAction: () => {},
-  updateTestActiveAction: () => {},
-  updateIncrementAction: () => {},
-  updateTasksFromDataAction: () => {},
+  addTaskAction: () => {},
 };
 
 const mapStateToProps = (state) => ({
@@ -148,17 +120,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   addTaskAction: (id, name, description, important) =>
     dispatch(actionCreators.addTaskAction(id, name, description, important)),
-  hangeDisplayModeAction: (payload) =>
-    dispatch(actionCreators.changeDisplayModeAction(payload)),
-  updateTestActiveAction: (payload) =>
-    dispatch(actionCreators.updateTestActiveAction(payload)),
-  updateTestCompletedAction: (payload) =>
-    dispatch(actionCreators.updateTestCompletedAction(payload)),
-  updateIncrementAction: () => dispatch(actionCreators.updateIncrementAction()),
-  updateTasksFromDataAction: (payload) =>
-    dispatch(actionCreators.updateTasksFromDataAction(payload)),
-  updateTasksToShowWithoutTasksAction: (payload) =>
-    dispatch(actionCreators.updateTasksToShowWithoutTasksAction(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddToDo);

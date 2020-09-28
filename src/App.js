@@ -81,7 +81,7 @@ class App extends Component {
   };
 
   render() {
-    const { tasksToShow } = this.props;
+    const { length } = this.props;
 
     return (
       <>
@@ -97,7 +97,7 @@ class App extends Component {
           <TableHead>
             <TableRow>
               <TableCell>
-                {tasksToShow.length}
+                {length}
                 {" items displayed"}{" "}
               </TableCell>
               <TableCell align="right"> </TableCell>

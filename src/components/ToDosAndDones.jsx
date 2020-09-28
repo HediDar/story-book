@@ -6,26 +6,7 @@ import SingleTask from "./SingleTask";
 import * as actionCreators from "../actions/tasksActions";
 
 class ToDosAndDones extends Component {
-  componentDidMount() {
-    if (localStorage.getItem("tasksInLocalStorage")) {
-      const {
-        updateTasksFromDataAction,
-        updateTasksToShowWithoutTasksAction,
-        setIncrementAction,
-      } = this.props;
-
-      const data = JSON.parse(localStorage.getItem("tasksInLocalStorage"));
-      if (data) {
-        updateTasksFromDataAction(data);
-        updateTasksToShowWithoutTasksAction(data);
-      }
-      if (localStorage.getItem("incrementInLocalStorage")) {
-        setIncrementAction(
-          parseInt(localStorage.getItem("incrementInLocalStorage"), 10) + 1
-        );
-      }
-    }
-  }
+  componentDidMount() {}
 
   componentDidUpdate() {
     const { onActive2, onCompleted2, testActive, testCompleted } = this.props;
@@ -110,30 +91,44 @@ class ToDosAndDones extends Component {
   };
 
   render() {
-    const { tasksToShow } = this.props;
-
-    const myTasks = tasksToShow;
+    const { tasks, displayMode, setLengthAction } = this.props;
+    const loopData = [...tasks];
 
     const tasksFiltredToDo = [];
+    let tasksFiltredToDo2 = [];
 
-    myTasks.forEach((el) => {
+    loopData.forEach((el) => {
       if (el.done === 0 && el.important === 1) tasksFiltredToDo.push(el);
     });
 
-    myTasks.forEach((el) => {
+    loopData.forEach((el) => {
       if (el.done === 0 && el.important === 0) tasksFiltredToDo.push(el);
     });
 
-    myTasks.forEach((el) => {
+    loopData.forEach((el) => {
       if (el.done === 1) tasksFiltredToDo.push(el);
     });
 
+    if (displayMode.localeCompare("all") === 0)
+      tasksFiltredToDo2 = [...tasksFiltredToDo];
+    else if (displayMode.localeCompare("actif") === 0) {
+      tasksFiltredToDo.forEach((el) => {
+        if (el.done === 0) tasksFiltredToDo2.push(el);
+      });
+    } else if (displayMode.localeCompare("done") === 0) {
+      tasksFiltredToDo.forEach((el) => {
+        if (el.done === 1) tasksFiltredToDo2.push(el);
+      });
+    }
+
+    setLengthAction(tasksFiltredToDo2);
     return (
       <>
-        {tasksFiltredToDo.map((task) => (
+        {tasksFiltredToDo2.map((task) => (
           <SingleTask
             key={task.id}
             task={task}
+            displayMode={displayMode}
             onDone={this.onDoneHandle}
             onDeleteTask={this.onDeleteHandle}
             onImportant={this.onImportantHandle}
@@ -184,6 +179,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  setLengthAction: (payload) =>
+    dispatch(actionCreators.setLengthAction(payload)),
   updateTasksFromDataRemoveMapAction: (payload) =>
     dispatch(actionCreators.updateTasksFromDataRemoveMapAction(payload)),
   updateTasksFromDataMapAction: (payload) =>
