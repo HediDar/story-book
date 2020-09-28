@@ -45,6 +45,16 @@ function tasksReducer(state = initialStates, action) {
       description: action.payload.description,
       done: 0,
     });
+
+    // this doesnt work
+    // tasks: ([...state.tasks]).push({
+    //   id: action.payload.id,
+    //   important: action.payload.important,
+    //   name: action.payload.name,
+    //   description: action.payload.description,
+    //   done: 0,
+    // }),
+
     return {
       ...state,
       tasks: data,

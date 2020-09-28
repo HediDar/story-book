@@ -13,22 +13,24 @@ import {
 import * as actionCreators from "../actions/tasksActions";
 
 const AddToDo = (props) => {
-  const [text, setText] = useState("");
-  const [textArea, setTextArea] = useState("");
-  const [radio, setRadio] = useState("notImportant");
+  const [nameText, setTextName] = useState("");
+  const [DescriptionArea, setDescriptionArea] = useState("");
+  const [importantRadio, setImportantRadio] = useState("notImportant");
 
   function onClickCalls() {
-    if (text === "") alert("you need to name your task");
+    if (nameText === "") alert("you need to name your task");
     else {
       const { addTaskAction } = props;
 
-      if (radio.localeCompare("notImportant") === 0)
-        addTaskAction(uuid(), text, textArea, 0);
-      else addTaskAction(uuid(), text, textArea, 1);
+      if (importantRadio.localeCompare("notImportant") === 0) {
+        addTaskAction(uuid(), nameText, DescriptionArea, 0);
+      } else {
+        addTaskAction(uuid(), nameText, DescriptionArea, 1);
+      }
 
-      setText("");
-      setTextArea("");
-      setRadio("notImportant");
+      setTextName("");
+      setDescriptionArea("");
+      setImportantRadio("notImportant");
     }
   }
 
@@ -39,9 +41,9 @@ const AddToDo = (props) => {
           <Grid container item style={{ justifyContent: "center" }} xl={12}>
             <TextField
               onChange={(e) => {
-                setText(e.target.value);
+                setTextName(e.target.value);
               }}
-              value={text}
+              value={nameText}
               inputProps={{ style: { textAlign: "center" } }}
               fullWidth
               id="standard-basic"
@@ -51,9 +53,9 @@ const AddToDo = (props) => {
           <Grid container item style={{ justifyContent: "center" }} xl={12}>
             <TextField
               onChange={(e) => {
-                setTextArea(e.target.value);
+                setDescriptionArea(e.target.value);
               }}
-              value={textArea}
+              value={DescriptionArea}
               inputProps={{ style: { textAlign: "center" } }}
               fullWidth
               id="standard-multiline-flexible"
@@ -66,12 +68,12 @@ const AddToDo = (props) => {
           <Grid container item style={{ justifyContent: "center" }} xl={12}>
             <RadioGroup
               onChange={(e) => {
-                setRadio(e.target.value);
+                setImportantRadio(e.target.value);
               }}
               row
               aria-label="gender"
               name="myRadioGroup"
-              value={radio}
+              value={importantRadio}
             >
               <FormControlLabel
                 value="notImportant"
@@ -102,7 +104,6 @@ AddToDo.propTypes = {
 AddToDo.defaultProps = {
   addTaskAction: () => {},
 };
-
 
 const mapDispatchToProps = (dispatch) => ({
   addTaskAction: (id, name, description, important) =>
