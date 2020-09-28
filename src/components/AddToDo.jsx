@@ -103,13 +103,10 @@ AddToDo.defaultProps = {
   addTaskAction: () => {},
 };
 
-const mapStateToProps = (state) => ({
-  ...state,
-});
 
 const mapDispatchToProps = (dispatch) => ({
   addTaskAction: (id, name, description, important) =>
     dispatch(actionCreators.addTaskAction(id, name, description, important)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddToDo);
+export default connect(null, mapDispatchToProps)(AddToDo);

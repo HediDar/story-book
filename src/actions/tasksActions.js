@@ -6,7 +6,6 @@ import {
   MAKE_IMPORTANT,
 } from "./actions-types";
 
-
 function changeDisplayModeAction(mode) {
   return {
     type: DISPLAY_MODE,
@@ -18,10 +17,10 @@ function addTaskAction(id, name, description, important) {
   return {
     type: ADD_TASK,
     payload: {
-      "id": id,
-      "name": name,
-      "description": description,
-      "important": important,
+      id,
+      name,
+      description,
+      important,
     },
   };
 }
@@ -32,7 +31,6 @@ function removeTaskAction(idTaskToRemove) {
     payload: idTaskToRemove,
   };
 }
-
 
 function makeImportantAction(id) {
   return {

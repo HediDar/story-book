@@ -9,77 +9,63 @@ import {
 const initialStates = {
   tasks: [],
   displayMode: "all",
-  length: 0,
-  tasksToShow: [],
-  increment: 0,
-  testActive: 0,
-  testCompleted: 0,
 };
 
 function tasksReducer(state = initialStates, action) {
   // if state is empty, we take initialStates
-  const data = [...state.tasks];
-  switch (action.type) {
-    // the case is the type
 
-    case MAKE_IMPORTANT:
-      return {
-        ...state,
-        tasks: state.tasks.map((el) => {
-          if (el.id === action.payload) {
-            if (el.important === 1) {
-              el.important = 0;
-              return el;
-            }
-            el.important = 1;
+  if (action.type.localeCompare(MAKE_IMPORTANT) === 0)
+    return {
+      ...state,
+      tasks: state.tasks.map((el) => {
+        if (el.id === action.payload) {
+          if (el.important === 1) {
+            el.important = 0;
             return el;
           }
+          el.important = 1;
           return el;
-        }),
-      };
-
-    case ADD_TO_DONE:
-      return {
-        ...state,
-        tasks: state.tasks.map((el) => {
-          if (el.id === action.payload) {
-            el.done = 1;
-            return el;
-          }
+        }
+        return el;
+      }),
+    };
+  if (action.type.localeCompare(ADD_TO_DONE) === 0)
+    return {
+      ...state,
+      tasks: state.tasks.map((el) => {
+        if (el.id === action.payload) {
+          el.done = 1;
           return el;
-        }),
-      };
-
-   
-
-    case ADD_TASK:
-      data.push({
-        id: action.payload.id,
-        important: action.payload.important,
-        name: action.payload.name,
-        description: action.payload.description,
-        done: 0,
-      });
-      return {
-        ...state,
-        tasks: data,
-      };
-
-    case REMOVE_TASK:
-      return {
-        ...state,
-        tasks: state.tasks.filter((el) => el.id !== action.payload),
-      };
-
-    case DISPLAY_MODE:
-      return {
-        ...state,
-        displayMode: action.payload,
-      };
-
-    default:
-      return state;
+        }
+        return el;
+      }),
+    };
+  if (action.type.localeCompare(ADD_TASK) === 0) {
+    const data = [...state.tasks];
+    data.push({
+      id: action.payload.id,
+      important: action.payload.important,
+      name: action.payload.name,
+      description: action.payload.description,
+      done: 0,
+    });
+    return {
+      ...state,
+      tasks: data,
+    };
   }
+  if (action.type.localeCompare(REMOVE_TASK) === 0)
+    return {
+      ...state,
+      tasks: state.tasks.filter((el) => el.id !== action.payload),
+    };
+  if (action.type.localeCompare(DISPLAY_MODE) === 0)
+    return {
+      ...state,
+      displayMode: action.payload,
+    };
+
+  return state;
 }
 
 export default tasksReducer;
