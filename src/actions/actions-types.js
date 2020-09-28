@@ -1,4 +1,3 @@
-export const UPDATE_TASKS = "UPDATE_TASKS";
 
 export const DISPLAY_MODE = "DISPLAY_MODE";
 
