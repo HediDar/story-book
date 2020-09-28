@@ -13,15 +13,10 @@ function changeDisplayModeAction(mode) {
   };
 }
 
-function addTaskAction(id, name, description, important) {
+function addTaskAction(obj) {
   return {
     type: ADD_TASK,
-    payload: {
-      id,
-      name,
-      description,
-      important,
-    },
+    payload: {...obj},
   };
 }
 

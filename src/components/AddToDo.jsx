@@ -22,11 +22,20 @@ const AddToDo = (props) => {
     else {
       const { addTaskAction } = props;
 
-      if (importantRadio.localeCompare("notImportant") === 0) {
-        addTaskAction(uuid(), nameText, DescriptionArea, 0);
-      } else {
-        addTaskAction(uuid(), nameText, DescriptionArea, 1);
-      }
+      if (importantRadio.localeCompare("notImportant") === 0)
+        addTaskAction({
+          id: uuid(),
+          name: nameText,
+          description: DescriptionArea,
+          important: 0,
+        });
+      else
+        addTaskAction({
+          id: uuid(),
+          name: nameText,
+          description: DescriptionArea,
+          important: 1,
+        });
 
       setTextName("");
       setDescriptionArea("");
@@ -106,8 +115,7 @@ AddToDo.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  addTaskAction: (id, name, description, important) =>
-    dispatch(actionCreators.addTaskAction(id, name, description, important)),
+  addTaskAction: (obj) => dispatch(actionCreators.addTaskAction(obj)),
 });
 
 export default connect(null, mapDispatchToProps)(AddToDo);
