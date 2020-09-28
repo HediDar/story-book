@@ -25,10 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SingleTask = (props) => {
-  const { task } = props;
-  const { onDone } = props;
-  const { onDeleteTask } = props;
-  const { onImportant } = props;
+  const { task, onDone, onDeleteTask, onImportant } = props;
 
   const classes = useStyles();
 
@@ -126,16 +123,16 @@ const SingleTask = (props) => {
     );
   return <></>;
 };
-// SingleTask.propTypes = {
-//   task: PropTypes.shape(),
-//   onDone: PropTypes.func,
-//   onDeleteTask: PropTypes.func,
-//   makeImportant: PropTypes.func,
-// };
-// SingleTask.defaultProps = {
-//   task: {},
-//   onDone: () => {},
-//   onDeleteTask: () => {},
-//   makeImportant: () => {},
-// };
+SingleTask.propTypes = {
+  task: PropTypes.shape(),
+  onDone: PropTypes.func,
+  onDeleteTask: PropTypes.func,
+  onImportant: PropTypes.func,
+};
+SingleTask.defaultProps = {
+  task: {},
+  onDone: () => {},
+  onDeleteTask: () => {},
+  onImportant: () => {},
+};
 export default SingleTask;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import uuid from "react-uuid";
@@ -16,16 +16,6 @@ const AddToDo = (props) => {
   const [text, setText] = useState("");
   const [textArea, setTextArea] = useState("");
   const [radio, setRadio] = useState("notImportant");
-
-  const didMountRef = useRef(false);
-  useEffect(() => {
-    const { onActive, testActive, testCompleted, onCompleted } = props;
-
-    if (didMountRef.current) {
-      if (testActive === 1) onActive();
-      else if (testCompleted === 1) onCompleted();
-    } else didMountRef.current = true;
-  });
 
   function onClickCalls() {
     if (text === "") alert("you need to name your task");

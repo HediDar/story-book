@@ -19,26 +19,8 @@ class ToDosAndDones extends Component {
   };
 
   onDeleteHandle = (id) => {
-    const {
-      displayMode,
-      updateTestCompletedAction,
-      updateTestActiveAction,
-      updateTasksToShowWithoutTasksAction,
-      updateTasksFromDataAction,
-      tasks,
-    } = this.props;
-
-    const data = tasks.filter((el) => el.id !== id);
-
-    updateTasksFromDataAction(data);
-
-    if (displayMode.localeCompare("all") === 0)
-      updateTasksToShowWithoutTasksAction(data);
-    else if (displayMode.localeCompare("actif") === 0)
-      updateTestActiveAction(1);
-    else if (displayMode.localeCompare("done") === 0)
-      updateTestCompletedAction(1);
-    localStorage.setItem("tasksInLocalStorage", JSON.stringify(data));
+    const { removeTaskAction } = this.props;
+    removeTaskAction(id);
   };
 
   render() {
@@ -91,66 +73,39 @@ class ToDosAndDones extends Component {
 }
 
 ToDosAndDones.propTypes = {
-  updateTestCompletedAction: PropTypes.func,
-  updateTestActiveAction: PropTypes.func,
-  updateTasksFromDataRemoveMapAction: PropTypes.func,
-  updateTasksFromDataAction: PropTypes.func,
-  updateTasksToShowWithoutTasksAction: PropTypes.func,
-  setIncrementAction: PropTypes.func,
-  onActive2: PropTypes.number,
-  onCompleted2: PropTypes.number,
-  testActive: PropTypes.number,
-  testCompleted: PropTypes.number,
+  makeImportantAction: PropTypes.func,
+  addToDoneAction: PropTypes.func,
+  removeTaskAction: PropTypes.func,
+  setLengthAction: PropTypes.func,
+  displayMode: PropTypes.string,
   tasks: PropTypes.arrayOf(PropTypes.object),
-
-  updateTasksFromDataMapAction: PropTypes.func,
 };
 
 ToDosAndDones.defaultProps = {
-  updateTasksFromDataAction: () => {},
-  updateTasksToShowWithoutTasksAction: () => {},
-  setIncrementAction: () => {},
-  updateTestCompletedAction: () => {},
-  updateTestActiveAction: () => {},
-  updateTasksFromDataRemoveMapAction: () => {},
-  onActive2: 0,
-  onCompleted2: 0,
-  testActive: 0,
-  testCompleted: 0,
+  makeImportantAction: () => {},
+  removeTaskAction: () => {},
+  addToDoneAction: () => {},
+  setLengthAction: () => {},
+  displayMode: "all",
   tasks: [{}],
-  updateTasksFromDataMapAction: () => {},
 };
 
 const mapStateToProps = (state) => {
   return {
-    tasksToShow: state.tasksToShow,
     displayMode: state.displayMode,
     tasks: state.tasks,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  removeTaskAction: (payload) =>
+    dispatch(actionCreators.removeTaskAction(payload)),
   addToDoneAction: (payload) =>
     dispatch(actionCreators.addToDoneAction(payload)),
   makeImportantAction: (payload) =>
     dispatch(actionCreators.makeImportantAction(payload)),
   setLengthAction: (payload) =>
     dispatch(actionCreators.setLengthAction(payload)),
-  updateTasksFromDataRemoveMapAction: (payload) =>
-    dispatch(actionCreators.updateTasksFromDataRemoveMapAction(payload)),
-  updateTasksFromDataMapAction: (payload) =>
-    dispatch(actionCreators.updateTasksFromDataMapAction(payload)),
-  updateTestActiveAction: (payload) =>
-    dispatch(actionCreators.updateTestActiveAction(payload)),
-  updateTestCompletedAction: (payload) =>
-    dispatch(actionCreators.updateTestCompletedAction(payload)),
-  setIncrementAction: (payload) =>
-    dispatch(actionCreators.setIncrementAction(payload)),
-  updateIncrementAction: () => dispatch(actionCreators.updateIncrementAction()),
-  updateTasksFromDataAction: (payload) =>
-    dispatch(actionCreators.updateTasksFromDataAction(payload)),
-  updateTasksToShowWithoutTasksAction: (payload) =>
-    dispatch(actionCreators.updateTasksToShowWithoutTasksAction(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToDosAndDones);

@@ -24,58 +24,31 @@ class App extends Component {
   }
 
   allButtonClick = () => {
-    const { setToSHowToTasksAction, changeDisplayModeAction } = this.props;
+    const { changeDisplayModeAction } = this.props;
 
     this.colorActif = "secondary";
     this.colorAll = "primary";
     this.colorCompleted = "secondary";
 
-    setToSHowToTasksAction();
-
     changeDisplayModeAction("all");
   };
 
   handleActiveButtonClick = () => {
-    const {
-      tasks,
-      updateTasksToShowWithoutTasksAction,
-      updateTestActiveAction,
-      changeDisplayModeAction,
-    } = this.props;
-    updateTestActiveAction(0);
-
-    const data = tasks.filter((el) => el.done === 0);
+    const { changeDisplayModeAction } = this.props;
 
     this.colorActif = "primary";
     this.colorAll = "secondary";
     this.colorCompleted = "secondary";
 
-    updateTasksToShowWithoutTasksAction(data);
     changeDisplayModeAction("actif");
   };
 
   handleAllcompletedButtonClick = () => {
-    const {
-      tasks,
-      changeDisplayModeAction,
-      updateTestCompletedAction,
-      updateTasksToShowWithoutTasksAction,
-    } = this.props;
+    const { changeDisplayModeAction } = this.props;
 
-    updateTestCompletedAction(0);
-
-    const myLoopData = tasks;
-    const toUpdataTasksToShow = [];
-    myLoopData.forEach((el) => {
-      if (el.done === 1) {
-        toUpdataTasksToShow.push(el);
-      }
-    });
     this.colorActif = "secondary";
     this.colorAll = "secondary";
     this.colorCompleted = "primary";
-
-    updateTasksToShowWithoutTasksAction(toUpdataTasksToShow);
 
     changeDisplayModeAction("done");
   };
@@ -85,11 +58,7 @@ class App extends Component {
 
     return (
       <>
-        <AddToDo
-          onAll={this.allButtonClick}
-          onActive={this.handleActiveButtonClick}
-          onCompleted={this.handleAllcompletedButtonClick}
-        />
+        <AddToDo />
         <br />
         <br />
 
@@ -129,11 +98,7 @@ class App extends Component {
           <TableBody>
             <TableRow>
               <TableCell colSpan="4" component="th" scope="row">
-                <ToDosAndDones
-                  onAll2={this.allButtonClick}
-                  onActive2={this.handleActiveButtonClick}
-                  onCompleted2={this.handleAllcompletedButtonClick}
-                />
+                <ToDosAndDones />
               </TableCell>
             </TableRow>
           </TableBody>
@@ -144,27 +109,13 @@ class App extends Component {
 }
 
 App.propTypes = {
-  setToSHowToTasksAction: PropTypes.func,
-  updateInAllAction: PropTypes.func,
-  updateInCompletedAction: PropTypes.func,
-  updateInActiveAction: PropTypes.func,
-  updateTasksToShowWithoutTasksAction: PropTypes.func,
-  updateTestActiveAction: PropTypes.func,
-  updateTestCompletedAction: PropTypes.func,
-  tasks: PropTypes.arrayOf(PropTypes.object),
-  tasksToShow: PropTypes.arrayOf(PropTypes.object),
+  length: PropTypes.number,
+  changeDisplayModeAction: PropTypes.func,
 };
 
 App.defaultProps = {
-  updateTestCompletedAction: () => {},
-  updateTasksToShowWithoutTasksAction: () => {},
-  updateTestActiveAction: () => {},
-  setToSHowToTasksAction: () => {},
-  updateInAllAction: () => {},
-  updateInCompletedAction: () => {},
-  updateInActiveAction: () => {},
-  tasksToShow: [{}],
-  tasks: [{}],
+  length: 0,
+  changeDisplayModeAction: () => {},
 };
 
 const mapStateToProps = (state) => ({
@@ -174,20 +125,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   changeDisplayModeAction: (payload) =>
     dispatch(actionCreators.changeDisplayModeAction(payload)),
-  updateTestActiveAction: (payload) =>
-    dispatch(actionCreators.updateTestActiveAction(payload)),
-  updateTestCompletedAction: (payload) =>
-    dispatch(actionCreators.updateTestCompletedAction(payload)),
-  setToSHowToTasksAction: () =>
-    dispatch(actionCreators.setToSHowToTasksAction()),
-  updateTasksToShowWithoutTasksAction: (payload) =>
-    dispatch(actionCreators.updateTasksToShowWithoutTasksAction(payload)),
-  updateInAllAction: (payload) =>
-    dispatch(actionCreators.updateInAllAction(payload)),
-  updateInActiveAction: (payload) =>
-    dispatch(actionCreators.updateInActiveAction(payload)),
-  updateInCompletedAction: (payload) =>
-    dispatch(actionCreators.updateInCompletedAction(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
