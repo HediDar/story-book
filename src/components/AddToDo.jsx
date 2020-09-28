@@ -30,48 +30,13 @@ const AddToDo = (props) => {
   function onClickCalls() {
     if (text === "") alert("you need to name your task");
     else {
-      const {
-        displayMode,
-        updateTestCompletedAction,
-        updateTestActiveAction,
-        updateTasksToShowWithoutTasksAction,
-        tasks,
-        increment,
-        updateIncrementAction,
-        updateTasksFromDataAction,
-      } = props;
-
-      const data = [...tasks];
-      if (radio.localeCompare("notImportant") === 0)
-        data.push({
-          id: increment,
-          important: 0,
-          name: text,
-          description: textArea,
-          done: 0,
-        });
-      else
-        data.push({
-          id: increment,
-          important: 1,
-          name: text,
-          description: textArea,
-          done: 0,
-        });
+      const { addTaskAction, updateIncrementAction,increment } = props;
 
       updateIncrementAction();
-      updateTasksFromDataAction(data);
 
-      localStorage.setItem("tasksInLocalStorage", JSON.stringify(data));
-      localStorage.setItem("incrementInLocalStorage", increment);
-
-      if (displayMode.localeCompare("all") === 0)
-        updateTasksToShowWithoutTasksAction(data);
-      else if (displayMode.localeCompare("actif") === 0) {
-        updateTestActiveAction(1);
-      } else if (displayMode.localeCompare("done") === 0) {
-        updateTestCompletedAction(1);
-      }
+      if (radio.localeCompare("notImportant") === 0)
+        addTaskAction(increment, text, textArea, 0);
+      else addTaskAction(increment, text, textArea, 1);
 
       setText("");
       setTextArea("");
@@ -181,6 +146,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  addTaskAction: (id, name, description, important) =>
+    dispatch(actionCreators.addTaskAction(id, name, description, important)),
   hangeDisplayModeAction: (payload) =>
     dispatch(actionCreators.changeDisplayModeAction(payload)),
   updateTestActiveAction: (payload) =>
