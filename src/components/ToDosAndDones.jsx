@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import PropTypes, { object } from "prop-types";
 import { connect } from "react-redux";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -9,17 +9,10 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import SingleTask from "./SingleTask";
+import { filterTasks } from "../selectors/filterSelector";
 import * as actionCreators from "../actions/tasksActions";
 
 class ToDosAndDones extends Component {
-  constructor() {
-    super();
-
-    this.colorActif = "secondary";
-    this.colorAll = "primary";
-    this.colorCompleted = "secondary";
-  }
-
   onImportantHandle = (id) => {
     const { makeImportantAction } = this.props;
     makeImportantAction({ id });
@@ -38,53 +31,29 @@ class ToDosAndDones extends Component {
 
   allButtonClick = () => {
     const { changeDisplayModeAction } = this.props;
-
-    this.colorActif = "secondary";
-    this.colorAll = "primary";
-    this.colorCompleted = "secondary";
-
     changeDisplayModeAction("all");
   };
 
   handleActiveButtonClick = () => {
     const { changeDisplayModeAction } = this.props;
-
-    this.colorActif = "primary";
-    this.colorAll = "secondary";
-    this.colorCompleted = "secondary";
-
     changeDisplayModeAction("actif");
   };
 
   handleAllcompletedButtonClick = () => {
     const { changeDisplayModeAction } = this.props;
-
-    this.colorActif = "secondary";
-    this.colorAll = "secondary";
-    this.colorCompleted = "primary";
-
     changeDisplayModeAction("done");
   };
 
   render() {
-    const { tasks, displayMode } = this.props;
-    let myArray = Object.values({ ...tasks });
-
-    if (displayMode !== "done") {
-      myArray.sort((a, b) => (a.important && !b.important ? 1 : -1));
-      myArray.sort((a, b) => (a.done && !b.done ? 1 : -1));
-
-      if (displayMode === "actif")
-        myArray = myArray.filter((el) => el.done === false);
-    } else myArray = myArray.filter((el) => el.done === true);
-
+    const { displayMode, tasksFiltred } = this.props;
+console.log(tasksFiltred);
     return (
       <>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>
-                {myArray.length}
+                {tasksFiltred.myArray.length}
                 {" items displayed"}{" "}
               </TableCell>
               <TableCell align="right"> </TableCell>
@@ -92,19 +61,19 @@ class ToDosAndDones extends Component {
               <TableCell align="right">
                 <ButtonGroup aria-label="outlined secondary button group">
                   <Button
-                    color={this.colorAll}
+                    color={tasksFiltred.colorAll}
                     onClick={() => this.allButtonClick()}
                   >
                     Show all
                   </Button>
                   <Button
-                    color={this.colorActif}
+                    color={tasksFiltred.colorActif}
                     onClick={() => this.handleActiveButtonClick()}
                   >
                     Show active
                   </Button>
                   <Button
-                    color={this.colorCompleted}
+                    color={tasksFiltred.colorCompleted}
                     onClick={() => this.handleAllcompletedButtonClick()}
                   >
                     Show completed
@@ -116,7 +85,7 @@ class ToDosAndDones extends Component {
           <TableBody>
             <TableRow>
               <TableCell colSpan="4" component="th" scope="row">
-                {myArray.map((task) => (
+                {tasksFiltred.myArray.map((task) => (
                   <SingleTask
                     key={task.id}
                     task={task}
@@ -142,6 +111,7 @@ ToDosAndDones.propTypes = {
   changeDisplayModeAction: PropTypes.func,
   displayMode: PropTypes.string,
   tasks: PropTypes.shape({}),
+  tasksFiltred: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 ToDosAndDones.defaultProps = {
@@ -151,12 +121,14 @@ ToDosAndDones.defaultProps = {
   changeDisplayModeAction: () => {},
   displayMode: "all",
   tasks: {},
+  tasksFiltred: [{}],
 };
 
 const mapStateToProps = (state) => {
   return {
     displayMode: state.displayMode,
     tasks: state.tasks,
+    tasksFiltred: filterTasks(state),
   };
 };
 
