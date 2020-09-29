@@ -22,7 +22,7 @@ const AddToDo = (props) => {
     else {
       const { addTaskAction } = props;
 
-      if (importantRadio.localeCompare("notImportant") === 0)
+      if (importantRadio==="notImportant")
         addTaskAction({
           id: uuid(),
           name: nameText,

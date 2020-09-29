@@ -13,31 +13,31 @@ function changeDisplayModeAction(mode) {
   };
 }
 
-function addTaskAction(obj) {
+function addTaskAction(task) {
   return {
     type: ADD_TASK,
-    payload: { ...obj },
+    payload: { ...task },
   };
 }
 
-function removeTaskAction(obj) {
+function removeTaskAction({id}) {
   return {
     type: REMOVE_TASK,
-    payload: obj.id,
+    payload: id,
   };
 }
 
-function makeImportantAction(obj) {
+function makeImportantAction({id}) {
   return {
     type: MAKE_IMPORTANT,
-    payload: obj.id,
+    payload: id,
   };
 }
 
-function addToDoneAction(obj) {
+function addToDoneAction({id}) {
   return {
     type: ADD_TO_DONE,
-    payload: obj.id,
+    payload: id,
   };
 }
 

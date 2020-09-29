@@ -27,7 +27,7 @@ class ToDosAndDones extends Component {
 
   onDoneHandle = (id) => {
     const { addToDoneAction } = this.props;
-    addToDoneAction({ id});
+    addToDoneAction({ id });
   };
 
   onDeleteHandle = (id) => {
@@ -68,41 +68,15 @@ class ToDosAndDones extends Component {
 
   render() {
     const { tasks, displayMode } = this.props;
-    let myData = [];
-    const myArray = Object.values({ ...tasks });
+    let myArray = Object.values({ ...tasks });
 
-    if (displayMode.localeCompare("done") !== 0) {
+    if (displayMode !== "done") {
       myArray.sort((a, b) => (a.important > b.important ? 1 : -1));
-      myData = myArray.sort((a, b) => (a.done > b.done ? 1 : -1));
+      myArray.sort((a, b) => (a.done > b.done ? 1 : -1));
 
-      if (displayMode.localeCompare("actif") === 0)
-        myData = myArray.filter((el) => el.done === 0);
-    } else myData = myArray.filter((el) => el.done === 1);
-
-
-    // loopData.forEach((el) => {
-    //   if (el.done === 0 && el.important === 1) tasksFiltredToDo.push(el);
-    // });
-
-    // loopData.forEach((el) => {
-    //   if (el.done === 0 && el.important === 0) tasksFiltredToDo.push(el);
-    // });
-
-    // loopData.forEach((el) => {
-    //   if (el.done === 1) tasksFiltredToDo.push(el);
-    // });
-
-    // if (displayMode.localeCompare("all") === 0)
-    //   tasksFiltredToDo2 = [...tasksFiltredToDo];
-    // else if (displayMode.localeCompare("actif") === 0) {
-    //   tasksFiltredToDo.forEach((el) => {
-    //     if (el.done === 0) tasksFiltredToDo2.push(el);
-    //   });
-    // } else if (displayMode.localeCompare("done") === 0) {
-    //   tasksFiltredToDo.forEach((el) => {
-    //     if (el.done === 1) tasksFiltredToDo2.push(el);
-    //   });
-    // }
+      if (displayMode === "actif")
+        myArray = myArray.filter((el) => el.done === 0);
+    } else myArray = myArray.filter((el) => el.done === 1);
 
     return (
       <>
@@ -110,7 +84,7 @@ class ToDosAndDones extends Component {
           <TableHead>
             <TableRow>
               <TableCell>
-                {myData.length}
+                {myArray.length}
                 {" items displayed"}{" "}
               </TableCell>
               <TableCell align="right"> </TableCell>
@@ -142,7 +116,7 @@ class ToDosAndDones extends Component {
           <TableBody>
             <TableRow>
               <TableCell colSpan="4" component="th" scope="row">
-                {myData.map((task) => (
+                {myArray.map((task) => (
                   <SingleTask
                     key={task.id}
                     task={task}
