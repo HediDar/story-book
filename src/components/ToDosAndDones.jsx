@@ -22,18 +22,18 @@ class ToDosAndDones extends Component {
 
   onImportantHandle = (id) => {
     const { makeImportantAction } = this.props;
-    makeImportantAction({"id":id});
+    makeImportantAction({ id });
   };
 
   onDoneHandle = (id) => {
     const { addToDoneAction } = this.props;
-    addToDoneAction({"id":id});
+    addToDoneAction({ id});
   };
 
   onDeleteHandle = (id) => {
     const { removeTaskAction } = this.props;
 
-    removeTaskAction({"id":id});
+    removeTaskAction({ id });
   };
 
   allButtonClick = () => {
@@ -67,22 +67,18 @@ class ToDosAndDones extends Component {
   };
 
   render() {
-    /////spread management
     const { tasks, displayMode } = this.props;
     let myData = [];
     const myArray = Object.values({ ...tasks });
-    myArray.sort((a, b) => (a.important > b.important ? 1 : -1));
-    /// if a.done>b.done verified ? (true treatment) :(false treatment)
-    if (displayMode.localeCompare("all") === 0)
+
+    if (displayMode.localeCompare("done") !== 0) {
+      myArray.sort((a, b) => (a.important > b.important ? 1 : -1));
       myData = myArray.sort((a, b) => (a.done > b.done ? 1 : -1));
 
-    if (displayMode.localeCompare("actif") === 0)
-      myData = myArray.filter((el) => el.done === 0);
+      if (displayMode.localeCompare("actif") === 0)
+        myData = myArray.filter((el) => el.done === 0);
+    } else myData = myArray.filter((el) => el.done === 1);
 
-    if (displayMode.localeCompare("done") === 0)
-      myData = myArray.filter((el) => el.done === 1);
-
-    ////////////end spread management
 
     // loopData.forEach((el) => {
     //   if (el.done === 0 && el.important === 1) tasksFiltredToDo.push(el);

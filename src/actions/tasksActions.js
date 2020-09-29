@@ -20,24 +20,24 @@ function addTaskAction(obj) {
   };
 }
 
-function removeTaskAction(idToRemoveObj) {
+function removeTaskAction(obj) {
   return {
     type: REMOVE_TASK,
-    payload: idToRemoveObj.id,
+    payload: obj.id,
   };
 }
 
-function makeImportantAction(idToMakeImportantObj) {
+function makeImportantAction(obj) {
   return {
     type: MAKE_IMPORTANT,
-    payload: idToMakeImportantObj.id,
+    payload: obj.id,
   };
 }
 
-function addToDoneAction(idToAddToDoneObj) {
+function addToDoneAction(obj) {
   return {
     type: ADD_TO_DONE,
-    payload: idToAddToDoneObj.id,
+    payload: obj.id,
   };
 }
 
