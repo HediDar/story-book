@@ -36,16 +36,6 @@ function tasksReducer(state = initialStates, action) {
     };
   }
   if (action.type.localeCompare(ADD_TASK) === 0) {
-    // var obj = {
-    //   [action.payload.id]: {
-    //     id: action.payload.id,
-    //     name: action.payload.name,
-    //     description: action.payload.description,
-    //     important: action.payload.important,
-    //     done: 0,
-    //   },
-    // };
-
     return {
       ...state,
       tasks: {

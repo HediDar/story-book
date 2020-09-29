@@ -22,17 +22,18 @@ class ToDosAndDones extends Component {
 
   onImportantHandle = (id) => {
     const { makeImportantAction } = this.props;
-    makeImportantAction(id);
+    makeImportantAction({"id":id});
   };
 
   onDoneHandle = (id) => {
     const { addToDoneAction } = this.props;
-    addToDoneAction(id);
+    addToDoneAction({"id":id});
   };
 
   onDeleteHandle = (id) => {
     const { removeTaskAction } = this.props;
-    removeTaskAction(id);
+
+    removeTaskAction({"id":id});
   };
 
   allButtonClick = () => {
@@ -69,11 +70,8 @@ class ToDosAndDones extends Component {
     /////spread management
     const { tasks, displayMode } = this.props;
     let myData = [];
-
     const myArray = Object.values({ ...tasks });
-
     myArray.sort((a, b) => (a.important > b.important ? 1 : -1));
-
     /// if a.done>b.done verified ? (true treatment) :(false treatment)
     if (displayMode.localeCompare("all") === 0)
       myData = myArray.sort((a, b) => (a.done > b.done ? 1 : -1));

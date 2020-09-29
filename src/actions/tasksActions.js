@@ -16,28 +16,28 @@ function changeDisplayModeAction(mode) {
 function addTaskAction(obj) {
   return {
     type: ADD_TASK,
-    payload: {...obj},
+    payload: { ...obj },
   };
 }
 
-function removeTaskAction(idTaskToRemove) {
+function removeTaskAction(idToRemoveObj) {
   return {
     type: REMOVE_TASK,
-    payload: idTaskToRemove,
+    payload: idToRemoveObj.id,
   };
 }
 
-function makeImportantAction(id) {
+function makeImportantAction(idToMakeImportantObj) {
   return {
     type: MAKE_IMPORTANT,
-    payload: id,
+    payload: idToMakeImportantObj.id,
   };
 }
 
-function addToDoneAction(id) {
+function addToDoneAction(idToAddToDoneObj) {
   return {
     type: ADD_TO_DONE,
-    payload: id,
+    payload: idToAddToDoneObj.id,
   };
 }
 
