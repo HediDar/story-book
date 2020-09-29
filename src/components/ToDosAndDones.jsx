@@ -68,16 +68,15 @@ class ToDosAndDones extends Component {
 
   render() {
     const { tasks, displayMode } = this.props;
-    let myData = [];
     const myArray = Object.values({ ...tasks });
 
     if (displayMode.localeCompare("done") !== 0) {
       myArray.sort((a, b) => (a.important > b.important ? 1 : -1));
-      myData = myArray.sort((a, b) => (a.done > b.done ? 1 : -1));
+       myArray.sort((a, b) => (a.done > b.done ? 1 : -1));
 
       if (displayMode.localeCompare("actif") === 0)
-        myData = myArray.filter((el) => el.done === 0);
-    } else myData = myArray.filter((el) => el.done === 1);
+        myArray.filter((el) => el.done === 0);
+    } else myArray.filter((el) => el.done === 1);
 
 
     // loopData.forEach((el) => {
@@ -110,7 +109,7 @@ class ToDosAndDones extends Component {
           <TableHead>
             <TableRow>
               <TableCell>
-                {myData.length}
+                {myArray.length}
                 {" items displayed"}{" "}
               </TableCell>
               <TableCell align="right"> </TableCell>
@@ -142,7 +141,7 @@ class ToDosAndDones extends Component {
           <TableBody>
             <TableRow>
               <TableCell colSpan="4" component="th" scope="row">
-                {myData.map((task) => (
+                {myArray.map((task) => (
                   <SingleTask
                     key={task.id}
                     task={task}
