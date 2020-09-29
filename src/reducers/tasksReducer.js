@@ -8,13 +8,20 @@ import {
 
 const initialStates = {
   tasks: [],
+  testTasks: {},
   displayMode: "all",
 };
 
 function tasksReducer(state = initialStates, action) {
   // if state is empty, we take initialStates
 
-  if (action.type.localeCompare(MAKE_IMPORTANT) === 0)
+  if (action.type.localeCompare(MAKE_IMPORTANT) === 0){
+    const myData={...state.testTasks};
+    if (myData[action.payload].important===0)
+    myData[action.payload].important=1;
+    else
+    myData[action.payload].important=0;
+
     return {
       ...state,
       tasks: state.tasks.map((el) => {
@@ -23,8 +30,9 @@ function tasksReducer(state = initialStates, action) {
           el.important = 1;
         return el;
       }),
+      testTasks:myData,
     };
-
+  }
   if (action.type.localeCompare(ADD_TO_DONE) === 0)
     return {
       ...state,
@@ -36,7 +44,20 @@ function tasksReducer(state = initialStates, action) {
         return el;
       }),
     };
+
   if (action.type.localeCompare(ADD_TASK) === 0) {
+    var obj = {
+      [action.payload.id]: {
+        id: action.payload.id,
+        name: action.payload.name,
+        description: action.payload.description,
+        important: action.payload.important,
+        done: 0,
+      },
+    };
+
+    var myObj = { ...state.testTasks, ...obj };
+
     const data = [...state.tasks];
     data.push({
       id: action.payload.id,
@@ -58,13 +79,19 @@ function tasksReducer(state = initialStates, action) {
     return {
       ...state,
       tasks: data,
+      testTasks: myObj,
     };
   }
-  if (action.type.localeCompare(REMOVE_TASK) === 0)
+  if (action.type.localeCompare(REMOVE_TASK) === 0) {
+
+    const data = { ...state.testTasks };
+    delete data[action.payload];
     return {
       ...state,
       tasks: state.tasks.filter((el) => el.id !== action.payload),
+       testTasks:data,
     };
+  }
   if (action.type.localeCompare(DISPLAY_MODE) === 0)
     return {
       ...state,

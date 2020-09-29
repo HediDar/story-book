@@ -66,36 +66,47 @@ class ToDosAndDones extends Component {
   };
 
   render() {
-    const { tasks, displayMode} = this.props;
-    const loopData = [...tasks];
+    /////spread management
+    const { testTasks, tasks, displayMode } = this.props;
+    let myData = [];
 
-    const tasksFiltredToDo = [];
-    let tasksFiltredToDo2 = [];
+    const myArray = Object.values({ ...testTasks });
 
-    loopData.forEach((el) => {
-      if (el.done === 0 && el.important === 1) tasksFiltredToDo.push(el);
-    });
+    myArray.sort((a, b) => (a.important < b.important ? 1 : -1));
 
-    loopData.forEach((el) => {
-      if (el.done === 0 && el.important === 0) tasksFiltredToDo.push(el);
-    });
+    if (displayMode.localeCompare("all") === 0) myData = myArray;
 
-    loopData.forEach((el) => {
-      if (el.done === 1) tasksFiltredToDo.push(el);
-    });
+    if (displayMode.localeCompare("actif") === 0)
+      myData = myArray.filter((el) => el.done === 0);
 
-    if (displayMode.localeCompare("all") === 0)
-      tasksFiltredToDo2 = [...tasksFiltredToDo];
-    else if (displayMode.localeCompare("actif") === 0) {
-      tasksFiltredToDo.forEach((el) => {
-        if (el.done === 0) tasksFiltredToDo2.push(el);
-      });
-    } else if (displayMode.localeCompare("done") === 0) {
-      tasksFiltredToDo.forEach((el) => {
-        if (el.done === 1) tasksFiltredToDo2.push(el);
-      });
-    }
+    if (displayMode.localeCompare("done") === 0)
+      myData = myArray.filter((el) => el.done === 1);
 
+    ////////////end spread management
+
+    // loopData.forEach((el) => {
+    //   if (el.done === 0 && el.important === 1) tasksFiltredToDo.push(el);
+    // });
+
+    // loopData.forEach((el) => {
+    //   if (el.done === 0 && el.important === 0) tasksFiltredToDo.push(el);
+    // });
+
+    // loopData.forEach((el) => {
+    //   if (el.done === 1) tasksFiltredToDo.push(el);
+    // });
+
+    // if (displayMode.localeCompare("all") === 0)
+    //   tasksFiltredToDo2 = [...tasksFiltredToDo];
+    // else if (displayMode.localeCompare("actif") === 0) {
+    //   tasksFiltredToDo.forEach((el) => {
+    //     if (el.done === 0) tasksFiltredToDo2.push(el);
+    //   });
+    // } else if (displayMode.localeCompare("done") === 0) {
+    //   tasksFiltredToDo.forEach((el) => {
+    //     if (el.done === 1) tasksFiltredToDo2.push(el);
+    //   });
+    // }
 
     return (
       <>
@@ -103,7 +114,7 @@ class ToDosAndDones extends Component {
           <TableHead>
             <TableRow>
               <TableCell>
-                {tasksFiltredToDo2.length}
+                {myData.length}
                 {" items displayed"}{" "}
               </TableCell>
               <TableCell align="right"> </TableCell>
@@ -135,7 +146,7 @@ class ToDosAndDones extends Component {
           <TableBody>
             <TableRow>
               <TableCell colSpan="4" component="th" scope="row">
-                {tasksFiltredToDo2.map((task) => (
+                {myData.map((task) => (
                   <SingleTask
                     key={task.id}
                     task={task}
@@ -176,6 +187,7 @@ const mapStateToProps = (state) => {
   return {
     displayMode: state.displayMode,
     tasks: state.tasks,
+    testTasks: state.testTasks,
   };
 };
 
@@ -188,7 +200,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.addToDoneAction(payload)),
   makeImportantAction: (payload) =>
     dispatch(actionCreators.makeImportantAction(payload)),
-  
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToDosAndDones);
