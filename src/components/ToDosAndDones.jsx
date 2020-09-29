@@ -67,10 +67,10 @@ class ToDosAndDones extends Component {
 
   render() {
     /////spread management
-    const { testTasks, tasks, displayMode } = this.props;
+    const { tasks, displayMode } = this.props;
     let myData = [];
 
-    const myArray = Object.values({ ...testTasks });
+    const myArray = Object.values({ ...tasks });
 
     myArray.sort((a, b) => (a.important > b.important ? 1 : -1));
 
@@ -173,7 +173,7 @@ ToDosAndDones.propTypes = {
   removeTaskAction: PropTypes.func,
   changeDisplayModeAction: PropTypes.func,
   displayMode: PropTypes.string,
-  tasks: PropTypes.arrayOf(PropTypes.object),
+  tasks: PropTypes.shape({}),
 };
 
 ToDosAndDones.defaultProps = {
@@ -182,14 +182,13 @@ ToDosAndDones.defaultProps = {
   addToDoneAction: () => {},
   changeDisplayModeAction: () => {},
   displayMode: "all",
-  tasks: [{}],
+  tasks: {},
 };
 
 const mapStateToProps = (state) => {
   return {
     displayMode: state.displayMode,
     tasks: state.tasks,
-    testTasks: state.testTasks,
   };
 };
 
