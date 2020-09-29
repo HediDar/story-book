@@ -18,8 +18,8 @@ function tasksReducer(state = initialStates, action) {
   if (type===MAKE_IMPORTANT) {
     const myData = { ...state.tasks };
     const id = action.payload;
-    if (myData[id].important === 0) myData[id].important = 1;
-    else myData[id].important = 0;
+    if (myData[id].important === false) myData[id].important = true;
+    else myData[id].important = false;
 
     return {
       ...state,
@@ -30,7 +30,7 @@ function tasksReducer(state = initialStates, action) {
     const myData = { ...state.tasks };
     const id = action.payload;
 
-    myData[id].done = 1;
+    myData[id].done = true;
 
     return {
       ...state,
@@ -49,7 +49,7 @@ function tasksReducer(state = initialStates, action) {
           name: action.payload.name,
           description: action.payload.description,
           important: action.payload.important,
-          done: 0,
+          done: false,
         },
       },
     };

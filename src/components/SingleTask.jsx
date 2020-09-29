@@ -29,7 +29,7 @@ const SingleTask = (props) => {
 
   const classes = useStyles();
 
-  if (task.done === 0 && task.important === 1)
+  if (task.done === false && task.important === true)
     return (
       <>
         <Accordion defaultExpanded style={{ backgroundColor: "yellow" }}>
@@ -63,7 +63,7 @@ const SingleTask = (props) => {
         </Accordion>
       </>
     );
-  if (task.done === 0 && task.important === 0)
+  if (task.done === false && task.important === false)
     return (
       <>
         <Accordion defaultExpanded style={{ backgroundColor: "white" }}>
@@ -96,7 +96,7 @@ const SingleTask = (props) => {
         </Accordion>
       </>
     );
-  if (task.done === 1)
+  if (task.done === true)
     return (
       <>
         <Accordion defaultExpanded style={{ backgroundColor: "lightgrey" }}>

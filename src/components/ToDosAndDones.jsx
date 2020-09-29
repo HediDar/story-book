@@ -71,12 +71,12 @@ class ToDosAndDones extends Component {
     let myArray = Object.values({ ...tasks });
 
     if (displayMode !== "done") {
-      myArray.sort((a, b) => (a.important > b.important ? 1 : -1));
-      myArray.sort((a, b) => (a.done > b.done ? 1 : -1));
+      myArray.sort((a, b) => (a.important && !b.important ? 1 : -1));
+      myArray.sort((a, b) => (a.done && !b.done ? 1 : -1));
 
       if (displayMode === "actif")
-        myArray = myArray.filter((el) => el.done === 0);
-    } else myArray = myArray.filter((el) => el.done === 1);
+        myArray = myArray.filter((el) => el.done === false);
+    } else myArray = myArray.filter((el) => el.done === true);
 
     return (
       <>

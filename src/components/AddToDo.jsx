@@ -27,14 +27,14 @@ const AddToDo = (props) => {
           id: uuid(),
           name: nameText,
           description: DescriptionArea,
-          important: 0,
+          important: false,
         });
       else
         addTaskAction({
           id: uuid(),
           name: nameText,
           description: DescriptionArea,
-          important: 1,
+          important: true,
         });
 
       setTextName("");
