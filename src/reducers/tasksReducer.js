@@ -33,7 +33,11 @@ function tasksReducer(state = initialStates, action) {
       testTasks:myData,
     };
   }
-  if (action.type.localeCompare(ADD_TO_DONE) === 0)
+  if (action.type.localeCompare(ADD_TO_DONE) === 0){
+    const myData={...state.testTasks};
+    
+    myData[action.payload].done=1;
+    
     return {
       ...state,
       tasks: state.tasks.map((el) => {
@@ -43,8 +47,10 @@ function tasksReducer(state = initialStates, action) {
         }
         return el;
       }),
+      testTasks:myData,
+      
     };
-
+  }
   if (action.type.localeCompare(ADD_TASK) === 0) {
     var obj = {
       [action.payload.id]: {

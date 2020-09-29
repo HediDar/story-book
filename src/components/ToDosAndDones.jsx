@@ -72,9 +72,11 @@ class ToDosAndDones extends Component {
 
     const myArray = Object.values({ ...testTasks });
 
-    myArray.sort((a, b) => (a.important < b.important ? 1 : -1));
+    myArray.sort((a, b) => (a.important > b.important ? 1 : -1));
 
-    if (displayMode.localeCompare("all") === 0) myData = myArray;
+    /// if a.done>b.done verified ? (true treatment) :(false treatment)
+    if (displayMode.localeCompare("all") === 0)
+      myData = myArray.sort((a, b) => (a.done > b.done ? 1 : -1));
 
     if (displayMode.localeCompare("actif") === 0)
       myData = myArray.filter((el) => el.done === 0);
