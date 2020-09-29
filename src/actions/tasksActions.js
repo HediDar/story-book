@@ -23,21 +23,21 @@ function addTaskAction(task) {
 function removeTaskAction({id}) {
   return {
     type: REMOVE_TASK,
-    payload: id,
+    payload: {id},
   };
 }
 
 function makeImportantAction({id}) {
   return {
     type: MAKE_IMPORTANT,
-    payload: id,
+    payload: {id},
   };
 }
 
 function addToDoneAction({id}) {
   return {
     type: ADD_TO_DONE,
-    payload: id,
+    payload: {id},
   };
 }
 

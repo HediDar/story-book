@@ -15,9 +15,19 @@ function tasksReducer(state = initialStates, action) {
   // if state is empty, we take initialStates
   const { type } = action;
 
-  if (type===MAKE_IMPORTANT) {
+  if (type === REMOVE_TASK) {
+    const data = { ...state.tasks };
+    const { id } = action.payload;
+    delete data[id];
+    return {
+      ...state,
+      tasks: data,
+    };
+  }
+
+  if (type === MAKE_IMPORTANT) {
     const myData = { ...state.tasks };
-    const id = action.payload;
+    const { id } = action.payload;
     if (myData[id].important === false) myData[id].important = true;
     else myData[id].important = false;
 
@@ -28,8 +38,7 @@ function tasksReducer(state = initialStates, action) {
   }
   if (type === ADD_TO_DONE) {
     const myData = { ...state.tasks };
-    const id = action.payload;
-
+    const { id } = action.payload;
     myData[id].done = true;
 
     return {
@@ -54,15 +63,7 @@ function tasksReducer(state = initialStates, action) {
       },
     };
   }
-  if (type === REMOVE_TASK) {
-    const data = { ...state.tasks };
-    const id = action.payload;
-    delete data[id];
-    return {
-      ...state,
-      tasks: data,
-    };
-  }
+
   if (type === DISPLAY_MODE)
     return {
       ...state,
