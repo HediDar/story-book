@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes, { object } from "prop-types";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -46,7 +46,6 @@ class ToDosAndDones extends Component {
 
   render() {
     const { displayMode, tasksFiltred } = this.props;
-console.log(tasksFiltred);
     return (
       <>
         <Table aria-label="simple table">
@@ -111,7 +110,7 @@ ToDosAndDones.propTypes = {
   changeDisplayModeAction: PropTypes.func,
   displayMode: PropTypes.string,
   tasks: PropTypes.shape({}),
-  tasksFiltred: PropTypes.arrayOf(PropTypes.shape({})),
+  tasksFiltred: PropTypes.shape({}),
 };
 
 ToDosAndDones.defaultProps = {
@@ -121,7 +120,7 @@ ToDosAndDones.defaultProps = {
   changeDisplayModeAction: () => {},
   displayMode: "all",
   tasks: {},
-  tasksFiltred: [{}],
+  tasksFiltred: {},
 };
 
 const mapStateToProps = (state) => {
