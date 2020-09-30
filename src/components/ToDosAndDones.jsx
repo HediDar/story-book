@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import PropTypes, { string } from "prop-types";
 import { connect } from "react-redux";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -9,7 +9,10 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import SingleTask from "./SingleTask";
-import { filterTasks } from "../selectors/filterSelector";
+import {
+  filterTasks,
+  getButtonsColorByDisplayMode,
+} from "../selectors/filterSelector";
 import * as actionCreators from "../actions/tasksActions";
 
 class ToDosAndDones extends Component {
@@ -45,14 +48,14 @@ class ToDosAndDones extends Component {
   };
 
   render() {
-    const { displayMode, tasksFiltred } = this.props;
+    const { displayMode, tasksFiltred, GroupButtonsColors } = this.props;
     return (
       <>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>
-                {tasksFiltred.myArray.length}
+                {tasksFiltred.length}
                 {" items displayed"}{" "}
               </TableCell>
               <TableCell align="right"> </TableCell>
@@ -60,19 +63,19 @@ class ToDosAndDones extends Component {
               <TableCell align="right">
                 <ButtonGroup aria-label="outlined secondary button group">
                   <Button
-                    color={tasksFiltred.colorAll}
+                    color={GroupButtonsColors[0]}
                     onClick={() => this.allButtonClick()}
                   >
                     Show all
                   </Button>
                   <Button
-                    color={tasksFiltred.colorActif}
+                    color={GroupButtonsColors[1]}
                     onClick={() => this.handleActiveButtonClick()}
                   >
                     Show active
                   </Button>
                   <Button
-                    color={tasksFiltred.colorCompleted}
+                    color={GroupButtonsColors[2]}
                     onClick={() => this.handleAllcompletedButtonClick()}
                   >
                     Show completed
@@ -84,7 +87,7 @@ class ToDosAndDones extends Component {
           <TableBody>
             <TableRow>
               <TableCell colSpan="4" component="th" scope="row">
-                {tasksFiltred.myArray.map((task) => (
+                {tasksFiltred.map((task) => (
                   <SingleTask
                     key={task.id}
                     task={task}
@@ -110,7 +113,8 @@ ToDosAndDones.propTypes = {
   changeDisplayModeAction: PropTypes.func,
   displayMode: PropTypes.string,
   tasks: PropTypes.shape({}),
-  tasksFiltred: PropTypes.shape({}),
+  tasksFiltred: PropTypes.arrayOf(PropTypes.shape({})),
+  GroupButtonsColors: PropTypes.arrayOf(string),
 };
 
 ToDosAndDones.defaultProps = {
@@ -120,7 +124,8 @@ ToDosAndDones.defaultProps = {
   changeDisplayModeAction: () => {},
   displayMode: "all",
   tasks: {},
-  tasksFiltred: {},
+  tasksFiltred: [{}],
+  GroupButtonsColors: ["primary", "secondary", "secondary"],
 };
 
 const mapStateToProps = (state) => {
@@ -128,6 +133,7 @@ const mapStateToProps = (state) => {
     displayMode: state.displayMode,
     tasks: state.tasks,
     tasksFiltred: filterTasks(state),
+    GroupButtonsColors: getButtonsColorByDisplayMode(state),
   };
 };
 
