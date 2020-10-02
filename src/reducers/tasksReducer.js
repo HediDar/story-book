@@ -17,9 +17,14 @@ function tasksReducer(state = initialStates, action) {
   const { type } = action;
 
   if (type === INITIALISE_ALL_TASKS) {
+    const resultToSend = {};
+    for (let i = 0; i < action.payload.length; i++) {
+      resultToSend[action.payload[i]._id] = action.payload[i];
+    }
+
     return {
       ...state,
-      tasks: action.payload,
+      tasks: resultToSend,
     };
   }
 
@@ -55,8 +60,7 @@ function tasksReducer(state = initialStates, action) {
     };
   }
   if (type === ADD_TASK) {
-    const  taskArg  = action.payload;
-    
+    const taskArg = action.payload;
 
     return {
       ...state,

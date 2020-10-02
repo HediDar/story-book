@@ -35,13 +35,8 @@ class ToDosAndDones extends Component {
 
     this.promise.then(
       function (result) {
-
-        const myArrayTasksData = result.data;
-        const resultToSend = {};
-        for (let i = 0; i < myArrayTasksData.length; i++) {
-          resultToSend[myArrayTasksData[i]._id] = myArrayTasksData[i];
-        }
-        initialiseAllTasksAction(resultToSend);
+       
+        initialiseAllTasksAction(result.data);
       },
       function (err) {
         // Error: "It broke"
@@ -142,6 +137,7 @@ class ToDosAndDones extends Component {
 
 ToDosAndDones.propTypes = {
   makeImportantAction: PropTypes.func,
+  initialiseAllTasksAction: PropTypes.func,
   addToDoneAction: PropTypes.func,
   removeTaskAction: PropTypes.func,
   changeDisplayModeAction: PropTypes.func,
@@ -153,6 +149,7 @@ ToDosAndDones.propTypes = {
 
 ToDosAndDones.defaultProps = {
   makeImportantAction: () => {},
+  initialiseAllTasksAction: () => {},
   removeTaskAction: () => {},
   addToDoneAction: () => {},
   changeDisplayModeAction: () => {},

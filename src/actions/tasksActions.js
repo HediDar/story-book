@@ -8,9 +8,10 @@ import {
 } from "./actions-types";
 
 function initialiseAllTasksAction(tasks) {
+  
   return {
     type: INITIALISE_ALL_TASKS,
-    payload: { ...tasks },
+    payload: tasks,
   };
 }
 
