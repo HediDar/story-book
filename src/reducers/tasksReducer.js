@@ -4,6 +4,7 @@ import {
   REMOVE_TASK,
   ADD_TO_DONE,
   MAKE_IMPORTANT,
+  INITIALISE_ALL_TASKS,
 } from "../actions/actions-types";
 
 const initialStates = {
@@ -14,6 +15,13 @@ const initialStates = {
 function tasksReducer(state = initialStates, action) {
   // if state is empty, we take initialStates
   const { type } = action;
+
+  if (type === INITIALISE_ALL_TASKS) {
+    return {
+      ...state,
+      tasks: action.payload,
+    };
+  }
 
   if (type === REMOVE_TASK) {
     const data = { ...state.tasks };
@@ -47,17 +55,18 @@ function tasksReducer(state = initialStates, action) {
     };
   }
   if (type === ADD_TASK) {
-    const { id } = action.payload;
+    const  taskArg  = action.payload;
+    
 
     return {
       ...state,
       tasks: {
         ...state.tasks,
-        [id]: {
-          id: action.payload.id,
-          name: action.payload.name,
-          description: action.payload.description,
-          important: action.payload.important,
+        [taskArg._id]: {
+          _id: taskArg._id,
+          name: taskArg.name,
+          description: taskArg.description,
+          important: taskArg.important,
           done: false,
         },
       },

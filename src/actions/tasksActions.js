@@ -4,7 +4,15 @@ import {
   ADD_TASK,
   ADD_TO_DONE,
   MAKE_IMPORTANT,
+  INITIALISE_ALL_TASKS,
 } from "./actions-types";
+
+function initialiseAllTasksAction(tasks) {
+  return {
+    type: INITIALISE_ALL_TASKS,
+    payload: { ...tasks },
+  };
+}
 
 function changeDisplayModeAction(mode) {
   return {
@@ -20,28 +28,29 @@ function addTaskAction(task) {
   };
 }
 
-function removeTaskAction({id}) {
+function removeTaskAction({ id }) {
   return {
     type: REMOVE_TASK,
-    payload: {id},
+    payload: { id },
   };
 }
 
-function makeImportantAction({id}) {
+function makeImportantAction({ id }) {
   return {
     type: MAKE_IMPORTANT,
-    payload: {id},
+    payload: { id },
   };
 }
 
-function addToDoneAction({id}) {
+function addToDoneAction({ id }) {
   return {
     type: ADD_TO_DONE,
-    payload: {id},
+    payload: { id },
   };
 }
 
 export {
+  initialiseAllTasksAction,
   addToDoneAction,
   makeImportantAction,
   changeDisplayModeAction,

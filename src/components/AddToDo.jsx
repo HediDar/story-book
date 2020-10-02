@@ -24,14 +24,14 @@ const AddToDo = (props) => {
 
       if (importantRadio==="notImportant")
         addTaskAction({
-          id: uuid(),
+          _id: uuid(),
           name: nameText,
           description: DescriptionArea,
           important: false,
         });
       else
         addTaskAction({
-          id: uuid(),
+          _id: uuid(),
           name: nameText,
           description: DescriptionArea,
           important: true,

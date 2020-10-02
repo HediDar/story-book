@@ -13,9 +13,43 @@ import {
   filterTasks,
   getButtonsColorByDisplayMode,
 } from "../selectors/filterSelector";
+import { getAllTasks } from "../domain/myAPIS";
 import * as actionCreators from "../actions/tasksActions";
 
 class ToDosAndDones extends Component {
+  constructor() {
+    super();
+    this.promise = new Promise(function (resolve, reject) {
+      const responseTasks = getAllTasks();
+
+      if (responseTasks) {
+        resolve(responseTasks);
+      } else {
+        reject(Error("It broke"));
+      }
+    });
+  }
+
+  componentDidMount() {
+    const { initialiseAllTasksAction } = this.props;
+
+    this.promise.then(
+      function (result) {
+
+        const myArrayTasksData = result.data;
+        const resultToSend = {};
+        for (let i = 0; i < myArrayTasksData.length; i++) {
+          resultToSend[myArrayTasksData[i]._id] = myArrayTasksData[i];
+        }
+        initialiseAllTasksAction(resultToSend);
+      },
+      function (err) {
+        // Error: "It broke"
+        console.log(err);
+      }
+    );
+  }
+
   onImportantHandle = (id) => {
     const { makeImportantAction } = this.props;
     makeImportantAction({ id });
@@ -89,7 +123,7 @@ class ToDosAndDones extends Component {
               <TableCell colSpan="4" component="th" scope="row">
                 {tasksFiltred.map((task) => (
                   <SingleTask
-                    key={task.id}
+                    key={task._id}
                     task={task}
                     displayMode={displayMode}
                     onDone={this.onDoneHandle}
@@ -138,6 +172,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  initialiseAllTasksAction: (payload) =>
+    dispatch(actionCreators.initialiseAllTasksAction(payload)),
   changeDisplayModeAction: (payload) =>
     dispatch(actionCreators.changeDisplayModeAction(payload)),
   removeTaskAction: (payload) =>
