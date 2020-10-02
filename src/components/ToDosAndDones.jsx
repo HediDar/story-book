@@ -13,13 +13,13 @@ import {
   filterTasks,
   getButtonsColorByDisplayMode,
 } from "../selectors/filterSelector";
-import { getAllTasks } from "../domain/myAPIS";
+import { getAllTasks, deleteTask, updateTask } from "../domain/myAPIS";
 import * as actionCreators from "../actions/tasksActions";
 
 class ToDosAndDones extends Component {
   constructor() {
     super();
-    this.promise = new Promise(function (resolve, reject) {
+    this.promiseAll = new Promise(function (resolve, reject) {
       const responseTasks = getAllTasks();
 
       if (responseTasks) {
@@ -33,9 +33,8 @@ class ToDosAndDones extends Component {
   componentDidMount() {
     const { initialiseAllTasksAction } = this.props;
 
-    this.promise.then(
+    this.promiseAll.then(
       function (result) {
-       
         initialiseAllTasksAction(result.data);
       },
       function (err) {
@@ -45,20 +44,81 @@ class ToDosAndDones extends Component {
     );
   }
 
-  onImportantHandle = (id) => {
+  onImportantHandle = (task) => {
+    const taskVar = { ...task };
+    if (taskVar.important === false) taskVar.important = true;
+    else taskVar.important = false;
+
+    let promiseUpdate = new Promise(function (resolve, reject) {
+      const responseUpdateTask = updateTask(taskVar);
+
+      if (responseUpdateTask) {
+        resolve(responseUpdateTask);
+      } else {
+        reject(Error("It broke"));
+      }
+    });
     const { makeImportantAction } = this.props;
-    makeImportantAction({ id });
+    promiseUpdate.then(
+      function (result) {
+        const id = taskVar._id;
+        makeImportantAction({ id });
+      },
+      function (err) {
+        // Error: "It broke"
+        console.log(err);
+      }
+    );
   };
 
-  onDoneHandle = (id) => {
+  onDoneHandle = (task) => {
+    const taskVar = { ...task };
+    if (taskVar.done === false) taskVar.done = true;
+    else taskVar.done = false;
+
+    let promiseUpdate = new Promise(function (resolve, reject) {
+      const responseUpdateTask = updateTask(taskVar);
+
+      if (responseUpdateTask) {
+        resolve(responseUpdateTask);
+      } else {
+        reject(Error("It broke"));
+      }
+    });
     const { addToDoneAction } = this.props;
-    addToDoneAction({ id });
+    promiseUpdate.then(
+      function (result) {
+        const id = taskVar._id;
+        addToDoneAction({ id });
+      },
+      function (err) {
+        // Error: "It broke"
+        console.log(err);
+      }
+    );
   };
 
   onDeleteHandle = (id) => {
-    const { removeTaskAction } = this.props;
+    let promiseDelete = new Promise(function (resolve, reject) {
+      const responseDeleteTask = deleteTask(id);
 
-    removeTaskAction({ id });
+      if (responseDeleteTask) {
+        resolve(responseDeleteTask);
+      } else {
+        reject(Error("It broke"));
+      }
+    });
+    const { removeTaskAction } = this.props;
+    promiseDelete.then(
+      function (result) {
+        console.log("result deleted");
+        removeTaskAction({ id });
+      },
+      function (err) {
+        // Error: "It broke"
+        console.log(err);
+      }
+    );
   };
 
   allButtonClick = () => {

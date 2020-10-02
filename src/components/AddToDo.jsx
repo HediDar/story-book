@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 
 import * as actionCreators from "../actions/tasksActions";
+import { addTask } from "../domain/myAPIS";
 
 const AddToDo = (props) => {
   const [nameText, setTextName] = useState("");
@@ -23,25 +24,46 @@ const AddToDo = (props) => {
     else {
       const { addTaskAction } = props;
 
-      if (importantRadio==="notImportant")
-        addTaskAction({
-          _id: uuid(),
+      let myTask = {};
+      if (importantRadio === "notImportant") {
+        myTask = {
           name: nameText,
           description: DescriptionArea,
           important: false,
-        });
-      else
-        addTaskAction({
-          _id: uuid(),
+          done: false,
+        };
+      } else {
+        myTask = {
           name: nameText,
           description: DescriptionArea,
           important: true,
-        });
+          done: false,
+        };
+      }
 
-      setTextName("");
-      setDescriptionArea("");
-      setImportantRadio("notImportant");
+      let promise = new Promise(function (resolve, reject) {
+        const responseTasks = addTask(myTask);
+        if (responseTasks) {
+          resolve(responseTasks);
+        } else {
+          reject(Error("It broke"));
+        }
+      });
+
+      promise.then(
+        function (result) {
+          addTaskAction(result.data.data);
+          // console.log(result.data.data);
+        },
+        function (err) {
+          // Error: "It broke"
+          console.log(err);
+        }
+      );
     }
+    setTextName("");
+    setDescriptionArea("");
+    setImportantRadio("notImportant");
   }
 
   return (

@@ -47,16 +47,16 @@ const SingleTask = (props) => {
           </AccordionDetails>
           <Divider />
           <AccordionActions>
-            <Button color="secondary" onClick={() => onImportant(task.id)}>
+            <Button color="secondary" onClick={() => onImportant(task)}>
               {" "}
               remove from important
             </Button>
 
-            <Button color="secondary" onClick={() => onDone(task.id)}>
+            <Button color="secondary" onClick={() => onDone(task)}>
               {" "}
               Add to done
             </Button>
-            <Button color="secondary" onClick={() => onDeleteTask(task.id)}>
+            <Button color="secondary" onClick={() => onDeleteTask(task._id)}>
               Delete
             </Button>
           </AccordionActions>
@@ -81,15 +81,15 @@ const SingleTask = (props) => {
           </AccordionDetails>
           <Divider />
           <AccordionActions>
-            <Button color="secondary" onClick={() => onImportant(task.id)}>
+            <Button color="secondary" onClick={() => onImportant(task)}>
               {" "}
               make Important
             </Button>
-            <Button color="secondary" onClick={() => onDone(task.id)}>
+            <Button color="secondary" onClick={() => onDone(task)}>
               {" "}
               Add to done
             </Button>
-            <Button color="secondary" onClick={() => onDeleteTask(task.id)}>
+            <Button color="secondary" onClick={() => onDeleteTask(task._id)}>
               Delete
             </Button>
           </AccordionActions>
@@ -114,7 +114,7 @@ const SingleTask = (props) => {
           </AccordionDetails>
           <Divider />
           <AccordionActions>
-            <Button color="secondary" onClick={() => onDeleteTask(task.id)}>
+            <Button color="secondary" onClick={() => onDeleteTask(task._id)}>
               Delete
             </Button>
           </AccordionActions>
