@@ -25,82 +25,20 @@ class ToDosAndDones extends Component {
   onImportantHandle = (task) => {
     const taskVar = { ...task };
     if (taskVar.important === false) taskVar.important = true;
-    else taskVar.important = false;
-    taskVar.isImportantUpdate=true;
 
     this.props.updateTaskImportantByApiAction(taskVar);
-
-    // let promiseUpdate = new Promise(function (resolve, reject) {
-    //   const responseUpdateTask = updateTask(taskVar);
-
-    //   if (responseUpdateTask) {
-    //     resolve(responseUpdateTask);
-    //   } else {
-    //     reject(Error("It broke"));
-    //   }
-    // });
-    // const { makeImportantAction } = this.props;
-    // promiseUpdate.then(
-    //   function (result) {
-    //     const id = taskVar._id;
-    //     makeImportantAction({ id });
-    //   },
-    //   function (err) {
-    //     // Error: "It broke"
-    //     console.log(err);
-    //   }
-    // );
   };
 
   onDoneHandle = (task) => {
     const taskVar = { ...task };
     if (taskVar.done === false) taskVar.done = true;
-    else taskVar.done = false;
 
-    let promiseUpdate = new Promise(function (resolve, reject) {
-      const responseUpdateTask = updateTask(taskVar);
-
-      if (responseUpdateTask) {
-        resolve(responseUpdateTask);
-      } else {
-        reject(Error("It broke"));
-      }
-    });
-    const { addToDoneAction } = this.props;
-    promiseUpdate.then(
-      function (result) {
-        const id = taskVar._id;
-        addToDoneAction({ id });
-      },
-      function (err) {
-        // Error: "It broke"
-        console.log(err);
-      }
-    );
+    this.props.updateTaskDoneByApiAction(taskVar);
   };
 
   onDeleteHandle = (id) => {
     console.log(id);
     this.props.deleteTaskByApiAction({ id });
-    // let promiseDelete = new Promise(function (resolve, reject) {
-    //   const responseDeleteTask = deleteTask(id);
-    //   if (responseDeleteTask) {
-    //     resolve(responseDeleteTask);
-    //   } else {
-    //     reject(Error("It broke"));
-    //   }
-    // });
-    // const { removeTaskAction } = this.props;
-    // promiseDelete.then(
-    //   function (result) {
-    //     console.log("result deleted");
-    //     removeTaskAction({ id });
-    //   },
-    //   function (err) {
-    //     // Error: "It broke"
-    //     console.log(err);
-    //   }
-    // );
   };
 
   allButtonClick = () => {
@@ -178,10 +116,6 @@ class ToDosAndDones extends Component {
 }
 
 ToDosAndDones.propTypes = {
-  makeImportantAction: PropTypes.func,
-  initialiseAllTasksAction: PropTypes.func,
-  addToDoneAction: PropTypes.func,
-  removeTaskAction: PropTypes.func,
   changeDisplayModeAction: PropTypes.func,
   displayMode: PropTypes.string,
   tasks: PropTypes.shape({}),
@@ -190,10 +124,6 @@ ToDosAndDones.propTypes = {
 };
 
 ToDosAndDones.defaultProps = {
-  makeImportantAction: () => {},
-  initialiseAllTasksAction: () => {},
-  removeTaskAction: () => {},
-  addToDoneAction: () => {},
   changeDisplayModeAction: () => {},
   displayMode: "all",
   tasks: {},
@@ -211,22 +141,16 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  updateTaskDoneByApiAction: (payload) =>
+    dispatch(actionCreators.updateTaskDoneByApiAction(payload)),
   updateTaskImportantByApiAction: (payload) =>
     dispatch(actionCreators.updateTaskImportantByApiAction(payload)),
   deleteTaskByApiAction: (payload) =>
     dispatch(actionCreators.deleteTaskByApiAction(payload)),
   fetchAllTasksByApiAction: () =>
     dispatch(actionCreators.fetchAllTasksByApiAction()),
-  initialiseAllTasksAction: (payload) =>
-    dispatch(actionCreators.initialiseAllTasksAction(payload)),
   changeDisplayModeAction: (payload) =>
     dispatch(actionCreators.changeDisplayModeAction(payload)),
-  removeTaskAction: (payload) =>
-    dispatch(actionCreators.removeTaskAction(payload)),
-  addToDoneAction: (payload) =>
-    dispatch(actionCreators.addToDoneAction(payload)),
-  makeImportantAction: (payload) =>
-    dispatch(actionCreators.makeImportantAction(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToDosAndDones);

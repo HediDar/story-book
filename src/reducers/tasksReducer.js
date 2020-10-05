@@ -1,9 +1,6 @@
 import {
   ADD_TASK,
   DISPLAY_MODE,
-  REMOVE_TASK,
-  ADD_TO_DONE,
-  MAKE_IMPORTANT,
   FETCH_DATA_PENDING,
   FETCH_DATA_FULFILLED,
   FETCH_DATA_REJECTED,
@@ -13,6 +10,9 @@ import {
   UPDATE_IMPORTANT_PENDING,
   UPDATE_IMPORTANT_FULFILLED,
   UPDATE_IMPORTANT_REJECTED,
+  UPDATE_DONE_PENDING,
+  UPDATE_DONE_FULFILLED,
+  UPDATE_DONE_REJECTED,
 } from "../actions/actions-types";
 
 const initialStates = {
@@ -50,16 +50,7 @@ function tasksReducer(state = initialStates, action) {
   }
   if (type === DELETE_DATA_REJECTED) console.log("delete error");
 
-  if (type === REMOVE_TASK) {
-    const data = { ...state.tasks };
-    const { id } = action.payload;
-    delete data[id];
-    return {
-      ...state,
-      tasks: data,
-    };
-  }
-
+ 
   // data update promise
   if (type === UPDATE_IMPORTANT_PENDING) console.log("loading up");
   if (type === UPDATE_IMPORTANT_FULFILLED) {
@@ -77,27 +68,23 @@ function tasksReducer(state = initialStates, action) {
   if (type === UPDATE_IMPORTANT_REJECTED) console.log("errror");
   // end promise treatment
 
-  if (type === MAKE_IMPORTANT) {
+  if (type === UPDATE_DONE_PENDING) console.log("loading up");
+  if (type === UPDATE_DONE_FULFILLED) {
     const myData = { ...state.tasks };
-    const { id } = action.payload;
-    if (myData[id].important === false) myData[id].important = true;
-    else myData[id].important = false;
+    const { _id } = action.payload.data.data;
+
+    if (myData[_id].done === false) myData[_id].done = true;
+    else myData[_id].done = false;
 
     return {
       ...state,
       tasks: myData,
     };
   }
-  if (type === ADD_TO_DONE) {
-    const myData = { ...state.tasks };
-    const { id } = action.payload;
-    myData[id].done = true;
+  if (type === UPDATE_DONE_REJECTED) console.log("errror");
+  // end promise treatment
 
-    return {
-      ...state,
-      tasks: myData,
-    };
-  }
+ 
   if (type === ADD_TASK) {
     const taskArg = action.payload;
 

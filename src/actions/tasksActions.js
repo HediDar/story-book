@@ -8,6 +8,7 @@ import {
   FETCH_DATA,
   DELETE_DATA,
   UPDATE_IMPORTANT,
+  UPDATE_DONE,
 } from "./actions-types";
 import { getAllTasks, deleteTask, updateTask } from "../domain/myAPIS";
 
@@ -32,10 +33,10 @@ function updateTaskImportantByApiAction(task) {
   };
 }
 
-function initialiseAllTasksAction(tasks) {
+function updateTaskDoneByApiAction(task) {
   return {
-    type: INITIALISE_ALL_TASKS,
-    payload: tasks,
+    type: UPDATE_DONE,
+    payload: updateTask(task),
   };
 }
 
@@ -53,35 +54,11 @@ function addTaskAction(task) {
   };
 }
 
-function removeTaskAction({ id }) {
-  return {
-    type: REMOVE_TASK,
-    payload: { id },
-  };
-}
-
-function makeImportantAction({ id }) {
-  return {
-    type: MAKE_IMPORTANT,
-    payload: { id },
-  };
-}
-
-function addToDoneAction({ id }) {
-  return {
-    type: ADD_TO_DONE,
-    payload: { id },
-  };
-}
-
 export {
+  updateTaskDoneByApiAction,
   updateTaskImportantByApiAction,
   deleteTaskByApiAction,
   fetchAllTasksByApiAction,
-  initialiseAllTasksAction,
-  addToDoneAction,
-  makeImportantAction,
   changeDisplayModeAction,
   addTaskAction,
-  removeTaskAction,
 };
