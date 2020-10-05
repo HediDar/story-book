@@ -26,27 +26,30 @@ class ToDosAndDones extends Component {
     const taskVar = { ...task };
     if (taskVar.important === false) taskVar.important = true;
     else taskVar.important = false;
+    taskVar.isImportantUpdate=true;
 
-    let promiseUpdate = new Promise(function (resolve, reject) {
-      const responseUpdateTask = updateTask(taskVar);
+    this.props.updateTaskImportantByApiAction(taskVar);
 
-      if (responseUpdateTask) {
-        resolve(responseUpdateTask);
-      } else {
-        reject(Error("It broke"));
-      }
-    });
-    const { makeImportantAction } = this.props;
-    promiseUpdate.then(
-      function (result) {
-        const id = taskVar._id;
-        makeImportantAction({ id });
-      },
-      function (err) {
-        // Error: "It broke"
-        console.log(err);
-      }
-    );
+    // let promiseUpdate = new Promise(function (resolve, reject) {
+    //   const responseUpdateTask = updateTask(taskVar);
+
+    //   if (responseUpdateTask) {
+    //     resolve(responseUpdateTask);
+    //   } else {
+    //     reject(Error("It broke"));
+    //   }
+    // });
+    // const { makeImportantAction } = this.props;
+    // promiseUpdate.then(
+    //   function (result) {
+    //     const id = taskVar._id;
+    //     makeImportantAction({ id });
+    //   },
+    //   function (err) {
+    //     // Error: "It broke"
+    //     console.log(err);
+    //   }
+    // );
   };
 
   onDoneHandle = (task) => {
@@ -77,9 +80,8 @@ class ToDosAndDones extends Component {
   };
 
   onDeleteHandle = (id) => {
-
     console.log(id);
-    this.props.deleteTaskByApiAction({id});
+    this.props.deleteTaskByApiAction({ id });
     // let promiseDelete = new Promise(function (resolve, reject) {
     //   const responseDeleteTask = deleteTask(id);
     //   if (responseDeleteTask) {
@@ -209,7 +211,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteTaskByApiAction: (payload) => dispatch(actionCreators.deleteTaskByApiAction(payload)),
+  updateTaskImportantByApiAction: (payload) =>
+    dispatch(actionCreators.updateTaskImportantByApiAction(payload)),
+  deleteTaskByApiAction: (payload) =>
+    dispatch(actionCreators.deleteTaskByApiAction(payload)),
   fetchAllTasksByApiAction: () =>
     dispatch(actionCreators.fetchAllTasksByApiAction()),
   initialiseAllTasksAction: (payload) =>

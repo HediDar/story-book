@@ -10,9 +10,9 @@ import {
   DELETE_DATA_PENDING,
   DELETE_DATA_FULFILLED,
   DELETE_DATA_REJECTED,
-  UPDATE_DATA_PENDING,
-  UPDATE_DATA_FULFILLED,
-  UPDATE_DATA_REJECTED,
+  UPDATE_IMPORTANT_PENDING,
+  UPDATE_IMPORTANT_FULFILLED,
+  UPDATE_IMPORTANT_REJECTED,
 } from "../actions/actions-types";
 
 const initialStates = {
@@ -59,6 +59,23 @@ function tasksReducer(state = initialStates, action) {
       tasks: data,
     };
   }
+
+  // data update promise
+  if (type === UPDATE_IMPORTANT_PENDING) console.log("loading up");
+  if (type === UPDATE_IMPORTANT_FULFILLED) {
+    const myData = { ...state.tasks };
+    const { _id } = action.payload.data.data;
+
+    if (myData[_id].important === false) myData[_id].important = true;
+    else myData[_id].important = false;
+
+    return {
+      ...state,
+      tasks: myData,
+    };
+  }
+  if (type === UPDATE_IMPORTANT_REJECTED) console.log("errror");
+  // end promise treatment
 
   if (type === MAKE_IMPORTANT) {
     const myData = { ...state.tasks };
