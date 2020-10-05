@@ -5,10 +5,21 @@ import {
   ADD_TO_DONE,
   MAKE_IMPORTANT,
   INITIALISE_ALL_TASKS,
+  FETCH_DATA,
 } from "./actions-types";
+import { getAllTasks, deleteTask, updateTask } from "../domain/myAPIS";
+
+
+
+const fetchAllTasksByApiAction = () => {
+  return {
+    type: FETCH_DATA,
+    payload: getAllTasks(),
+  };
+};
+
 
 function initialiseAllTasksAction(tasks) {
-  
   return {
     type: INITIALISE_ALL_TASKS,
     payload: tasks,
@@ -51,6 +62,7 @@ function addToDoneAction({ id }) {
 }
 
 export {
+  fetchAllTasksByApiAction,
   initialiseAllTasksAction,
   addToDoneAction,
   makeImportantAction,

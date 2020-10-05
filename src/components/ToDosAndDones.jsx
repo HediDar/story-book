@@ -17,31 +17,10 @@ import { getAllTasks, deleteTask, updateTask } from "../domain/myAPIS";
 import * as actionCreators from "../actions/tasksActions";
 
 class ToDosAndDones extends Component {
-  constructor() {
-    super();
-    this.promiseAll = new Promise(function (resolve, reject) {
-      const responseTasks = getAllTasks();
-
-      if (responseTasks) {
-        resolve(responseTasks);
-      } else {
-        reject(Error("It broke"));
-      }
-    });
-  }
-
+  
   componentDidMount() {
-    const { initialiseAllTasksAction } = this.props;
-
-    this.promiseAll.then(
-      function (result) {
-        initialiseAllTasksAction(result.data);
-      },
-      function (err) {
-        // Error: "It broke"
-        console.log(err);
-      }
-    );
+    const {fetchAllTasksByApiAction}=this.props;
+    fetchAllTasksByApiAction();
   }
 
   onImportantHandle = (task) => {
@@ -229,6 +208,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  fetchAllTasksByApiAction: () =>
+    dispatch(actionCreators.fetchAllTasksByApiAction()),
   initialiseAllTasksAction: (payload) =>
     dispatch(actionCreators.initialiseAllTasksAction(payload)),
   changeDisplayModeAction: (payload) =>

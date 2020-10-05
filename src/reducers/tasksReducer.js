@@ -4,7 +4,9 @@ import {
   REMOVE_TASK,
   ADD_TO_DONE,
   MAKE_IMPORTANT,
-  INITIALISE_ALL_TASKS,
+  FETCH_DATA_PENDING,
+  FETCH_DATA_FULFILLED,
+  FETCH_DATA_REJECTED,
 } from "../actions/actions-types";
 
 const initialStates = {
@@ -16,10 +18,11 @@ function tasksReducer(state = initialStates, action) {
   // if state is empty, we take initialStates
   const { type } = action;
 
-  if (type === INITIALISE_ALL_TASKS) {
+  if (type === FETCH_DATA_PENDING) console.log("loading");
+  if (type === FETCH_DATA_FULFILLED) {
     const resultToSend = {};
-    for (let i = 0; i < action.payload.length; i++) {
-      resultToSend[action.payload[i]._id] = action.payload[i];
+    for (let i = 0; i < action.payload.data.length; i++) {
+      resultToSend[action.payload.data[i]._id] = action.payload.data[i];
     }
 
     return {
@@ -27,6 +30,7 @@ function tasksReducer(state = initialStates, action) {
       tasks: resultToSend,
     };
   }
+  if (type === FETCH_DATA_REJECTED) console.log("errror");
 
   if (type === REMOVE_TASK) {
     const data = { ...state.tasks };
