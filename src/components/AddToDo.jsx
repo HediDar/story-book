@@ -16,7 +16,7 @@ const AddToDo = (props) => {
   const [nameText, setTextName] = useState("");
   const [DescriptionArea, setDescriptionArea] = useState("");
   const [importantRadio, setImportantRadio] = useState("notImportant");
-  const { setLoaderBoolToActiveAction, addTaskByApiAction } = props;
+  const { addTaskByApiAction } = props;
 
   function onClickCalls() {
     if (nameText === "") alert("you need to name your task");
@@ -37,7 +37,7 @@ const AddToDo = (props) => {
           done: false,
         };
       }
-      setLoaderBoolToActiveAction();
+
       addTaskByApiAction(myTask);
     }
     setTextName("");
@@ -110,17 +110,13 @@ const AddToDo = (props) => {
 };
 
 AddToDo.propTypes = {
-  setLoaderBoolToActiveAction: PropTypes.func,
   addTaskByApiAction: PropTypes.func,
 };
 AddToDo.defaultProps = {
-  setLoaderBoolToActiveAction: () => {},
   addTaskByApiAction: () => {},
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  setLoaderBoolToActiveAction: () =>
-    dispatch(actionCreators.setLoaderBoolToActiveAction()),
   addTaskByApiAction: (payload) =>
     dispatch(actionCreators.addTaskByApiAction(payload)),
 });

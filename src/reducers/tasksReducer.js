@@ -26,7 +26,11 @@ function tasksReducer(state = initialStates, action) {
   const { type } = action;
 
   // ///////////////////add promise
-  if (type === ADD_TASK_PENDING) console.log("loading");
+  if (type === ADD_TASK_PENDING)
+    return {
+      ...state,
+      loaderBool: true,
+    };
   if (type === ADD_TASK_FULFILLED) {
     const taskArg = action.payload.data.data;
 
@@ -48,7 +52,11 @@ function tasksReducer(state = initialStates, action) {
   if (type === ADD_TASK_REJECTED) console.log("errror");
 
   // /////////////////////data delete promise treatment
-  if (type === DELETE_DATA_PENDING) console.log("loading");
+  if (type === DELETE_DATA_PENDING)
+    return {
+      ...state,
+      loaderBool: true,
+    };
   if (type === DELETE_DATA_FULFILLED) {
     const data = { ...state.tasks };
     const id = action.payload.data.data;
@@ -62,7 +70,11 @@ function tasksReducer(state = initialStates, action) {
   if (type === DELETE_DATA_REJECTED) console.log("delete error");
 
   // //////////////////data fetching promise treatment
-  if (type === FETCH_DATA_PENDING) console.log("loading");
+  if (type === FETCH_DATA_PENDING)
+    return {
+      ...state,
+      loaderBool: true,
+    };
   if (type === FETCH_DATA_FULFILLED) {
     const resultToSend = {};
     for (let i = 0; i < action.payload.data.length; i++) {
@@ -78,7 +90,11 @@ function tasksReducer(state = initialStates, action) {
   if (type === FETCH_DATA_REJECTED) console.log("errror");
 
   // /////////////////////data update promise
-  if (type === UPDATE_TASK_PENDING) console.log("loading up");
+  if (type === UPDATE_TASK_PENDING)
+    return {
+      ...state,
+      loaderBool: true,
+    };
   if (type === UPDATE_TASK_FULFILLED) {
     const myData = { ...state.tasks };
     const { _id } = action.payload.data.data;
