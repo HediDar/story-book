@@ -1,21 +1,24 @@
 import {
   DISPLAY_MODE,
-  REMOVE_TASK,
   ADD_TASK,
-  ADD_TO_DONE,
-  MAKE_IMPORTANT,
-  INITIALISE_ALL_TASKS,
   FETCH_DATA,
   DELETE_DATA,
   UPDATE_IMPORTANT,
   UPDATE_DONE,
 } from "./actions-types";
-import { getAllTasks, deleteTask, updateTask } from "../domain/myAPIS";
+import { getAllTasks, deleteTask, updateTask, addTask } from "../domain/myAPIS";
 
 const fetchAllTasksByApiAction = () => {
   return {
     type: FETCH_DATA,
     payload: getAllTasks(),
+  };
+};
+
+const addTaskByApiAction = (task) => {
+  return {
+    type: ADD_TASK,
+    payload: addTask(task),
   };
 };
 
@@ -55,6 +58,7 @@ function addTaskAction(task) {
 }
 
 export {
+  addTaskByApiAction,
   updateTaskDoneByApiAction,
   updateTaskImportantByApiAction,
   deleteTaskByApiAction,

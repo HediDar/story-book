@@ -13,7 +13,6 @@ import {
   filterTasks,
   getButtonsColorByDisplayMode,
 } from "../selectors/filterSelector";
-import { getAllTasks, deleteTask, updateTask } from "../domain/myAPIS";
 import * as actionCreators from "../actions/tasksActions";
 
 class ToDosAndDones extends Component {
@@ -37,7 +36,6 @@ class ToDosAndDones extends Component {
   };
 
   onDeleteHandle = (id) => {
-    console.log(id);
     this.props.deleteTaskByApiAction({ id });
   };
 

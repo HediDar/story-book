@@ -40,25 +40,27 @@ const AddToDo = (props) => {
         };
       }
 
-      let promise = new Promise(function (resolve, reject) {
-        const responseTasks = addTask(myTask);
-        if (responseTasks) {
-          resolve(responseTasks);
-        } else {
-          reject(Error("It broke"));
-        }
-      });
+      props.addTaskByApiAction(myTask);
 
-      promise.then(
-        function (result) {
-          addTaskAction(result.data.data);
-          // console.log(result.data.data);
-        },
-        function (err) {
-          // Error: "It broke"
-          console.log(err);
-        }
-      );
+      // let promise = new Promise(function (resolve, reject) {
+      //   const responseTasks = addTask(myTask);
+      //   if (responseTasks) {
+      //     resolve(responseTasks);
+      //   } else {
+      //     reject(Error("It broke"));
+      //   }
+      // });
+
+      // promise.then(
+      //   function (result) {
+      //     addTaskAction(result.data.data);
+      //     // console.log(result.data.data);
+      //   },
+      //   function (err) {
+      //     // Error: "It broke"
+      //     console.log(err);
+      //   }
+      // );
     }
     setTextName("");
     setDescriptionArea("");
@@ -138,6 +140,8 @@ AddToDo.defaultProps = {
 
 const mapDispatchToProps = (dispatch) => ({
   addTaskAction: (obj) => dispatch(actionCreators.addTaskAction(obj)),
+  addTaskByApiAction: (payload) =>
+    dispatch(actionCreators.addTaskByApiAction(payload)),
 });
 
 export default connect(null, mapDispatchToProps)(AddToDo);

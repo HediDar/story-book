@@ -1,15 +1,5 @@
 export const DISPLAY_MODE = "DISPLAY_MODE";
 
-export const REMOVE_TASK = "REMOVE_TASK";
-
-export const ADD_TASK = "ADD_TASK";
-
-export const MAKE_IMPORTANT = "MAKE_IMPORTANT";
-
-export const ADD_TO_DONE = "ADD_TO_DONE";
-
-export const INITIALISE_ALL_TASKS = "INITIALISE_ALL_TASKS";
-
 export const FETCH_DATA = "FETCH_DATA";
 
 export const FETCH_DATA_PENDING = "FETCH_DATA_PENDING";
@@ -41,3 +31,11 @@ export const UPDATE_DONE_PENDING = "UPDATE_DONE_PENDING";
 export const UPDATE_DONE_FULFILLED = "UPDATE_DONE_FULFILLED";
 
 export const UPDATE_DONE_REJECTED = "UPDATE_DONE_REJECTED";
+
+export const ADD_TASK = "ADD_TASK";
+
+export const ADD_TASK_PENDING = "ADD_TASK_PENDING";
+
+export const ADD_TASK_FULFILLED = "ADD_TASK_FULFILLED";
+
+export const ADD_TASK_REJECTED = "ADD_TASK_REJECTED";
