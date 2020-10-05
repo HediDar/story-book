@@ -25,21 +25,30 @@ class ToDosAndDones extends Component {
 
   onImportantHandle = (task) => {
     const taskVar = { ...task };
+    const {
+      setLoaderBoolToActiveAction,
+      updateTaskImportantByApiAction,
+    } = this.props;
     if (taskVar.important === false) taskVar.important = true;
-    this.props.setLoaderBoolToActiveAction();
-    this.props.updateTaskImportantByApiAction(taskVar);
+    setLoaderBoolToActiveAction();
+    updateTaskImportantByApiAction(taskVar);
   };
 
   onDoneHandle = (task) => {
     const taskVar = { ...task };
+    const {
+      setLoaderBoolToActiveAction,
+      updateTaskDoneByApiAction,
+    } = this.props;
     if (taskVar.done === false) taskVar.done = true;
-    this.props.setLoaderBoolToActiveAction();
-    this.props.updateTaskDoneByApiAction(taskVar);
+    setLoaderBoolToActiveAction();
+    updateTaskDoneByApiAction(taskVar);
   };
 
   onDeleteHandle = (id) => {
-    this.props.setLoaderBoolToActiveAction();
-    this.props.deleteTaskByApiAction({ id });
+    const { setLoaderBoolToActiveAction, deleteTaskByApiAction } = this.props;
+    setLoaderBoolToActiveAction();
+    deleteTaskByApiAction({ id });
   };
 
   allButtonClick = () => {
@@ -58,7 +67,12 @@ class ToDosAndDones extends Component {
   };
 
   render() {
-    const { displayMode, tasksFiltred, GroupButtonsColors } = this.props;
+    const {
+      displayMode,
+      tasksFiltred,
+      GroupButtonsColors,
+      loaderBool,
+    } = this.props;
     return (
       <>
         <Table aria-label="simple table">
@@ -71,7 +85,8 @@ class ToDosAndDones extends Component {
               <TableCell align="right"> </TableCell>
               <TableCell align="right">
                 {" "}
-                <Loader style={{display: this.props.loaderBool ? 'block' : 'none' }}
+                <Loader
+                  style={{ display: loaderBool ? "block" : "none" }}
                   type="ThreeDots"
                   color="#2BAD60"
                   height="100"
@@ -125,17 +140,29 @@ class ToDosAndDones extends Component {
 }
 
 ToDosAndDones.propTypes = {
+  fetchAllTasksByApiAction: PropTypes.func,
+  updateTaskImportantByApiAction: PropTypes.func,
+  deleteTaskByApiAction: PropTypes.func,
+  updateTaskDoneByApiAction: PropTypes.func,
+  setLoaderBoolToActiveAction: PropTypes.func,
   changeDisplayModeAction: PropTypes.func,
   displayMode: PropTypes.string,
   tasks: PropTypes.shape({}),
+  loaderBool: PropTypes.bool,
   tasksFiltred: PropTypes.arrayOf(PropTypes.shape({})),
   GroupButtonsColors: PropTypes.arrayOf(string),
 };
 
 ToDosAndDones.defaultProps = {
+  fetchAllTasksByApiAction: () => {},
+  deleteTaskByApiAction: () => {},
+  updateTaskImportantByApiAction: () => {},
+  updateTaskDoneByApiAction: () => {},
+  setLoaderBoolToActiveAction: () => {},
   changeDisplayModeAction: () => {},
   displayMode: "all",
   tasks: {},
+  loaderBool: true,
   tasksFiltred: [{}],
   GroupButtonsColors: ["primary", "secondary", "secondary"],
 };
@@ -144,7 +171,7 @@ const mapStateToProps = (state) => {
   return {
     displayMode: state.displayMode,
     tasks: state.tasks,
-    loaderBool:state.loaderBool,
+    loaderBool: state.loaderBool,
     tasksFiltred: filterTasks(state),
     GroupButtonsColors: getButtonsColorByDisplayMode(state),
   };

@@ -11,18 +11,16 @@ import {
 } from "@material-ui/core";
 
 import * as actionCreators from "../actions/tasksActions";
-import { addTask } from "../domain/myAPIS";
 
 const AddToDo = (props) => {
   const [nameText, setTextName] = useState("");
   const [DescriptionArea, setDescriptionArea] = useState("");
   const [importantRadio, setImportantRadio] = useState("notImportant");
+  const { setLoaderBoolToActiveAction, addTaskByApiAction } = props;
 
   function onClickCalls() {
     if (nameText === "") alert("you need to name your task");
     else {
-      const { addTaskAction } = props;
-
       let myTask = {};
       if (importantRadio === "notImportant") {
         myTask = {
@@ -39,8 +37,8 @@ const AddToDo = (props) => {
           done: false,
         };
       }
-      props.setLoaderBoolToActiveAction();
-      props.addTaskByApiAction(myTask);
+      setLoaderBoolToActiveAction();
+      addTaskByApiAction(myTask);
     }
     setTextName("");
     setDescriptionArea("");
@@ -112,16 +110,17 @@ const AddToDo = (props) => {
 };
 
 AddToDo.propTypes = {
-  addTaskAction: PropTypes.func,
+  setLoaderBoolToActiveAction: PropTypes.func,
+  addTaskByApiAction: PropTypes.func,
 };
 AddToDo.defaultProps = {
-  addTaskAction: () => {},
+  setLoaderBoolToActiveAction: () => {},
+  addTaskByApiAction: () => {},
 };
 
 const mapDispatchToProps = (dispatch) => ({
   setLoaderBoolToActiveAction: () =>
     dispatch(actionCreators.setLoaderBoolToActiveAction()),
-  addTaskAction: (obj) => dispatch(actionCreators.addTaskAction(obj)),
   addTaskByApiAction: (payload) =>
     dispatch(actionCreators.addTaskByApiAction(payload)),
 });
