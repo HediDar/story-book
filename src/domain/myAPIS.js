@@ -13,7 +13,7 @@ export function addTask(task) {
   });
 }
 
-export function deleteTask(id) {
+export function deleteTask({id}) {
   return axios.delete("http://localhost:8000/api/tasks?_id=" + id);
 }
 

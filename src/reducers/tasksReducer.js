@@ -7,6 +7,12 @@ import {
   FETCH_DATA_PENDING,
   FETCH_DATA_FULFILLED,
   FETCH_DATA_REJECTED,
+  DELETE_DATA_PENDING,
+  DELETE_DATA_FULFILLED,
+  DELETE_DATA_REJECTED,
+  UPDATE_DATA_PENDING,
+  UPDATE_DATA_FULFILLED,
+  UPDATE_DATA_REJECTED,
 } from "../actions/actions-types";
 
 const initialStates = {
@@ -17,7 +23,7 @@ const initialStates = {
 function tasksReducer(state = initialStates, action) {
   // if state is empty, we take initialStates
   const { type } = action;
-
+  // data fetching promise treatment
   if (type === FETCH_DATA_PENDING) console.log("loading");
   if (type === FETCH_DATA_FULFILLED) {
     const resultToSend = {};
@@ -31,6 +37,18 @@ function tasksReducer(state = initialStates, action) {
     };
   }
   if (type === FETCH_DATA_REJECTED) console.log("errror");
+  // data delete promise treatment
+  if (type === DELETE_DATA_PENDING) console.log("loading");
+  if (type === DELETE_DATA_FULFILLED) {
+    const data = { ...state.tasks };
+    const id = action.payload.data.data;
+    delete data[id];
+    return {
+      ...state,
+      tasks: data,
+    };
+  }
+  if (type === DELETE_DATA_REJECTED) console.log("delete error");
 
   if (type === REMOVE_TASK) {
     const data = { ...state.tasks };

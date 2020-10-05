@@ -17,9 +17,8 @@ import { getAllTasks, deleteTask, updateTask } from "../domain/myAPIS";
 import * as actionCreators from "../actions/tasksActions";
 
 class ToDosAndDones extends Component {
-  
   componentDidMount() {
-    const {fetchAllTasksByApiAction}=this.props;
+    const { fetchAllTasksByApiAction } = this.props;
     fetchAllTasksByApiAction();
   }
 
@@ -78,26 +77,28 @@ class ToDosAndDones extends Component {
   };
 
   onDeleteHandle = (id) => {
-    let promiseDelete = new Promise(function (resolve, reject) {
-      const responseDeleteTask = deleteTask(id);
 
-      if (responseDeleteTask) {
-        resolve(responseDeleteTask);
-      } else {
-        reject(Error("It broke"));
-      }
-    });
-    const { removeTaskAction } = this.props;
-    promiseDelete.then(
-      function (result) {
-        console.log("result deleted");
-        removeTaskAction({ id });
-      },
-      function (err) {
-        // Error: "It broke"
-        console.log(err);
-      }
-    );
+    console.log(id);
+    this.props.deleteTaskByApiAction({id});
+    // let promiseDelete = new Promise(function (resolve, reject) {
+    //   const responseDeleteTask = deleteTask(id);
+    //   if (responseDeleteTask) {
+    //     resolve(responseDeleteTask);
+    //   } else {
+    //     reject(Error("It broke"));
+    //   }
+    // });
+    // const { removeTaskAction } = this.props;
+    // promiseDelete.then(
+    //   function (result) {
+    //     console.log("result deleted");
+    //     removeTaskAction({ id });
+    //   },
+    //   function (err) {
+    //     // Error: "It broke"
+    //     console.log(err);
+    //   }
+    // );
   };
 
   allButtonClick = () => {
@@ -208,6 +209,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  deleteTaskByApiAction: (payload) => dispatch(actionCreators.deleteTaskByApiAction(payload)),
   fetchAllTasksByApiAction: () =>
     dispatch(actionCreators.fetchAllTasksByApiAction()),
   initialiseAllTasksAction: (payload) =>

@@ -6,10 +6,9 @@ import {
   MAKE_IMPORTANT,
   INITIALISE_ALL_TASKS,
   FETCH_DATA,
+  DELETE_DATA,
 } from "./actions-types";
 import { getAllTasks, deleteTask, updateTask } from "../domain/myAPIS";
-
-
 
 const fetchAllTasksByApiAction = () => {
   return {
@@ -18,6 +17,14 @@ const fetchAllTasksByApiAction = () => {
   };
 };
 
+function deleteTaskByApiAction({id}) {
+ 
+
+  return {
+    type: DELETE_DATA,
+    payload: deleteTask({ id }),
+  };
+}
 
 function initialiseAllTasksAction(tasks) {
   return {
@@ -62,6 +69,7 @@ function addToDoneAction({ id }) {
 }
 
 export {
+  deleteTaskByApiAction,
   fetchAllTasksByApiAction,
   initialiseAllTasksAction,
   addToDoneAction,
