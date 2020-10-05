@@ -8,7 +8,9 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Loader from "react-loader-spinner";
 import SingleTask from "./SingleTask";
+
 import {
   filterTasks,
   getButtonsColorByDisplayMode,
@@ -24,18 +26,19 @@ class ToDosAndDones extends Component {
   onImportantHandle = (task) => {
     const taskVar = { ...task };
     if (taskVar.important === false) taskVar.important = true;
-
+    this.props.setLoaderBoolToActiveAction();
     this.props.updateTaskImportantByApiAction(taskVar);
   };
 
   onDoneHandle = (task) => {
     const taskVar = { ...task };
     if (taskVar.done === false) taskVar.done = true;
-
+    this.props.setLoaderBoolToActiveAction();
     this.props.updateTaskDoneByApiAction(taskVar);
   };
 
   onDeleteHandle = (id) => {
+    this.props.setLoaderBoolToActiveAction();
     this.props.deleteTaskByApiAction({ id });
   };
 
@@ -66,7 +69,15 @@ class ToDosAndDones extends Component {
                 {" items displayed"}{" "}
               </TableCell>
               <TableCell align="right"> </TableCell>
-              <TableCell align="right"> </TableCell>
+              <TableCell align="right">
+                {" "}
+                <Loader style={{display: this.props.loaderBool ? 'block' : 'none' }}
+                  type="ThreeDots"
+                  color="#2BAD60"
+                  height="100"
+                  width="100"
+                />{" "}
+              </TableCell>
               <TableCell align="right">
                 <ButtonGroup aria-label="outlined secondary button group">
                   <Button
@@ -133,12 +144,15 @@ const mapStateToProps = (state) => {
   return {
     displayMode: state.displayMode,
     tasks: state.tasks,
+    loaderBool:state.loaderBool,
     tasksFiltred: filterTasks(state),
     GroupButtonsColors: getButtonsColorByDisplayMode(state),
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  setLoaderBoolToActiveAction: () =>
+    dispatch(actionCreators.setLoaderBoolToActiveAction()),
   updateTaskDoneByApiAction: (payload) =>
     dispatch(actionCreators.updateTaskDoneByApiAction(payload)),
   updateTaskImportantByApiAction: (payload) =>

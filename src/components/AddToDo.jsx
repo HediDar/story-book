@@ -39,28 +39,8 @@ const AddToDo = (props) => {
           done: false,
         };
       }
-
+      props.setLoaderBoolToActiveAction();
       props.addTaskByApiAction(myTask);
-
-      // let promise = new Promise(function (resolve, reject) {
-      //   const responseTasks = addTask(myTask);
-      //   if (responseTasks) {
-      //     resolve(responseTasks);
-      //   } else {
-      //     reject(Error("It broke"));
-      //   }
-      // });
-
-      // promise.then(
-      //   function (result) {
-      //     addTaskAction(result.data.data);
-      //     // console.log(result.data.data);
-      //   },
-      //   function (err) {
-      //     // Error: "It broke"
-      //     console.log(err);
-      //   }
-      // );
     }
     setTextName("");
     setDescriptionArea("");
@@ -139,6 +119,8 @@ AddToDo.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  setLoaderBoolToActiveAction: () =>
+    dispatch(actionCreators.setLoaderBoolToActiveAction()),
   addTaskAction: (obj) => dispatch(actionCreators.addTaskAction(obj)),
   addTaskByApiAction: (payload) =>
     dispatch(actionCreators.addTaskByApiAction(payload)),

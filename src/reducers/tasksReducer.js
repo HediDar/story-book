@@ -1,5 +1,4 @@
 import {
-  ADD_TASK,
   DISPLAY_MODE,
   FETCH_DATA_PENDING,
   FETCH_DATA_FULFILLED,
@@ -16,10 +15,12 @@ import {
   ADD_TASK_FULFILLED,
   ADD_TASK_PENDING,
   ADD_TASK_REJECTED,
+  LOADER_BOOL,
 } from "../actions/actions-types";
 
 const initialStates = {
   tasks: {},
+  loaderBool: true,
   displayMode: "all",
 };
 
@@ -44,6 +45,7 @@ function tasksReducer(state = initialStates, action) {
           done: false,
         },
       },
+      loaderBool: false,
     };
   }
   if (type === ADD_TASK_REJECTED) console.log("errror");
@@ -57,6 +59,7 @@ function tasksReducer(state = initialStates, action) {
     return {
       ...state,
       tasks: data,
+      loaderBool: false,
     };
   }
   if (type === DELETE_DATA_REJECTED) console.log("delete error");
@@ -72,6 +75,7 @@ function tasksReducer(state = initialStates, action) {
     return {
       ...state,
       tasks: resultToSend,
+      loaderBool: false,
     };
   }
   if (type === FETCH_DATA_REJECTED) console.log("errror");
@@ -88,6 +92,7 @@ function tasksReducer(state = initialStates, action) {
     return {
       ...state,
       tasks: myData,
+      loaderBool: false,
     };
   }
   if (type === UPDATE_IMPORTANT_REJECTED) console.log("errror");
@@ -105,6 +110,7 @@ function tasksReducer(state = initialStates, action) {
     return {
       ...state,
       tasks: myData,
+      loaderBool: false,
     };
   }
   if (type === UPDATE_DONE_REJECTED) console.log("errror");
@@ -115,6 +121,12 @@ function tasksReducer(state = initialStates, action) {
     return {
       ...state,
       displayMode: action.payload,
+    };
+
+  if (type === LOADER_BOOL)
+    return {
+      ...state,
+      loaderBool: true,
     };
 
   return state;

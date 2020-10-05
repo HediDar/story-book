@@ -5,6 +5,7 @@ import {
   DELETE_DATA,
   UPDATE_IMPORTANT,
   UPDATE_DONE,
+  LOADER_BOOL,
 } from "./actions-types";
 import { getAllTasks, deleteTask, updateTask, addTask } from "../domain/myAPIS";
 
@@ -57,7 +58,14 @@ function addTaskAction(task) {
   };
 }
 
+function setLoaderBoolToActiveAction() {
+  return {
+    type: LOADER_BOOL,
+  };
+}
+
 export {
+  setLoaderBoolToActiveAction,
   addTaskByApiAction,
   updateTaskDoneByApiAction,
   updateTaskImportantByApiAction,
