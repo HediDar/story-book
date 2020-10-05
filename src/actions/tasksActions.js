@@ -4,7 +4,6 @@ import {
   FETCH_DATA,
   DELETE_DATA,
   UPDATE_TASK,
-  UPDATE_DONE,
   LOADER_BOOL,
 } from "./actions-types";
 import { getAllTasks, deleteTask, updateTask, addTask } from "../domain/myAPIS";
@@ -30,19 +29,12 @@ function deleteTaskByApiAction({ id }) {
   };
 }
 
-function updateTaskByApiAction(task,isImportantTest) {
- // console.log(isImportantTest);
+function updateTaskByApiAction(task) {
+  // console.log(isImportantTest);
   return {
     type: UPDATE_TASK,
     payload: updateTask(task),
-    meta:isImportantTest,
-  };
-}
-
-function updateTaskDoneByApiAction(task) {
-  return {
-    type: UPDATE_DONE,
-    payload: updateTask(task),
+    meta: task.importantOrDoneBool,
   };
 }
 
@@ -69,7 +61,6 @@ function setLoaderBoolToActiveAction() {
 export {
   setLoaderBoolToActiveAction,
   addTaskByApiAction,
-  updateTaskDoneByApiAction,
   updateTaskByApiAction,
   deleteTaskByApiAction,
   fetchAllTasksByApiAction,

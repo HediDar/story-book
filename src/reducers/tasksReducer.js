@@ -9,9 +9,6 @@ import {
   UPDATE_TASK_PENDING,
   UPDATE_TASK_FULFILLED,
   UPDATE_TASK_REJECTED,
-  UPDATE_DONE_PENDING,
-  UPDATE_DONE_FULFILLED,
-  UPDATE_DONE_REJECTED,
   ADD_TASK_FULFILLED,
   ADD_TASK_PENDING,
   ADD_TASK_REJECTED,
@@ -83,7 +80,6 @@ function tasksReducer(state = initialStates, action) {
   // /////////////////////data update promise
   if (type === UPDATE_TASK_PENDING) console.log("loading up");
   if (type === UPDATE_TASK_FULFILLED) {
-    console.log(action.meta);
     const myData = { ...state.tasks };
     const { _id } = action.payload.data.data;
 
@@ -108,24 +104,6 @@ function tasksReducer(state = initialStates, action) {
     };
   }
   if (type === UPDATE_TASK_REJECTED) console.log("errror");
-
-  // update done prommmmmmmmmiiisse
-
-  if (type === UPDATE_DONE_PENDING) console.log("loading up");
-  if (type === UPDATE_DONE_FULFILLED) {
-    const myData = { ...state.tasks };
-    const { _id } = action.payload.data.data;
-
-    if (myData[_id].done === false) myData[_id].done = true;
-    else myData[_id].done = false;
-
-    return {
-      ...state,
-      tasks: myData,
-      loaderBool: false,
-    };
-  }
-  if (type === UPDATE_DONE_REJECTED) console.log("errror");
 
   // end promise treatment
 

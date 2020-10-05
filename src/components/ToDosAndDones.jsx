@@ -25,24 +25,21 @@ class ToDosAndDones extends Component {
 
   onImportantHandle = (task) => {
     const taskVar = { ...task };
-    const {
-      setLoaderBoolToActiveAction,
-      updateTaskByApiAction,
-    } = this.props;
+    const { setLoaderBoolToActiveAction, updateTaskByApiAction } = this.props;
     if (taskVar.important === false) taskVar.important = true;
     setLoaderBoolToActiveAction();
-    updateTaskByApiAction(taskVar,true);
+    taskVar.importantOrDoneBool = true;
+
+    updateTaskByApiAction(taskVar);
   };
 
   onDoneHandle = (task) => {
     const taskVar = { ...task };
-    const {
-      setLoaderBoolToActiveAction,
-      updateTaskDoneByApiAction,
-    } = this.props;
+    const { setLoaderBoolToActiveAction, updateTaskByApiAction } = this.props;
     if (taskVar.done === false) taskVar.done = true;
     setLoaderBoolToActiveAction();
-    updateTaskDoneByApiAction(taskVar);
+    taskVar.importantOrDoneBool = false;
+    updateTaskByApiAction(taskVar);
   };
 
   onDeleteHandle = (id) => {
@@ -143,7 +140,6 @@ ToDosAndDones.propTypes = {
   fetchAllTasksByApiAction: PropTypes.func,
   updateTaskByApiAction: PropTypes.func,
   deleteTaskByApiAction: PropTypes.func,
-  updateTaskDoneByApiAction: PropTypes.func,
   setLoaderBoolToActiveAction: PropTypes.func,
   changeDisplayModeAction: PropTypes.func,
   displayMode: PropTypes.string,
@@ -157,7 +153,6 @@ ToDosAndDones.defaultProps = {
   fetchAllTasksByApiAction: () => {},
   deleteTaskByApiAction: () => {},
   updateTaskByApiAction: () => {},
-  updateTaskDoneByApiAction: () => {},
   setLoaderBoolToActiveAction: () => {},
   changeDisplayModeAction: () => {},
   displayMode: "all",
@@ -180,10 +175,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   setLoaderBoolToActiveAction: () =>
     dispatch(actionCreators.setLoaderBoolToActiveAction()),
-  updateTaskDoneByApiAction: (payload) =>
-    dispatch(actionCreators.updateTaskDoneByApiAction(payload)),
-  updateTaskByApiAction: (payload,meta) =>
-    dispatch(actionCreators.updateTaskByApiAction(payload,meta)),
+  updateTaskByApiAction: (payload) =>
+    dispatch(actionCreators.updateTaskByApiAction(payload)),
   deleteTaskByApiAction: (payload) =>
     dispatch(actionCreators.deleteTaskByApiAction(payload)),
   fetchAllTasksByApiAction: () =>
