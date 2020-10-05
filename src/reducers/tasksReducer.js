@@ -6,9 +6,9 @@ import {
   DELETE_DATA_PENDING,
   DELETE_DATA_FULFILLED,
   DELETE_DATA_REJECTED,
-  UPDATE_IMPORTANT_PENDING,
-  UPDATE_IMPORTANT_FULFILLED,
-  UPDATE_IMPORTANT_REJECTED,
+  UPDATE_TASK_PENDING,
+  UPDATE_TASK_FULFILLED,
+  UPDATE_TASK_REJECTED,
   UPDATE_DONE_PENDING,
   UPDATE_DONE_FULFILLED,
   UPDATE_DONE_REJECTED,
@@ -81,13 +81,25 @@ function tasksReducer(state = initialStates, action) {
   if (type === FETCH_DATA_REJECTED) console.log("errror");
 
   // /////////////////////data update promise
-  if (type === UPDATE_IMPORTANT_PENDING) console.log("loading up");
-  if (type === UPDATE_IMPORTANT_FULFILLED) {
+  if (type === UPDATE_TASK_PENDING) console.log("loading up");
+  if (type === UPDATE_TASK_FULFILLED) {
+    console.log(action.meta);
     const myData = { ...state.tasks };
     const { _id } = action.payload.data.data;
 
-    if (myData[_id].important === false) myData[_id].important = true;
-    else myData[_id].important = false;
+    if (action.meta === true) {
+      if (myData[_id].important === false) myData[_id].important = true;
+      else myData[_id].important = false;
+
+      return {
+        ...state,
+        tasks: myData,
+        loaderBool: false,
+      };
+    }
+
+    if (myData[_id].done === false) myData[_id].done = true;
+    else myData[_id].done = false;
 
     return {
       ...state,
@@ -95,7 +107,7 @@ function tasksReducer(state = initialStates, action) {
       loaderBool: false,
     };
   }
-  if (type === UPDATE_IMPORTANT_REJECTED) console.log("errror");
+  if (type === UPDATE_TASK_REJECTED) console.log("errror");
 
   // update done prommmmmmmmmiiisse
 

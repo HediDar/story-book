@@ -3,7 +3,7 @@ import {
   ADD_TASK,
   FETCH_DATA,
   DELETE_DATA,
-  UPDATE_IMPORTANT,
+  UPDATE_TASK,
   UPDATE_DONE,
   LOADER_BOOL,
 } from "./actions-types";
@@ -30,10 +30,12 @@ function deleteTaskByApiAction({ id }) {
   };
 }
 
-function updateTaskImportantByApiAction(task) {
+function updateTaskByApiAction(task,isImportantTest) {
+ // console.log(isImportantTest);
   return {
-    type: UPDATE_IMPORTANT,
+    type: UPDATE_TASK,
     payload: updateTask(task),
+    meta:isImportantTest,
   };
 }
 
@@ -68,7 +70,7 @@ export {
   setLoaderBoolToActiveAction,
   addTaskByApiAction,
   updateTaskDoneByApiAction,
-  updateTaskImportantByApiAction,
+  updateTaskByApiAction,
   deleteTaskByApiAction,
   fetchAllTasksByApiAction,
   changeDisplayModeAction,

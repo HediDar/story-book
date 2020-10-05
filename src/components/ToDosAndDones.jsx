@@ -27,11 +27,11 @@ class ToDosAndDones extends Component {
     const taskVar = { ...task };
     const {
       setLoaderBoolToActiveAction,
-      updateTaskImportantByApiAction,
+      updateTaskByApiAction,
     } = this.props;
     if (taskVar.important === false) taskVar.important = true;
     setLoaderBoolToActiveAction();
-    updateTaskImportantByApiAction(taskVar);
+    updateTaskByApiAction(taskVar,true);
   };
 
   onDoneHandle = (task) => {
@@ -141,7 +141,7 @@ class ToDosAndDones extends Component {
 
 ToDosAndDones.propTypes = {
   fetchAllTasksByApiAction: PropTypes.func,
-  updateTaskImportantByApiAction: PropTypes.func,
+  updateTaskByApiAction: PropTypes.func,
   deleteTaskByApiAction: PropTypes.func,
   updateTaskDoneByApiAction: PropTypes.func,
   setLoaderBoolToActiveAction: PropTypes.func,
@@ -156,7 +156,7 @@ ToDosAndDones.propTypes = {
 ToDosAndDones.defaultProps = {
   fetchAllTasksByApiAction: () => {},
   deleteTaskByApiAction: () => {},
-  updateTaskImportantByApiAction: () => {},
+  updateTaskByApiAction: () => {},
   updateTaskDoneByApiAction: () => {},
   setLoaderBoolToActiveAction: () => {},
   changeDisplayModeAction: () => {},
@@ -182,8 +182,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.setLoaderBoolToActiveAction()),
   updateTaskDoneByApiAction: (payload) =>
     dispatch(actionCreators.updateTaskDoneByApiAction(payload)),
-  updateTaskImportantByApiAction: (payload) =>
-    dispatch(actionCreators.updateTaskImportantByApiAction(payload)),
+  updateTaskByApiAction: (payload,meta) =>
+    dispatch(actionCreators.updateTaskByApiAction(payload,meta)),
   deleteTaskByApiAction: (payload) =>
     dispatch(actionCreators.deleteTaskByApiAction(payload)),
   fetchAllTasksByApiAction: () =>
