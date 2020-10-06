@@ -27,7 +27,8 @@ class ToDosAndDones extends Component {
     const taskVar = { ...task };
     const { updateTaskByApiAction } = this.props;
     if (taskVar.important === false) taskVar.important = true;
-    taskVar.importantOrDoneBool = false;
+    else taskVar.important = false;
+    taskVar.importantOrDoneBool = true;
 
     updateTaskByApiAction(taskVar);
   };
