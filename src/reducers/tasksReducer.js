@@ -19,6 +19,7 @@ const initialStates = {
   tasks: {},
   loaderBool: true,
   displayMode: "all",
+  connectionBool: true,
 };
 
 function tasksReducer(state = initialStates, action) {
@@ -30,6 +31,7 @@ function tasksReducer(state = initialStates, action) {
     return {
       ...state,
       loaderBool: true,
+      connectionBool: true,
     };
   if (type === ADD_TASK_FULFILLED) {
     const taskArg = action.payload.data.data;
@@ -49,13 +51,21 @@ function tasksReducer(state = initialStates, action) {
       loaderBool: false,
     };
   }
-  if (type === ADD_TASK_REJECTED) console.log("errror");
+  if (type === ADD_TASK_REJECTED) {
+    console.log("errror");
+    return {
+      ...state,
+      loaderBool: false,
+      connectionBool: false,
+    };
+  }
 
   // /////////////////////data delete promise treatment
   if (type === DELETE_DATA_PENDING)
     return {
       ...state,
       loaderBool: true,
+      connectionBool: true,
     };
   if (type === DELETE_DATA_FULFILLED) {
     const data = { ...state.tasks };
@@ -67,13 +77,21 @@ function tasksReducer(state = initialStates, action) {
       loaderBool: false,
     };
   }
-  if (type === DELETE_DATA_REJECTED) console.log("delete error");
+  if (type === DELETE_DATA_REJECTED) {
+    console.log("delete error");
+    return {
+      ...state,
+      loaderBool: false,
+      connectionBool: false,
+    };
+  }
 
   // //////////////////data fetching promise treatment
   if (type === FETCH_DATA_PENDING)
     return {
       ...state,
       loaderBool: true,
+      connectionBool: true,
     };
   if (type === FETCH_DATA_FULFILLED) {
     const resultToSend = {};
@@ -87,13 +105,21 @@ function tasksReducer(state = initialStates, action) {
       loaderBool: false,
     };
   }
-  if (type === FETCH_DATA_REJECTED) console.log("errror");
+  if (type === FETCH_DATA_REJECTED) {
+    console.log("errror");
+    return {
+      ...state,
+      loaderBool: false,
+      connectionBool: false,
+    };
+  }
 
   // /////////////////////data update promise
   if (type === UPDATE_TASK_PENDING)
     return {
       ...state,
       loaderBool: true,
+      connectionBool: true,
     };
   if (type === UPDATE_TASK_FULFILLED) {
     const myData = { ...state.tasks };
@@ -119,7 +145,14 @@ function tasksReducer(state = initialStates, action) {
       loaderBool: false,
     };
   }
-  if (type === UPDATE_TASK_REJECTED) console.log("errror");
+  if (type === UPDATE_TASK_REJECTED) {
+    console.log("errror");
+    return {
+      ...state,
+      loaderBool: false,
+      connectionBool: false,
+    };
+  }
 
   // end promise treatment
 

@@ -16,7 +16,7 @@ const AddToDo = (props) => {
   const [nameText, setTextName] = useState("");
   const [DescriptionArea, setDescriptionArea] = useState("");
   const [importantRadio, setImportantRadio] = useState("notImportant");
-  const { addTaskByApiAction } = props;
+  const { addTaskByApiAction,connectionBool,loaderBool } = props;
 
   function onClickCalls() {
     if (nameText === "") alert("you need to name your task");
@@ -99,7 +99,12 @@ const AddToDo = (props) => {
             </RadioGroup>
           </Grid>
           <Grid container item style={{ justifyContent: "center" }} xl={12}>
-            <Button fullWidth color="secondary" onClick={() => onClickCalls()}>
+            <Button
+              disabled={!connectionBool||loaderBool}
+              fullWidth
+              color="secondary"
+              onClick={() => onClickCalls()}
+            >
               Add task
             </Button>
           </Grid>
@@ -116,9 +121,16 @@ AddToDo.defaultProps = {
   addTaskByApiAction: () => {},
 };
 
+const mapStateToProps = (state) => {
+  return {
+    connectionBool: state.connectionBool,
+    loaderBool: state.loaderBool,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => ({
   addTaskByApiAction: (payload) =>
     dispatch(actionCreators.addTaskByApiAction(payload)),
 });
 
-export default connect(null, mapDispatchToProps)(AddToDo);
+export default connect(mapStateToProps, mapDispatchToProps)(AddToDo);

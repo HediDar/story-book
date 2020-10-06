@@ -27,7 +27,7 @@ class ToDosAndDones extends Component {
     const taskVar = { ...task };
     const { updateTaskByApiAction } = this.props;
     if (taskVar.important === false) taskVar.important = true;
-    taskVar.importantOrDoneBool = true;
+    taskVar.importantOrDoneBool = false;
 
     updateTaskByApiAction(taskVar);
   };
@@ -60,74 +60,97 @@ class ToDosAndDones extends Component {
     changeDisplayModeAction("done");
   };
 
+  refreshComponent = () => {
+    window.location.reload(false);
+  };
+
   render() {
     const {
       displayMode,
       tasksFiltred,
       GroupButtonsColors,
       loaderBool,
+      connectionBool,
     } = this.props;
     return (
       <>
-        <Table aria-label="simple table">
+        <Table
+          style={{ display: !connectionBool ? "block" : "none" }}
+          aria-label="simple table"
+        >
           <TableHead>
             <TableRow>
+              <TableCell>a server side error occured</TableCell>
               <TableCell>
-                {tasksFiltred.length}
-                {" items displayed"}{" "}
-              </TableCell>
-              <TableCell align="right"> </TableCell>
-              <TableCell align="right">
-                {" "}
-                <Loader
-                  style={{ display: loaderBool ? "block" : "none" }}
-                  type="ThreeDots"
-                  color="#2BAD60"
-                  height="100"
-                  width="100"
-                />{" "}
-              </TableCell>
-              <TableCell align="right">
-                <ButtonGroup aria-label="outlined secondary button group">
-                  <Button
-                    color={GroupButtonsColors[0]}
-                    onClick={() => this.allButtonClick()}
-                  >
-                    Show all
-                  </Button>
-                  <Button
-                    color={GroupButtonsColors[1]}
-                    onClick={() => this.handleActiveButtonClick()}
-                  >
-                    Show active
-                  </Button>
-                  <Button
-                    color={GroupButtonsColors[2]}
-                    onClick={() => this.handleAllcompletedButtonClick()}
-                  >
-                    Show completed
-                  </Button>
-                </ButtonGroup>
+                <Button color="primary" onClick={() => this.refreshComponent()}>
+                  Refresh and try again?
+                </Button>
               </TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell colSpan="4" component="th" scope="row">
-                {tasksFiltred.map((task) => (
-                  <SingleTask
-                    key={task._id}
-                    task={task}
-                    displayMode={displayMode}
-                    onDone={this.onDoneHandle}
-                    onDeleteTask={this.onDeleteHandle}
-                    onImportant={this.onImportantHandle}
-                  />
-                ))}
-              </TableCell>
-            </TableRow>
-          </TableBody>
         </Table>
+
+        <div style={{ display: connectionBool ? "block" : "none" }}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  {tasksFiltred.length}
+                  {" items displayed"}{" "}
+                </TableCell>
+                <TableCell align="right"> </TableCell>
+                <TableCell align="right">
+                  {" "}
+                  <Loader
+                    style={{ display: loaderBool ? "block" : "none" }}
+                    type="ThreeDots"
+                    color="#2BAD60"
+                    height="100"
+                    width="100"
+                  />{" "}
+                </TableCell>
+                <TableCell align="right">
+                  <ButtonGroup aria-label="outlined secondary button group">
+                    <Button
+                      color={GroupButtonsColors[0]}
+                      onClick={() => this.allButtonClick()}
+                    >
+                      Show all
+                    </Button>
+                    <Button
+                      color={GroupButtonsColors[1]}
+                      onClick={() => this.handleActiveButtonClick()}
+                    >
+                      Show active
+                    </Button>
+                    <Button
+                      color={GroupButtonsColors[2]}
+                      onClick={() => this.handleAllcompletedButtonClick()}
+                    >
+                      Show completed
+                    </Button>
+                  </ButtonGroup>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan="4" component="th" scope="row">
+                  {tasksFiltred.map((task) => (
+                    <SingleTask
+                      key={task._id}
+                      task={task}
+                      displayMode={displayMode}
+                      onDone={this.onDoneHandle}
+                      onDeleteTask={this.onDeleteHandle}
+                      onImportant={this.onImportantHandle}
+                    />
+                  ))}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
       </>
     );
   }
@@ -141,11 +164,13 @@ ToDosAndDones.propTypes = {
   displayMode: PropTypes.string,
   tasks: PropTypes.shape({}),
   loaderBool: PropTypes.bool,
+  connectionBool: PropTypes.bool,
   tasksFiltred: PropTypes.arrayOf(PropTypes.shape({})),
   GroupButtonsColors: PropTypes.arrayOf(string),
 };
 
 ToDosAndDones.defaultProps = {
+  connectionBool: true,
   fetchAllTasksByApiAction: () => {},
   deleteTaskByApiAction: () => {},
   updateTaskByApiAction: () => {},
@@ -161,6 +186,7 @@ const mapStateToProps = (state) => {
   return {
     displayMode: state.displayMode,
     tasks: state.tasks,
+    connectionBool: state.connectionBool,
     loaderBool: state.loaderBool,
     tasksFiltred: filterTasks(state),
     GroupButtonsColors: getButtonsColorByDisplayMode(state),
