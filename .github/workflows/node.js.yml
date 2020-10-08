@@ -24,4 +24,4 @@ jobs:
           PERSONAL_TOKEN: ${{ secrets.GITHUBL_ACCESS_TOKEN }}
           EXTERNAL_REPOSITORY: HediDar/HediDar.github.io
           PUBLISH_BRANCH: master
-          PUBLISH_DIR: ./public
+          PUBLISH_DIR: ./build
