@@ -23,5 +23,7 @@ jobs:
       run: npm install
     - name: Deploy to GH Pages
       run: |
+        git config --global user.email darg.medhed@gmail.com
+        git config --global user.name HediDar
         git remote set-url origin https://994fdb5837569a79d92560dec0e424a7ae11c35a@github.com/HediDar/story-book.git
         npm run deploy
