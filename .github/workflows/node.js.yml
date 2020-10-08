@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - deployGithubActions
+      
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
