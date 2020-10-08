@@ -25,5 +25,5 @@ jobs:
       run: |
         git config --global user.email ${{secrets.GITHUBMAIL}}
         git config --global user.name HediDar
-        git remote set-url origin https://${{secrets.GITHUBL_ACCESS_TOKEN}}@github.com/HediDar/story-book.git
+        git remote set-url origin https://4076a30048123724f4a7978662c34af7eafa6ea6@github.com/HediDar/story-book.git
         npm run deploy
