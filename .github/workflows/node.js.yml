@@ -13,7 +13,7 @@ jobs:
         with:
           persist-credentials: false
 
-     - name: Run Jest
+      - name: Run Jest
         uses: stefanoeb/jest-action@1.0.3
         with:
           jestArgs: ../../__tests__filterByTasksImportantAndDone.sepc.js     
