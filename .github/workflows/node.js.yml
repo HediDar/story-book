@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - deployGithubActions
-      
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -13,8 +13,6 @@ jobs:
         with:
           persist-credentials: false
 
-        
-
       - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
         run: |
           npm install
@@ -22,8 +20,6 @@ jobs:
 
       - name: Run Jest
         uses: stefanoeb/jest-action@1.0.3
-        with:
-          jestArgs: ../../__tests__filterByTasksImportantAndDone.sepc.js   
 
       - name: Deploy 🚀
         uses: peaceiris/actions-gh-pages@v2
