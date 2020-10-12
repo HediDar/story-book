@@ -23,8 +23,6 @@ describe("Filter functions actif", () => {
   });
 });
 
-
-
 describe("Filter functions final filter", () => {
   it("important +!done, not important+!done, then done", () => {
     const input = [
@@ -66,7 +64,6 @@ describe("Filter functions done", () => {
 });
 
 describe("Filter functions all", () => {
- 
   it("important should come always first length 9", () => {
     const input3 = [
       { id: 1, important: false, done: false },
@@ -81,11 +78,12 @@ describe("Filter functions all", () => {
     ];
 
     const output3 = [
-      { id: 2, important: true, done: true },
-      { id: 4, important: true, done: true },
-      { id: 6, important: true, done: false },
-      { id: 8, important: true, done: false },
       { id: 9, important: true, done: false },
+      { id: 8, important: true, done: false },
+      { id: 6, important: true, done: false },
+      { id: 4, important: true, done: true },
+      { id: 2, important: true, done: true },
+
       { id: 1, important: false, done: false },
       { id: 5, important: false, done: false },
       { id: 7, important: false, done: true },
