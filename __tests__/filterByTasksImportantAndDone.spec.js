@@ -1,27 +1,10 @@
-function filterImportantAlwaysFirst(myArray) {
-  myArray.sort((a, b) => (a.important && !b.important ? -1 : 1));
-  return myArray;
-}
-
-function filterDoneAlwaysLast(myArray) {
-  myArray.sort((a, b) => (a.done && !b.done ? 1 : -1));
-
-  return myArray;
-}
-
-function filterImportantThenNotImportantThenDone(myArray) {
-  myArray.sort((a, b) => (a.important && !b.important ? 1 : 1));
-  myArray.sort((a, b) => (a.done && !b.done ? 1 : -1));
-  return myArray;
-}
-
-function removeDone(myArray) {
-  return myArray.filter((el) => el.done === false);
-}
-
-function displayOnlyDone(myArray) {
-  return myArray.filter((el) => el.done === true);
-}
+import {
+  displayOnlyDone,
+  removeDone,
+  filterImportantThenNotImportantThenDone,
+  filterDoneAlwaysLast,
+  filterImportantAlwaysFirst,
+} from "../src/util/filters";
 
 describe("Filter functions actif", () => {
   it("done removed", () => {
@@ -38,6 +21,46 @@ describe("Filter functions actif", () => {
     ];
 
     expect(removeDone(input)).toEqual(output);
+  });
+});
+
+describe("Filter functions done", () => {
+  it("done should always be last", () => {
+    const input = [
+      { id: 2, important: true, done: true },
+      { id: 3, important: true, done: false },
+      { id: 1, important: false, done: false },
+      { id: 4, important: false, done: true },
+    ];
+
+    const output = [
+      { id: 1, important: false, done: false },
+      { id: 3, important: true, done: false },
+      { id: 4, important: false, done: true },
+      { id: 2, important: true, done: true },
+    ];
+
+    expect(filterDoneAlwaysLast(input)).toEqual(output);
+  });
+});
+
+describe("Filter functions final filter", () => {
+  it("important +!done, not important+!done, then done", () => {
+    const input = [
+      { id: 1, important: false, done: false },
+      { id: 2, important: true, done: true },
+      { id: 3, important: true, done: false },
+      { id: 4, important: false, done: true },
+    ];
+
+    const output = [
+      { id: 3, important: true, done: false },
+      { id: 1, important: false, done: false },
+      { id: 4, important: false, done: true },
+      { id: 2, important: true, done: true },
+    ];
+
+    expect(filterImportantThenNotImportantThenDone(input)).toEqual(output);
   });
 });
 
@@ -62,7 +85,7 @@ describe("Filter functions done", () => {
 });
 
 describe("Filter functions all", () => {
-  it("important should come always first", () => {
+  it("important should come always first length 4", () => {
     const input = [
       { id: 1, important: false, done: false },
       { id: 2, important: true, done: true },
@@ -77,7 +100,8 @@ describe("Filter functions all", () => {
       { id: 4, important: false, done: true },
     ];
     expect(filterImportantAlwaysFirst(input)).toEqual(output);
-
+  });
+  it("important should come always first length 6", () => {
     const input2 = [
       { id: 1, important: true, done: true },
       { id: 2, important: true, done: true },
@@ -96,7 +120,8 @@ describe("Filter functions all", () => {
       { id: 6, important: false, done: true },
     ];
     expect(filterImportantAlwaysFirst(input2)).toEqual(output2);
-
+  });
+  it("important should come always first length 9", () => {
     const input3 = [
       { id: 1, important: false, done: false },
       { id: 2, important: true, done: true },
@@ -122,41 +147,5 @@ describe("Filter functions all", () => {
     ];
 
     expect(filterImportantAlwaysFirst(input3)).toEqual(output3);
-  });
-
-  it("done should always be last", () => {
-    const input = [
-      { id: 2, important: true, done: true },
-      { id: 3, important: true, done: false },
-      { id: 1, important: false, done: false },
-      { id: 4, important: false, done: true },
-    ];
-
-    const output = [
-      { id: 1, important: false, done: false },
-      { id: 3, important: true, done: false },
-      { id: 4, important: false, done: true },
-      { id: 2, important: true, done: true },
-    ];
-
-    expect(filterDoneAlwaysLast(input)).toEqual(output);
-  });
-
-  it("important +!done, not important+!done, then done", () => {
-    const input = [
-      { id: 1, important: false, done: false },
-      { id: 2, important: true, done: true },
-      { id: 3, important: true, done: false },
-      { id: 4, important: false, done: true },
-    ];
-
-    const output = [
-      { id: 3, important: true, done: false },
-      { id: 1, important: false, done: false },
-      { id: 4, important: false, done: true },
-      { id: 2, important: true, done: true },
-    ];
-
-    expect(filterImportantThenNotImportantThenDone(input)).toEqual(output);
   });
 });
