@@ -8,7 +8,6 @@ import "./App.css";
 const App = () => {
   return (
     <>
-      <h1>hello</h1>
       <AddToDo />
       <br />
       <br />
