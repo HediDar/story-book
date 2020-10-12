@@ -50,16 +50,37 @@ export default {
       );
     });
   },
+  delete: () => {
+    return new Promise((resolve, reject) => {
+      process.nextTick(() =>
+        tasks
+          ? resolve("delete successful")
+          : reject({
+              error: "Task not found.",
+            })
+      );
+    });
+  },
+  put: () => {
+    return new Promise((resolve, reject) => {
+      process.nextTick(() =>
+        tasks
+          ? resolve("update successful")
+          : reject({
+              error: "Task not found.",
+            })
+      );
+    });
+  },
+  post: () => {
+    return new Promise((resolve, reject) => {
+      process.nextTick(() =>
+        tasks
+          ? resolve("task added")
+          : reject({
+              error: "an error occured",
+            })
+      );
+    });
+  },
 };
-
-// export default function get(url) {
-//   return new Promise((resolve, reject) => {
-//     process.nextTick(() =>
-//       tasks
-//         ? resolve(tasks)
-//         : reject({
-//             error: "Tasks not found.",
-//           })
-//     );
-//   });
-// }
