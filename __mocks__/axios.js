@@ -50,11 +50,20 @@ export default {
       );
     });
   },
-  delete: () => {
+  delete: (failOrSucc) => {
+    if (failOrSucc[failOrSucc.length - 1] === "0")
+      return new Promise((resolve, reject) => {
+        process.nextTick(() =>
+          reject({
+            error: "Task not found.",
+          })
+        );
+      });
+
     return new Promise((resolve, reject) => {
       process.nextTick(() =>
         tasks
-          ? resolve("delete successful")
+          ? resolve("delete successfull")
           : reject({
               error: "Task not found.",
             })

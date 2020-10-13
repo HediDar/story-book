@@ -4,6 +4,7 @@ import {
   deleteTask,
   updateTask,
 } from "../src/domain/myAPIS";
+
 jest.mock("../__mocks__/axios");
 
 it("works with promises", () => {
@@ -53,7 +54,7 @@ it("works with promises", () => {
 it("delete task", () => {
   expect.assertions(1);
   return deleteTask({ id: 5 }).then((data) =>
-    expect(data).toEqual("delete successful")
+    expect(data).toEqual("delete successfull")
   );
 });
 
@@ -74,3 +75,26 @@ it("add task", () => {
     important: true,
   }).then((data) => expect(data).toEqual("task added"));
 });
+
+it("delete task rejected", () => {
+  return deleteTask({ id: 0 }).catch((e) => {
+    console.log("test fail");
+    expect(e).toEqual({ error: "Task not found." });
+  });
+});
+
+// it("delete task rejected", () => {
+//   expect.assertions(1);
+//   return expect(deleteTask({ id: 0 })).rejects.toEqual({
+//     error: "Task not found.",
+//   });
+// });
+
+// it("grgg.",  () => {
+//   expect.assertions(1);
+
+//  return  deleteTask({ id: 5 }).catch((e) => {
+//     console.log("tgtg");
+//     expect(e).toEqual("error");
+//   });
+// });
