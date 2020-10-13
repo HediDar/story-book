@@ -1,12 +1,12 @@
 import axios from "axios";
-jest.mock("axios");
-import "regenerator-runtime/runtime";
 import {
   getAllTasks,
   addTask,
   deleteTask,
   updateTask,
 } from "../src/domain/myAPIS";
+
+jest.mock("axios");
 
 describe("getAllTasks", () => {
   it("fetches successfully all tasks data from an API", async () => {
