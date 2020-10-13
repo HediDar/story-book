@@ -1,3 +1,6 @@
+import axios from "axios";
+jest.mock("axios");
+import "regenerator-runtime/runtime";
 import {
   getAllTasks,
   addTask,
@@ -5,96 +8,110 @@ import {
   updateTask,
 } from "../src/domain/myAPIS";
 
-jest.mock("../__mocks__/axios");
+describe("getAllTasks", () => {
+  it("fetches successfully all tasks data from an API", async () => {
+    const data = [
+      {
+        _id: "5f7c61ef72e7de0017f59ce6",
+        name: "important task",
+        description: "",
+        important: true,
+        done: true,
+      },
 
-it("works with promises", () => {
-  const output = [
-    {
+      {
+        _id: "5f7d9c19fffee20017541c25",
+        name: "Test from Bouba",
+        description: "This is just a test",
+        important: false,
+        done: true,
+      },
+    ];
+
+    axios.get.mockImplementationOnce(() => Promise.resolve(data));
+
+    await expect(getAllTasks()).resolves.toEqual(data);
+  });
+
+  it("fetches erroneously tasks from my API", async () => {
+    const errorMessage = "Network Error";
+
+    axios.get.mockImplementationOnce(() =>
+      Promise.reject(new Error(errorMessage))
+    );
+
+    await expect(getAllTasks()).rejects.toThrow(errorMessage);
+  });
+});
+
+describe("addTask", () => {
+  it("adds successfully a task data with an API", async () => {
+    const data = {
       _id: "5f7c61ef72e7de0017f59ce6",
       name: "important task",
       description: "",
       important: true,
       done: true,
-    },
+    };
 
-    {
-      _id: "5f7d9c19fffee20017541c25",
-      name: "Test from Bouba",
-      description: "This is just a test",
-      important: false,
+    axios.post.mockImplementationOnce(() => Promise.resolve(data));
+
+    await expect(addTask(data)).resolves.toEqual(data);
+  });
+
+  it("adds erroneously a task with my API", async () => {
+    const errorMessage = "Network Error";
+    const data = {
+      _id: "5f7c61ef72e7de0017f59ce6",
+      name: "important task",
+      description: "",
+      important: true,
       done: true,
-    },
-    {
-      _id: "5f7d9c88fffee20017541c26",
-      name: "Hello from Hamza",
-      description: "",
-      important: false,
-      done: false,
-    },
-    {
-      _id: "5f7da19afffee20017541c27",
-      name: "Integration of Github Actions",
-      description: "",
-      important: false,
-      done: false,
-    },
-    {
-      _id: "5f7f0714938a2e0017049866",
-      name: "first task",
-      description: "",
-      important: false,
-      done: false,
-    },
-  ];
+    };
+    axios.post.mockImplementationOnce(() =>
+      Promise.reject(new Error(errorMessage))
+    );
 
-  expect.assertions(1);
-  return getAllTasks().then((data) => expect(data).toEqual(output));
-});
-
-it("delete task", () => {
-  expect.assertions(1);
-  return deleteTask({ id: 5 }).then((data) =>
-    expect(data).toEqual("delete successfull")
-  );
-});
-
-it("update task", () => {
-  expect.assertions(1);
-  return updateTask({ id: 5 }).then((data) =>
-    expect(data).toEqual("update successful")
-  );
-});
-
-it("add task", () => {
-  expect.assertions(1);
-  return addTask({
-    id: 5,
-    name: "test",
-    description: "a",
-    done: true,
-    important: true,
-  }).then((data) => expect(data).toEqual("task added"));
-});
-
-it("delete task rejected", () => {
-  return deleteTask({ id: 0 }).catch((e) => {
-    console.log("test fail");
-    expect(e).toEqual({ error: "Task not found." });
+    await expect(addTask(data)).rejects.toThrow(errorMessage);
   });
 });
 
-// it("delete task rejected", () => {
-//   expect.assertions(1);
-//   return expect(deleteTask({ id: 0 })).rejects.toEqual({
-//     error: "Task not found.",
-//   });
-// });
+describe("deleteTask", () => {
+  it("delete successfully a task with id with an API", async () => {
+    const id = "5f7c61ef72e7de0017f59ce6";
 
-// it("grgg.",  () => {
-//   expect.assertions(1);
+    axios.delete.mockImplementationOnce(() => Promise.resolve(id));
 
-//  return  deleteTask({ id: 5 }).catch((e) => {
-//     console.log("tgtg");
-//     expect(e).toEqual("error");
-//   });
-// });
+    await expect(deleteTask({ id })).resolves.toEqual(id);
+  });
+
+  it("deletes erroneously a task with id with my API", async () => {
+    const errorMessage = "Network Error";
+    const id = "5f7c61ef72e7de0017f59ce6";
+    axios.delete.mockImplementationOnce(() =>
+      Promise.reject(new Error(errorMessage))
+    );
+
+    await expect(deleteTask({ id })).rejects.toThrow(errorMessage);
+  });
+});
+
+describe("updateTask", () => {
+  it("update successfully a task with id with an API", async () => {
+    const id = "5f7c61ef72e7de0017f59ce6";
+
+    axios.put.mockImplementationOnce(() => Promise.resolve(id));
+
+    await expect(updateTask({ id })).resolves.toEqual(id);
+  });
+
+  it("update erroneously a task with id with my API", async () => {
+    const errorMessage = "Network Error";
+    const id = "5f7c61ef72e7de0017f59ce6";
+    axios.put.mockImplementationOnce(() =>
+      Promise.reject(new Error(errorMessage))
+    );
+
+    await expect(updateTask({ id })).rejects.toThrow(errorMessage);
+  });
+});
